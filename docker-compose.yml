@@ -1,0 +1,12 @@
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    env_file:
+      - ./.env-sqlserver
+    ports:
+      - "1433:1433"
+    volumes:
+      - data:/var/opt/mssql
+
+volumes:
+  data:
