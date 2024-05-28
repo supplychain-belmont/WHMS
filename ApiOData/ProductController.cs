@@ -3,6 +3,7 @@ using Indotalent.DTOs;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Indotalent.ApiOData
 {
@@ -29,13 +30,11 @@ namespace Indotalent.ApiOData
                     Number = rec.Number,
                     RowGuid = rec.RowGuid,
                     CreatedAtUtc = rec.CreatedAtUtc,
-                    ProductGroup = rec.ProductGroup!.Name,
-                    UnitMeasure = rec.UnitMeasure!.Name,
+                    ProductGroup = rec.ProductGroup != null ? rec.ProductGroup.Name : null,
+                    UnitMeasure = rec.UnitMeasure != null ? rec.UnitMeasure.Name : null,
                     UnitPrice = rec.UnitPrice,
                     Physical = rec.Physical,
                 });
         }
-
-
     }
 }
