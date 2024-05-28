@@ -17,5 +17,18 @@ namespace Indotalent.Models.Entities
         public double? BeforeTaxAmount { get; set; }
         public double? TaxAmount { get; set; }
         public double? AfterTaxAmount { get; set; }
+        public int? FinalSaleAmount { get; set; }
+        public string? PaymentId { get; set; }
+        public int? CreditDuesId { get; set; }
+        public bool? CreditExistence { get; set; }
+        public int? Balance { get; set; }
+        public float? It { get; set; }
+        public bool Invoice { get; set; }
+        public int? InvoicedAmount { get; set; }
+        public int? GrossProfit { get; set; }
+        public float? GrossMargin { get; set; }
+        public float? DistributionMargin { get; set; }
+        public float? Revenue { get; set; }
+        public float? Commission { get; set; }
     }
 }
