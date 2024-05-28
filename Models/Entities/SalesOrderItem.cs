@@ -1,4 +1,5 @@
 ﻿using Indotalent.Models.Contracts;
+using System;
 
 namespace Indotalent.Models.Entities
 {
@@ -13,6 +14,7 @@ namespace Indotalent.Models.Entities
         public double? UnitPrice { get; set; } = 0;
         public double? Quantity { get; set; } = 1;
         public double? Total { get; set; } = 0;
+        public string? FileImage { get; set; }
 
         public void RecalculateTotal()
         {
