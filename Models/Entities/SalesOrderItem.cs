@@ -1,4 +1,5 @@
 ﻿using Indotalent.Models.Contracts;
+using System;
 
 namespace Indotalent.Models.Entities
 {

@@ -11,6 +11,10 @@ namespace Indotalent.Models.Configurations
 
             builder.Property(c => c.Name).IsRequired().HasMaxLength(100);
             builder.Property(c => c.Description).HasMaxLength(255);
+            builder.Property(c => c.CreatedByUserId).HasMaxLength(255);
+            builder.Property(c => c.UpdatedByUserId).HasMaxLength(255);
+            builder.Property(c => c.CreatedByUserId).HasMaxLength(255);
+            builder.Property(c => c.CreatedByUserId).HasMaxLength(255);
         }
     }
 }
