@@ -148,7 +148,7 @@ namespace Indotalent.Infrastructures.Repositories
                 if (entity is IHasSoftDelete softDeleteEntity)
                 {
                     softDeleteEntity.IsNotDeleted = false;
-                    _context.Entry(entity).State = EntityState.Modified;
+                    _context.SetModifiedState(entity);
                 }
                 else
                 {
@@ -184,7 +184,7 @@ namespace Indotalent.Infrastructures.Repositories
                 if (entity is IHasSoftDelete softDeleteEntity)
                 {
                     softDeleteEntity.IsNotDeleted = false;
-                    _context.Entry(entity).State = EntityState.Modified;
+                    _context.SetModifiedState(entity);
                 }
                 else
                 {

@@ -14,41 +14,44 @@ namespace Indotalent.Data
         {
         }
 
-        public DbSet<FileImage> FileImages { get; set; } = default!;
-        public DbSet<FileDocument> FileDocument { get; set; } = default!;
-        public DbSet<Company> Company { get; set; } = default!;
-        public DbSet<NumberSequence> NumberSequence { get; set; } = default!;
-        public DbSet<LogSession> LogSession { get; set; } = default!;
-        public DbSet<LogError> LogError { get; set; } = default!;
-        public DbSet<LogAnalytic> LogAnalytic { get; set; } = default!;
-        public DbSet<CustomerGroup> CustomerGroup { get; set; } = default!;
-        public DbSet<CustomerCategory> CustomerCategory { get; set; } = default!;
-        public DbSet<VendorGroup> VendorGroup { get; set; } = default!;
-        public DbSet<VendorCategory> VendorCategory { get; set; } = default!;
-        public DbSet<Warehouse> Warehouse { get; set; } = default!;
-        public DbSet<Customer> Customer { get; set; } = default!;
-        public DbSet<Vendor> Vendor { get; set; } = default!;
-        public DbSet<UnitMeasure> UnitMeasure { get; set; } = default!;
-        public DbSet<ProductGroup> ProductGroup { get; set; } = default!;
-        public DbSet<Product> Product { get; set; } = default!;
-        public DbSet<CustomerContact> CustomerContact { get; set; } = default!;
-        public DbSet<VendorContact> VendorContact { get; set; } = default!;
-        public DbSet<Tax> Tax { get; set; } = default!;
-        public DbSet<SalesOrder> SalesOrder { get; set; } = default!;
-        public DbSet<SalesOrderItem> SalesOrderItem { get; set; } = default!;
-        public DbSet<PurchaseOrder> PurchaseOrder { get; set; } = default!;
-        public DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; } = default!;
-        public DbSet<InventoryTransaction> InventoryTransaction { get; set; } = default!;
-        public DbSet<DeliveryOrder> DeliveryOrder { get; set; } = default!;
-        public DbSet<GoodsReceive> GoodsReceive { get; set; } = default!;
-        public DbSet<SalesReturn> SalesReturn { get; set; } = default!;
-        public DbSet<PurchaseReturn> PurchaseReturn { get; set; } = default!;
-        public DbSet<TransferIn> TransferIn { get; set; } = default!;
-        public DbSet<TransferOut> TransferOut { get; set; } = default!;
-        public DbSet<StockCount> StockCount { get; set; } = default!;
-        public DbSet<AdjustmentMinus> AdjustmentMinus { get; set; } = default!;
-        public DbSet<AdjustmentPlus> AdjustmentPlus { get; set; } = default!;
-        public DbSet<Scrapping> Scrapping { get; set; } = default!;
+        public virtual DbSet<FileImage> FileImages { get; set; } = default!;
+        public virtual DbSet<FileDocument> FileDocument { get; set; } = default!;
+        public virtual DbSet<Company> Company { get; set; } = default!;
+        public virtual DbSet<NumberSequence> NumberSequence { get; set; } = default!;
+        public virtual DbSet<LogSession> LogSession { get; set; } = default!;
+        public virtual DbSet<LogError> LogError { get; set; } = default!;
+        public virtual DbSet<LogAnalytic> LogAnalytic { get; set; } = default!;
+        public virtual DbSet<CustomerGroup> CustomerGroup { get; set; } = default!;
+        public virtual DbSet<CustomerCategory> CustomerCategory { get; set; } = default!;
+        public virtual DbSet<VendorGroup> VendorGroup { get; set; } = default!;
+        public virtual DbSet<VendorCategory> VendorCategory { get; set; } = default!;
+        public virtual DbSet<Warehouse> Warehouse { get; set; } = default!;
+        public virtual DbSet<Customer> Customer { get; set; } = default!;
+        public virtual DbSet<Vendor> Vendor { get; set; } = default!;
+        public virtual DbSet<UnitMeasure> UnitMeasure { get; set; } = default!;
+        public virtual DbSet<ProductGroup> ProductGroup { get; set; } = default!;
+        public virtual DbSet<Product> Product { get; set; } = default!;
+        public virtual DbSet<CustomerContact> CustomerContact { get; set; } = default!;
+        public virtual DbSet<VendorContact> VendorContact { get; set; } = default!;
+        public virtual DbSet<Tax> Tax { get; set; } = default!;
+        public virtual DbSet<SalesOrder> SalesOrder { get; set; } = default!;
+        public virtual DbSet<SalesOrderItem> SalesOrderItem { get; set; } = default!;
+        public virtual DbSet<PurchaseOrder> PurchaseOrder { get; set; } = default!;
+        public virtual DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; } = default!;
+        public virtual DbSet<InventoryTransaction> InventoryTransaction { get; set; } = default!;
+        public virtual DbSet<DeliveryOrder> DeliveryOrder { get; set; } = default!;
+        public virtual DbSet<GoodsReceive> GoodsReceive { get; set; } = default!;
+        public virtual DbSet<SalesReturn> SalesReturn { get; set; } = default!;
+        public virtual DbSet<PurchaseReturn> PurchaseReturn { get; set; } = default!;
+        public virtual DbSet<TransferIn> TransferIn { get; set; } = default!;
+        public virtual DbSet<TransferOut> TransferOut { get; set; } = default!;
+        public virtual DbSet<StockCount> StockCount { get; set; } = default!;
+        public virtual DbSet<AdjustmentMinus> AdjustmentMinus { get; set; } = default!;
+        public virtual DbSet<AdjustmentPlus> AdjustmentPlus { get; set; } = default!;
+        public virtual DbSet<Scrapping> Scrapping { get; set; } = default!;
+
+        public virtual void SetModifiedState(object entity) =>
+            Entry(entity).State = EntityState.Modified;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,6 +97,5 @@ namespace Indotalent.Data
             modelBuilder.ApplyConfiguration(new AdjustmentPlusConfiguration());
             modelBuilder.ApplyConfiguration(new ScrappingConfiguration());
         }
-
     }
 }
