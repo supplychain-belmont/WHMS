@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
@@ -28,7 +28,9 @@ jobs:
 
       - name: Test
         run: |
+          dotnet tool install --global DotnetCtrfJsonReporter
           dotnet test --logger "trx;logfilename=testResults.trx"
+          dotnet tool restore
           dotnet tool run DotnetCtrfJsonReporter testResults.trx -p "Indotalent.Tests/TestResults/testResults.trx" -t "nunit"
       - name: Report tests
         run: npx github-actions-ctrf ctrf/ctrf-report.json
