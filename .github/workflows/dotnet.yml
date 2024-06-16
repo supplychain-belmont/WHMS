@@ -28,8 +28,6 @@ jobs:
 
       - name: Test
         run: |
-          dotnet new tool-manifest
-          dotnet tool install DotnetCtrfJsonReporter --local
           dotnet test --logger "trx;logfilename=testResults.trx"
           dotnet tool run DotnetCtrfJsonReporter testResults.trx -p "Indotalent.Tests/TestResults/testResults.trx" -t "nunit"
       - name: Report tests
