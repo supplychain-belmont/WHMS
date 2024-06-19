@@ -202,8 +202,9 @@ public static class ItemList
             VendorId = 0
         }
     ];
-    public static List<Customer> Customers => new List<Customer>
-    {
+
+    public static List<Customer> Customers =
+    [
         new Customer
         {
             Id = 1,
@@ -276,7 +277,7 @@ public static class ItemList
             CustomerGroupId = 1,
             CustomerCategoryId = 1
         }
-    };
+    ];
 
     public static List<T>? GetList<T>(Type type) where T : class
     {

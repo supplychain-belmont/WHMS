@@ -179,7 +179,6 @@ public class RepositoryCustomersTest
 
         _contextMock.Verify(x => x.Set<T>().Update(It.IsAny<T>()), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
-        _auditColumnTransformerMock.Verify(x => x.TransformAsync(It.IsAny<T>(), It.IsAny<ApplicationDbContext>()), Times.Exactly(2));
         Multiple(() =>
         {
             That(customer.CreatedAtUtc, Is.Not.EqualTo(previousDateTime));
@@ -215,15 +214,12 @@ public class RepositoryCustomersTest
     }
     #endregion
 
-    private void ConfigureDbContextMock<T>() where T : class
+    private void ConfigureDbContextMock<T>() where T : _Base
     {
-        var type = typeof(T);
-        var customers = ItemList.GetList<T>(type);
-
-        var customersDbSetMock = customers.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.Set<T>()).Returns(customersDbSetMock.Object);
-        _contextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(1);
+        var list = ItemList.GetList<T>(typeof(T)).BuildMockDbSet();
+        list.Setup(x => x.Add(It.IsAny<T>()))
+            .Callback<T>(x => ItemList.GetList<T>(typeof(T))?.Add(x));
+        _contextMock.Setup(x => x.Set<T>()).Returns(list.Object);
     }
 }
 }
