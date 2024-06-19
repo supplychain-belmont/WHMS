@@ -202,6 +202,81 @@ public static class ItemList
             VendorId = 0
         }
     ];
+    public static List<Customer> Customers => new List<Customer>
+    {
+        new Customer
+        {
+            Id = 1,
+            Name = "Customer1",
+            Number = "123456",
+            Description = "Description1",
+            Street = "Street1",
+            City = "City1",
+            State = "State1",
+            ZipCode = "Zip1",
+            Country = "Country1",
+            PhoneNumber = "Phone1",
+            FaxNumber = "Fax1",
+            EmailAddress = "Email1",
+            Website = "Website1",
+            WhatsApp = "WhatsApp1",
+            LinkedIn = "LinkedIn1",
+            Facebook = "Facebook1",
+            Instagram = "Instagram1",
+            TwitterX = "Twitter1",
+            TikTok = "TikTok1",
+            CustomerGroupId = 1,
+            CustomerCategoryId = 1
+        },
+        new Customer
+        {
+            Id = 2,
+            Name = "Customer2",
+            Number = "123456",
+            Description = "Description1",
+            Street = "Street1",
+            City = "City1",
+            State = "State1",
+            ZipCode = "Zip1",
+            Country = "Country1",
+            PhoneNumber = "Phone1",
+            FaxNumber = "Fax1",
+            EmailAddress = "Email1",
+            Website = "Website1",
+            WhatsApp = "WhatsApp1",
+            LinkedIn = "LinkedIn1",
+            Facebook = "Facebook1",
+            Instagram = "Instagram1",
+            TwitterX = "Twitter1",
+            TikTok = "TikTok1",
+            CustomerGroupId = 1,
+            CustomerCategoryId = 1
+        },
+        new Customer
+        {
+            Id = 3,
+            Name = "Customer3",
+            Number = "123456",
+            Description = "Description1",
+            Street = "Street1",
+            City = "City1",
+            State = "State1",
+            ZipCode = "Zip1",
+            Country = "Country1",
+            PhoneNumber = "Phone1",
+            FaxNumber = "Fax1",
+            EmailAddress = "Email1",
+            Website = "Website1",
+            WhatsApp = "WhatsApp1",
+            LinkedIn = "LinkedIn1",
+            Facebook = "Facebook1",
+            Instagram = "Instagram1",
+            TwitterX = "Twitter1",
+            TikTok = "TikTok1",
+            CustomerGroupId = 1,
+            CustomerCategoryId = 1
+        }
+    };
 
     public static List<T>? GetList<T>(Type type) where T : class
     {
@@ -213,6 +288,7 @@ public static class ItemList
             not null when type == typeof(VendorGroup) => VendorGroups as List<T>,
             not null when type == typeof(VendorCategory) => VendorCategories as List<T>,
             not null when type == typeof(VendorContact) => VendorContacts as List<T>,
+            not null when type == typeof(Customer) => Customers as List<T>, 
             _ => throw new ArgumentException("Invalid type")
         };
     }

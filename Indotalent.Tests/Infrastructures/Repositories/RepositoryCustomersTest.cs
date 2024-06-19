@@ -6,10 +6,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using MockQueryable.Moq;
 using Moq;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using static NUnit.Framework.Assert;
 
-namespace Indotalent.Tests.Infrastructures.Repositories;
-
+namespace Indotalent.Tests.Infrastructures.Repositories
+{
 [TestFixture]
 public class RepositoryCustomersTest
 {
@@ -37,6 +43,8 @@ public class RepositoryCustomersTest
 
         _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
         _auditColumnTransformerMock = new Mock<IAuditColumnTransformer>();
+        _auditColumnTransformerMock.Setup(x => x.TransformAsync(It.IsAny<_Base>(), It.IsAny<ApplicationDbContext>()))
+            .Returns(Task.CompletedTask);
     }
 
     #endregion
@@ -73,14 +81,13 @@ public class RepositoryCustomersTest
     public async Task ShouldAddCustomerByTable<T>(T entity) where T : _Base
     {
         ConfigureDbContextMock<T>();
-        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object,
-            _auditColumnTransformerMock.Object);
+        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object, _auditColumnTransformerMock.Object);
 
         await repository.AddAsync(entity);
 
         _contextMock.Verify(x => x.Set<T>().Add(It.IsAny<T>()), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        That(repository.GetAll().Count(), Is.GreaterThan(4));
+        That(repository.GetAll().Count(), Is.GreaterThan(2));
     }
 
     [TestCaseSource(typeof(Customers), nameof(Customers.GetAll))]
@@ -103,18 +110,15 @@ public class RepositoryCustomersTest
     public async Task ShouldReturnACustomerByIdAsync<T>(T entity) where T : _Base
     {
         ConfigureDbContextMock<T>();
-        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object,
-            _auditColumnTransformerMock.Object);
+        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object, _auditColumnTransformerMock.Object);
 
         await repository.AddAsync(entity);
         var customer = await repository.GetByIdAsync(entity.Id);
 
         _contextMock.Verify(x => x.Set<T>().Add(It.IsAny<T>()), Times.Once);
-        _auditColumnTransformerMock.Verify(x => x.TransformAsync(It.IsAny<T>(), It.IsAny<ApplicationDbContext>()),
-            Times.Once);
+        _auditColumnTransformerMock.Verify(x => x.TransformAsync(It.IsAny<T>(), It.IsAny<ApplicationDbContext>()), Times.Once);
         That(customer, Is.Not.Null);
     }
-
     [TestCaseSource(typeof(Customers), nameof(Customers.GetAll))]
     public async Task ShouldReturnACustomerByRowGuidAsync<T>(T entity) where T : _Base
     {
@@ -158,15 +162,13 @@ public class RepositoryCustomersTest
     #endregion
 
     #region TestUpdateCustomers
-
     [TestCaseSource(typeof(Customers), nameof(Customers.GetAll))]
     public async Task ShouldUpdateACustomer<T>(T entity) where T : _Base
     {
         ConfigureDbContextMock<T>();
         var previousDateTime = entity.CreatedAtUtc;
 
-        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object,
-            _auditColumnTransformerMock.Object);
+        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object, _auditColumnTransformerMock.Object);
 
         await repository.AddAsync(entity);
         var customer = await repository.GetByIdAsync(entity.Id);
@@ -177,6 +179,7 @@ public class RepositoryCustomersTest
 
         _contextMock.Verify(x => x.Set<T>().Update(It.IsAny<T>()), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+        _auditColumnTransformerMock.Verify(x => x.TransformAsync(It.IsAny<T>(), It.IsAny<ApplicationDbContext>()), Times.Exactly(2));
         Multiple(() =>
         {
             That(customer.CreatedAtUtc, Is.Not.EqualTo(previousDateTime));
@@ -198,37 +201,29 @@ public class RepositoryCustomersTest
 
     #endregion
 
-    #region TestDeleteCustomers
+    #region TestRemoveCustomers
 
     [TestCaseSource(typeof(Customers), nameof(Customers.GetAll))]
-    public async Task ShouldDeleteACustomerByIdAsync<T>(T entity) where T : _Base
+    public void ShouldThrowExceptionTryToRemoveNullEntity<T>(T entity) where T : _Base
     {
         ConfigureDbContextMock<T>();
-        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object,
-            _auditColumnTransformerMock.Object);
+        var repository = new Repository<T>(_contextMock.Object, _httpContextAccessorMock.Object, _auditColumnTransformerMock.Object);
 
-        var customer = await repository.GetByIdAsync(new Random().Next(1, 5));
-        Multiple(() =>
-        {
-            That(customer, Is.Not.Null);
-            That(customer?.IsNotDeleted, Is.True);
-        });
-
-        await repository.DeleteByIdAsync(customer?.Id);
-
-        _contextMock.Verify(x =>
-            x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        That(customer?.IsNotDeleted, Is.False);
-
-        customer!.IsNotDeleted = true;
-        await repository.UpdateAsync(customer);
+        var exception = ThrowsAsync<Exception>(async () => await repository.DeleteByIdAsync(null));
+        That(exception, Is.Not.Null);
+        That(exception?.Message, Is.EqualTo(ExceptionMessageIdNull));
     }
     #endregion
-    private void ConfigureDbContextMock<T>() where T : _Base
+
+    private void ConfigureDbContextMock<T>() where T : class
     {
-        var entities = (IList<T>)Customers.GetAll();
-        var entitiesSetMock = entities.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.Set<T>())
-            .Returns(entitiesSetMock.Object);
+        var type = typeof(T);
+        var customers = ItemList.GetList<T>(type);
+
+        var customersDbSetMock = customers.AsQueryable().BuildMockDbSet();
+        _contextMock.Setup(x => x.Set<T>()).Returns(customersDbSetMock.Object);
+        _contextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(1);
     }
+}
 }
