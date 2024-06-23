@@ -1,5 +1,6 @@
 ﻿using Indotalent.Applications.SalesOrders;
 using Indotalent.DTOs;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;

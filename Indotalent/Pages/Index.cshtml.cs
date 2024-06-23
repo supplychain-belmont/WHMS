@@ -1,4 +1,5 @@
 using Indotalent.Infrastructures.Extensions;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Indotalent.Pages

@@ -1,7 +1,10 @@
 ﻿using Indotalent.AppSettings;
+
 using MailKit.Net.Smtp;
+
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
+
 using MimeKit;
 
 namespace Indotalent.Infrastructures.Emails

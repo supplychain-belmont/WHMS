@@ -1,6 +1,7 @@
 ﻿using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.Companies

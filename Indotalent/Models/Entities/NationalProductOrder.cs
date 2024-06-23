@@ -1,7 +1,8 @@
-using Indotalent.Models.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
+
 using Indotalent.Models.Contracts;
+using Indotalent.Models.Enums;
 namespace Indotalent.Models.Entities
 {
     public class NationalProductOrder : _Base

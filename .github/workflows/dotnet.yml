@@ -1,0 +1,40 @@
+name: dotnet-build-test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: |
+          dotnet tool install --global DotnetCtrfJsonReporter
+          dotnet test --logger "trx;logfilename=testResults.trx"
+          dotnet tool restore
+          dotnet tool run DotnetCtrfJsonReporter testResults.trx -p "Indotalent.Tests/TestResults/testResults.trx" -t "nunit"
+      - name: Report tests
+        run: npx github-actions-ctrf ctrf/ctrf-report.json
+        if: always()

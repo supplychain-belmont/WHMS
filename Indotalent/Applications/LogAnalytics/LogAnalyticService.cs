@@ -1,8 +1,11 @@
-﻿using DeviceDetectorNET;
+﻿using System.Security.Claims;
+
+using DeviceDetectorNET;
+
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
-using System.Security.Claims;
+
 using UAParser;
 
 namespace Indotalent.Applications.LogAnalytics

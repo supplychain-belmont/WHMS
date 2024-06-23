@@ -1,16 +1,19 @@
+using System.ComponentModel;
+
 using AutoMapper;
+
 using Indotalent.Applications.ApplicationUsers;
 using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
-using System.ComponentModel;
 
 namespace Indotalent.Pages.UserProfiles
 {

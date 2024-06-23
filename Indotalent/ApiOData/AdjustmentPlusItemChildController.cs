@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+
 using Indotalent.Applications.AdjustmentPluss;
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 using Indotalent.Models.Enums;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;

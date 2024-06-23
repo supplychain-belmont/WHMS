@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+
 using Indotalent.Models.Contracts;
 namespace Indotalent.Models.Entities
 {

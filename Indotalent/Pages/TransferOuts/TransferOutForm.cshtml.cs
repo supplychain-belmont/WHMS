@@ -1,4 +1,7 @@
+using System.ComponentModel;
+
 using AutoMapper;
+
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
@@ -7,12 +10,12 @@ using Indotalent.Applications.Warehouses;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Models.Entities;
 using Indotalent.Models.Enums;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 
 namespace Indotalent.Pages.TransferOuts
 {

@@ -1,5 +1,6 @@
 ﻿using Indotalent.Applications.VendorGroups;
 using Indotalent.DTOs;
+
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 

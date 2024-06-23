@@ -5,9 +5,11 @@ using Indotalent.Infrastructures.Middlewares;
 using Indotalent.Infrastructures.ODatas;
 using Indotalent.Infrastructures.Pdfs;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
 
