@@ -2,6 +2,7 @@ using Indotalent.Applications.Companies;
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.Scrappings;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 

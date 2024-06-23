@@ -1,9 +1,11 @@
-﻿using Indotalent.Applications.Products;
+﻿using System.Linq;
+
+using Indotalent.Applications.Products;
 using Indotalent.DTOs;
+
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Indotalent.ApiOData
 {

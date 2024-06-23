@@ -2,9 +2,13 @@ using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Tests.Utils;
+
 using Microsoft.EntityFrameworkCore;
+
 using MockQueryable.Moq;
+
 using Moq;
+
 using static NUnit.Framework.Assert;
 
 namespace Indotalent.Tests.Infrastructures.Repositories;

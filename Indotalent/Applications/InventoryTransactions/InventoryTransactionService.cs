@@ -4,6 +4,7 @@ using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
 using Indotalent.Models.Enums;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.InventoryTransactions

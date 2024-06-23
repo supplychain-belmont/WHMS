@@ -6,6 +6,7 @@ using Indotalent.Applications.SalesOrders;
 using Indotalent.Applications.Warehouses;
 using Indotalent.Models.Entities;
 using Indotalent.Models.Enums;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Data.Demo

@@ -23,6 +23,9 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
 
+      - name: Formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+
       - name: Build
         run: dotnet build --configuration Release --no-restore
 

@@ -1,4 +1,9 @@
+using System.ComponentModel;
+using System.Security.Claims;
+using System.Text;
+
 using AutoMapper;
+
 using Indotalent.Applications.ApplicationUsers;
 using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
@@ -6,6 +11,7 @@ using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Models.Entities;
 using Indotalent.Models.Enums;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +19,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using System.ComponentModel;
-using System.Security.Claims;
-using System.Text;
 
 namespace Indotalent.Pages.Users
 {

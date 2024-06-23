@@ -1,4 +1,5 @@
 using Indotalent.Models.Entities;
+
 using static System.Guid;
 
 namespace Indotalent.Tests.Utils;
@@ -289,7 +290,7 @@ public static class ItemList
             not null when type == typeof(VendorGroup) => VendorGroups as List<T>,
             not null when type == typeof(VendorCategory) => VendorCategories as List<T>,
             not null when type == typeof(VendorContact) => VendorContacts as List<T>,
-            not null when type == typeof(Customer) => Customers as List<T>, 
+            not null when type == typeof(Customer) => Customers as List<T>,
             _ => throw new ArgumentException("Invalid type")
         };
     }

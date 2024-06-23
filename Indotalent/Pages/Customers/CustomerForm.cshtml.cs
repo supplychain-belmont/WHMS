@@ -1,4 +1,7 @@
+using System.ComponentModel;
+
 using AutoMapper;
+
 using Indotalent.Applications.CustomerCategories;
 using Indotalent.Applications.CustomerGroups;
 using Indotalent.Applications.Customers;
@@ -6,11 +9,11 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
 
 namespace Indotalent.Pages.Customers
 {

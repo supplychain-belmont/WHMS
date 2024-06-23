@@ -3,6 +3,7 @@ using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.SalesOrderItems
