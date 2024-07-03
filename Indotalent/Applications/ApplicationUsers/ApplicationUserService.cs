@@ -1,9 +1,11 @@
-﻿using Indotalent.Data;
+﻿using System.Security.Claims;
+
+using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
+
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace Indotalent.Applications.ApplicationUsers
 {

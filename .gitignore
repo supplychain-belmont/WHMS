@@ -5,6 +5,7 @@
 
 # dotenv files
 .env*
+ctrf/
 
 # User-specific files
 *.rsuser

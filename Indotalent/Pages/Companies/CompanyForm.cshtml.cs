@@ -1,15 +1,18 @@
+using System.ComponentModel;
+
 using AutoMapper;
+
 using Indotalent.Applications.Companies;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Infrastructures.TimeZones;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
 
 namespace Indotalent.Pages.Companies
 {

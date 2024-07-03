@@ -1,7 +1,9 @@
-﻿using Indotalent.Data;
+﻿using System.Security.Claims;
+
+using Indotalent.Data;
 using Indotalent.Models.Contracts;
+
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace Indotalent.Infrastructures.Repositories
 {

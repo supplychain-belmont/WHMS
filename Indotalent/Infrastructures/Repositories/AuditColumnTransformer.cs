@@ -1,12 +1,13 @@
 ﻿using Indotalent.Data;
 using Indotalent.Models.Contracts;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Infrastructures.Repositories
 {
     public class AuditColumnTransformer : IAuditColumnTransformer
     {
-        private string _dateFormat = "yyyy-MM-dd HH:ss";
+        private readonly string _dateFormat = "yyyy-MM-dd HH:ss";
         public async Task TransformAsync(IHasAudit entity, ApplicationDbContext context)
         {
             if (entity != null)

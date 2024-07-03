@@ -4,6 +4,7 @@
 
 using Indotalent.Applications.LogSessions;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

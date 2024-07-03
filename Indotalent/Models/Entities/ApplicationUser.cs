@@ -1,7 +1,9 @@
-﻿using Indotalent.Models.Contracts;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+using Indotalent.Models.Contracts;
 using Indotalent.Models.Enums;
+
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Indotalent.Models.Entities
 {

@@ -1,11 +1,14 @@
+using System.ComponentModel;
+
 using AutoMapper;
+
 using Indotalent.Applications.ProductGroups;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel;
 
 namespace Indotalent.Pages.ProductGroups
 {

@@ -1,7 +1,8 @@
-﻿using Indotalent.Data;
+﻿using System.Security.Claims;
+
+using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
-using System.Security.Claims;
 
 namespace Indotalent.Applications.LogSessions
 {

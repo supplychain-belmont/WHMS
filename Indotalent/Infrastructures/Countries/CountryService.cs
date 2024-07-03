@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Globalization;
+﻿using System.Globalization;
+
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Indotalent.Infrastructures.Countries
 {
