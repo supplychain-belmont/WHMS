@@ -1,7 +1,6 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-
 using Indotalent.Models.Contracts;
+
 namespace Indotalent.Models.Entities
 {
     public class NationalProductOrderItem : _Base
@@ -9,20 +8,25 @@ namespace Indotalent.Models.Entities
         public int NationalProductOrderId { get; set; }
         public int ProductId { get; set; }
         public string? Summary { get; set; }
-        public double UnitPrice { get; set; }
-        public double Quantity { get; set; }
-        public double Total { get; set; }
-        public double ManPowerCost { get; set; }
-        public double MaterialCost { get; set; }
-        public double ShippingCost { get; set; }
-        public double TotalAmount { get; set; }
-        public double DiscountCost { get; set; }
-        public double AmountPayable { get; set; }
-        public double Utility1 { get; set; }
-        public double Utility2 { get; set; }
-        public double UnitPriceInvoice { get; set; }
-        public double UnitPriceNoInvoice { get; set; }
+        public float UnitPrice { get; set; }
+        public float Quantity { get; set; }
+        public float Total { get; set; }
+        public Guid RowGuid { get; set; }
+        public string? CreatedByUserId { get; set; }
+        public DateTime CreatedAtUtc { get; set; }
+        public string? UpdatedByUserId { get; set; }
+        public DateTime UpdatedAtUtc { get; set; }
+        public bool IsNotDeleted { get; set; }
+        public float ManPowerCost { get; set; }
+        public float MaterialCost { get; set; }
+        public float ShippingCost { get; set; }
+        public float TotalAmount { get; set; }
+        public float DiscountCost { get; set; }
+        public float AmountPayable { get; set; }
+        public float Utility1 { get; set; }
+        public float Utility2 { get; set; }
+        public float UnitPriceInvoice { get; set; }
+        public float UnitPriceNoInvoice { get; set; }
         public string? ColorCode { get; set; }
-        public int Id { get; set; }
     }
 }
