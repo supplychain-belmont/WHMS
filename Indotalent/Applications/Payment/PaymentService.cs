@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using Indotalent.Models.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.Payment
 {
@@ -12,25 +13,25 @@ namespace Indotalent.Applications.Payment
             _context = context;
         }
 
-        public IQueryable<Models.Entities.Payment > GetAll()
+        public IQueryable<Models.Entities.Payment> GetAll()
         {
-            return _context.Set<Models.Entities.Payment >();
+            return _context.Set<Models.Entities.Payment>();
         }
 
-        public async Task<Models.Entities.Payment ?> GetByIdAsync(Guid id)
+        public async Task<Models.Entities.Payment?> GetByIdAsync(Guid id)
         {
-            return await _context.Set<Models.Entities.Payment >().FindAsync(id);
+            return await _context.Set<Models.Entities.Payment>().FindAsync(id);
         }
 
-        public async Task AddAsync(Models.Entities.Payment  payment)
+        public async Task AddAsync(Models.Entities.Payment payment)
         {
-            await _context.Set<Models.Entities.Payment >().AddAsync(payment);
+            await _context.Set<Models.Entities.Payment>().AddAsync(payment);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Models.Entities.Payment payment)
         {
-            _context.Set<Models.Entities.Payment >().Update(payment);
+            _context.Set<Models.Entities.Payment>().Update(payment);
             await _context.SaveChangesAsync();
         }
 
@@ -39,7 +40,7 @@ namespace Indotalent.Applications.Payment
             var payment = await GetByIdAsync(id);
             if (payment != null)
             {
-                _context.Set<Models.Entities.Payment >().Remove(payment);
+                _context.Set<Models.Entities.Payment>().Remove(payment);
                 await _context.SaveChangesAsync();
             }
         }

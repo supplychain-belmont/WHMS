@@ -2,6 +2,7 @@ using Indotalent.Infrastructures.Docs;
 using Indotalent.Infrastructures.Images;
 using Indotalent.Models.Configurations;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

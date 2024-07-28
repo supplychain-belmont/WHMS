@@ -1,4 +1,5 @@
 using System;
+
 using Indotalent.Models.Enums;
 
 namespace Indotalent.DTOs

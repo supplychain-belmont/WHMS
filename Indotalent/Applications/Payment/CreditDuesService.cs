@@ -1,4 +1,5 @@
 using Indotalent.Models.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.Payment
