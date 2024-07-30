@@ -26,7 +26,6 @@ namespace Indotalent.Models.Configurations
             builder.Property(n => n.UpdatedByUserId).IsRequired().HasMaxLength(50);
             builder.Property(n => n.UpdatedAtUtc).IsRequired();
             builder.Property(n => n.IsNotDeleted).IsRequired();
-            builder.Property(n => n.PaymentId).IsRequired().HasMaxLength(50);
             builder.Property(n => n.AmountPaid).IsRequired();
             builder.Property(n => n.Balance).IsRequired();
             builder.Property(n => n.Invoice).IsRequired();

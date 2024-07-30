@@ -12,12 +12,6 @@ namespace Indotalent.Models.Entities
         public float UnitPrice { get; set; }
         public float Quantity { get; set; }
         public float Total { get; set; }
-        public Guid RowGuid { get; set; }
-        public string? CreatedByUserId { get; set; }
-        public DateTime CreatedAtUtc { get; set; }
-        public string? UpdatedByUserId { get; set; }
-        public DateTime UpdatedAtUtc { get; set; }
-        public bool IsNotDeleted { get; set; }
         public float ManPowerCost { get; set; }
         public float MaterialCost { get; set; }
         public float ShippingCost { get; set; }

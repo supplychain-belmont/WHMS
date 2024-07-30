@@ -15,13 +15,6 @@ namespace Indotalent.Models.Entities
         public double AmountPayable { get; set; }
         public double TaxAmount { get; set; }
         public double AfterTaxAmount { get; set; }
-        public Guid RowGuid { get; set; }
-        public string CreatedByUserId { get; set; } = default!;
-        public DateTime CreatedAtUtc { get; set; }
-        public string UpdatedByUserId { get; set; } = default!;
-        public DateTime UpdatedAtUtc { get; set; }
-        public bool IsNotDeleted { get; set; }
-        public string PaymentId { get; set; } = default!;
         public double AmountPaid { get; set; }
         public double Balance { get; set; }
         public bool Invoice { get; set; }
