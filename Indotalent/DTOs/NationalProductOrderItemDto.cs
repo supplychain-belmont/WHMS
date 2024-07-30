@@ -1,11 +1,8 @@
-using System;
-
-using Indotalent.Models.Contracts;
-
-namespace Indotalent.Models.Entities
+namespace Indotalent.DTOs
 {
-    public class NationalProductOrderItem : _Base
+    public class NationalProductOrderItemDto
     {
+        public int Id { get; set; }
         public int NationalProductOrderId { get; set; }
         public int ProductId { get; set; }
         public string? Summary { get; set; }

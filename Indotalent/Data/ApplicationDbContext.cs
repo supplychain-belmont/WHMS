@@ -1,4 +1,4 @@
-﻿using Indotalent.Infrastructures.Docs;
+using Indotalent.Infrastructures.Docs;
 using Indotalent.Infrastructures.Images;
 using Indotalent.Models.Configurations;
 using Indotalent.Models.Entities;
@@ -50,6 +50,8 @@ namespace Indotalent.Data
         public virtual DbSet<AdjustmentMinus> AdjustmentMinus { get; set; } = default!;
         public virtual DbSet<AdjustmentPlus> AdjustmentPlus { get; set; } = default!;
         public virtual DbSet<Scrapping> Scrapping { get; set; } = default!;
+        public virtual DbSet<NationalProductOrder> NationalProductOrders { get; set; } = default!;
+        public virtual DbSet<NationalProductOrderItem> NationalProductOrderItems { get; set; } = default!;
 
         public virtual void SetModifiedState(object entity) =>
             Entry(entity).State = EntityState.Modified;
@@ -97,6 +99,8 @@ namespace Indotalent.Data
             modelBuilder.ApplyConfiguration(new AdjustmentMinusConfiguration());
             modelBuilder.ApplyConfiguration(new AdjustmentPlusConfiguration());
             modelBuilder.ApplyConfiguration(new ScrappingConfiguration());
+            modelBuilder.ApplyConfiguration(new NationalProductOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new NationalProductOrderItemConfiguration());
         }
     }
 }
