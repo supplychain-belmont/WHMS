@@ -4,6 +4,9 @@ using Indotalent.DTOs;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Results;
 
 namespace Indotalent.ApiOData
 {
@@ -19,7 +22,6 @@ namespace Indotalent.ApiOData
         [EnableQuery]
         public IQueryable<UserProfileDto> Get()
         {
-
             const string HeaderKeyName = "CurrentUserId";
             Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
             var currentUserId = headerValue.ToString();
@@ -49,6 +51,32 @@ namespace Indotalent.ApiOData
             return result;
         }
 
-
+        [EnableQuery]
+        [HttpGet("odata/UserProfile({id})")]
+        public SingleResult<UserProfileDto> Get([FromODataUri] string id)
+        {
+            var result = _applicationUserService
+                .GetAll()
+                .Include(x => x.SelectedCompany)
+                .Where(x => x.Id == id)
+                .Select(rec => new UserProfileDto
+                {
+                    Id = rec.Id,
+                    FullName = rec.FullName,
+                    JobTitle = rec.JobTitle,
+                    Address = rec.Address,
+                    City = rec.City,
+                    State = rec.State,
+                    Country = rec.Country,
+                    ZipCode = rec.ZipCode,
+                    Avatar = rec.Avatar,
+                    UserType = rec.UserType.ToString(),
+                    IsDefaultAdmin = rec.IsDefaultAdmin,
+                    IsOnline = rec.IsOnline,
+                    SelectedCompany = rec.SelectedCompany!.Name,
+                    CreatedAtUtc = rec.CreatedAtUtc,
+                });
+            return SingleResult.Create(result);
+        }
     }
 }
