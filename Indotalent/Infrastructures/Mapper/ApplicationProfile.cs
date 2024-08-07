@@ -25,5 +25,11 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+        CreateMap<VendorGroup, VendorGroupDto>();
+        CreateMap<VendorGroupDto, VendorGroup>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
     }
 }

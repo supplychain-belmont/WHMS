@@ -75,7 +75,6 @@ namespace Indotalent.ApiOData
             }
 
             _mapper.Map(vendorDto, currentVendor);
-            Console.WriteLine($"Updating vendor: ${currentVendor.RowGuid} ${vendorDto.RowGuid}");
             await _vendorService.UpdateAsync(currentVendor);
             return NoContent();
         }
