@@ -1,4 +1,6 @@
-﻿namespace Indotalent.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Indotalent.DTOs
 {
     public class VendorContactDto
     {
@@ -9,8 +11,9 @@
         public string? Description { get; set; }
         public string? PhoneNumber { get; set; }
         public string? EmailAddress { get; set; }
+        public int VendorId { get; set; }
         public string? Vendor { get; set; }
-        public Guid? RowGuid { get; set; }
+        [Key] public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
     }
 }

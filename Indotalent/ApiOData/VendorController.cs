@@ -5,6 +5,7 @@ using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,29 @@ namespace Indotalent.ApiOData
             _mapper.Map(vendorDto, currentVendor);
             await _vendorService.UpdateAsync(currentVendor);
             return NoContent();
+        }
+
+        public async Task<ActionResult<VendorDto>> Patch([FromRoute] Guid key,
+            [FromBody] Delta<VendorDto> vendorDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var currentVendor = await _vendorService.GetByRowGuidAsync(key);
+            if (currentVendor == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<VendorDto>(currentVendor);
+            vendorDto.Patch(dto);
+
+            var entity = _mapper.Map(dto, currentVendor);
+
+            await _vendorService.UpdateAsync(entity);
+            return Updated(_mapper.Map<VendorDto>(entity));
         }
 
         public async Task<ActionResult> Delete([FromRoute] Guid key)

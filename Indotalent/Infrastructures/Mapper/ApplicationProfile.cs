@@ -9,6 +9,8 @@ public class ApplicationProfile : Profile
 {
     public ApplicationProfile()
     {
+        #region Purchase DTOs
+
         CreateMap<Vendor, VendorDto>()
             .ForMember(dest => dest.VendorGroup,
                 opt =>
@@ -31,5 +33,24 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+        CreateMap<VendorCategory, VendorCategoryDto>();
+        CreateMap<VendorCategoryDto, VendorCategory>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        CreateMap<VendorContact, VendorContactDto>()
+            .ForMember(dest => dest.Vendor,
+                opt =>
+                    opt.MapFrom(src => src.Vendor!.Name));
+        CreateMap<VendorContactDto, VendorContact>()
+            .ForMember(dest => dest.Vendor,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+
+        #endregion
     }
 }
