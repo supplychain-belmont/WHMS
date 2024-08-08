@@ -87,9 +87,6 @@ builder.Services
     .AddAllCustomServices();
 
 builder.Services
-    .AddAutoMapper(typeof(Program));
-
-builder.Services
     .AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 builder.Services
@@ -100,7 +97,6 @@ builder.Services
 
 builder.Services
     .AddSession();
-
 
 var app = builder.Build();
 

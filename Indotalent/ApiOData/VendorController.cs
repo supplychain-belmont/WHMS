@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.Vendors;
 using Indotalent.DTOs;
@@ -30,7 +31,7 @@ namespace Indotalent.ApiOData
                 .GetAll()
                 .Include(x => x.VendorGroup)
                 .Include(x => x.VendorCategory)
-                .Select(rec => _mapper.Map<VendorDto>(rec));
+                .ProjectTo<VendorDto>(_mapper.ConfigurationProvider);
         }
 
         public async Task<ActionResult<VendorDto>> Get([FromRoute] Guid key)
