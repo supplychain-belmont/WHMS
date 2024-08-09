@@ -97,6 +97,12 @@ namespace Indotalent.ApiOData
                 return NotFound();
             }
 
+            vendorDto.TryGetPropertyValue("Number", out var numberProperty);
+            if (numberProperty is string number && currentVendor.Number != number)
+            {
+                return BadRequest("Unable to update vendor");
+            }
+
             var dto = _mapper.Map<VendorDto>(currentVendor);
             vendorDto.Patch(dto);
 

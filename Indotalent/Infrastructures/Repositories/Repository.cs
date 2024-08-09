@@ -92,7 +92,7 @@ namespace Indotalent.Infrastructures.Repositories
             return entity;
         }
 
-        public IQueryable<T> GetByRowGuidAsync(Guid? rowGuid,
+        public virtual IQueryable<T> GetByRowGuidAsync(Guid? rowGuid,
             params Expression<Func<T, _Base?>>[] includes)
         {
             if (!rowGuid.HasValue)
