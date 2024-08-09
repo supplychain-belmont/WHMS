@@ -42,8 +42,10 @@ namespace Indotalent.ApiOData
             }
 
             var vendor = await _vendorService.GetByRowGuidAsync(key,
-                x => x.VendorGroup, x => x.VendorCategory);
-            return Ok(_mapper.Map<VendorDto>(vendor));
+                    x => x.VendorGroup, x => x.VendorCategory)
+                .ProjectTo<VendorDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+            return Ok(vendor);
         }
 
         public async Task<ActionResult<VendorDto>> Post([FromBody] VendorDto vendorDto)

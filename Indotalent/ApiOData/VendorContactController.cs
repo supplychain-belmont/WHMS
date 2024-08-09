@@ -40,9 +40,11 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var vendor = await _vendorContactService.GetByRowGuidAsync(key,
-                x => x.Vendor);
-            return Ok(_mapper.Map<VendorContactDto>(vendor));
+            var vendorContact = await _vendorContactService.GetByRowGuidAsync(key,
+                    x => x.Vendor, x => x.Vendor)
+                .ProjectTo<VendorContactDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+            return Ok(vendorContact);
         }
 
         public async Task<ActionResult<VendorContactDto>> Post([FromBody] VendorContactDto vendorContactDto)

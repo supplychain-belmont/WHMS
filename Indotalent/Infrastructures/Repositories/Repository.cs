@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 using System.Security.Claims;
 
+using AutoMapper.QueryableExtensions;
+
 using Indotalent.Data;
 using Indotalent.Models.Contracts;
 
@@ -90,7 +92,8 @@ namespace Indotalent.Infrastructures.Repositories
             return entity;
         }
 
-        public virtual async Task<T?> GetByRowGuidAsync(Guid? rowGuid, params Expression<Func<T, _Base?>>[] includes)
+        public IQueryable<T> GetByRowGuidAsync(Guid? rowGuid,
+            params Expression<Func<T, _Base?>>[] includes)
         {
             if (!rowGuid.HasValue)
             {
@@ -100,14 +103,7 @@ namespace Indotalent.Infrastructures.Repositories
             IQueryable<T> query = _context.Set<T>();
             query = includes.Aggregate(query,
                 (current, include) => current.Include(include));
-            var entity = await query.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
-
-            if (entity != null)
-            {
-                await _auditColumnTransformer.TransformAsync(entity, _context);
-            }
-
-            return entity;
+            return query.Where(x => x.RowGuid == rowGuid);
         }
 
         public virtual async Task<T?> GetByRowGuidAsync(Guid? rowGuid)
