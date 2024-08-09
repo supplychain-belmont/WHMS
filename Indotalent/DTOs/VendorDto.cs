@@ -1,4 +1,7 @@
-﻿namespace Indotalent.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Indotalent.DTOs
 {
     public class VendorDto
     {
@@ -21,9 +24,12 @@
         public string? Instagram { get; set; }
         public string? TwitterX { get; set; }
         public string? TikTok { get; set; }
+        public int VendorGroupId { get; set; }
         public string? VendorGroup { get; set; }
+
+        public int VendorCategoryId { get; set; }
         public string? VendorCategory { get; set; }
-        public Guid? RowGuid { get; set; }
+        [Key] public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
     }
 }
