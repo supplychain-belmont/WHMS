@@ -1,4 +1,6 @@
-﻿using Indotalent.Applications.SalesOrders;
+﻿using AutoMapper;
+
+using Indotalent.Applications.SalesOrders;
 using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
@@ -22,54 +24,41 @@ namespace Indotalent.ApiOData
         [EnableQuery]
         public IQueryable<SalesOrderDto> Get()
         {
-            return _salesOrderService
-                .GetAll()
-                .Include(x => x.Customer)
-                .Include(x => x.Tax)
-                .Select(rec => new SalesOrderDto
-                {
-                    Id = rec.Id,
-                    Number = rec.Number,
-                    OrderDate = rec.OrderDate,
-                    Status = rec.OrderStatus,
-                    Description = rec.Description,
-                    Customer = rec.Customer!.Name,
-                    Tax = rec.Tax!.Name,
-                    BeforeTaxAmount = rec.BeforeTaxAmount,
-                    TaxAmount = rec.TaxAmount,
-                    AfterTaxAmount = rec.AfterTaxAmount,
-                    RowGuid = rec.RowGuid,
-                    CreatedAtUtc = rec.CreatedAtUtc,
-                });
+            return _salesOrderService.GetAllDtos();
         }
-
-
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public SingleResult<SalesOrderDto> Get([FromODataUri] int key)
+        public async Task<SingleResult<SalesOrderDto>> Get([FromODataUri] int key)
         {
-            return SingleResult.Create(_salesOrderService
-                .GetAll()
-                .Where(x => x.Id == key)
-                .Select(rec => new SalesOrderDto
-                {
-                    Id = rec.Id,
-                    Number = rec.Number,
-                    OrderDate = rec.OrderDate,
-                    Status = rec.OrderStatus,
-                    Description = rec.Description,
-                    Customer = rec.Customer!.Name,
-                    Tax = rec.Tax!.Name,
-                    BeforeTaxAmount = rec.BeforeTaxAmount,
-                    TaxAmount = rec.TaxAmount,
-                    AfterTaxAmount = rec.AfterTaxAmount,
-                    RowGuid = rec.RowGuid,
-                    CreatedAtUtc = rec.CreatedAtUtc,
-                })
-            );
+            var result = await _salesOrderService.GetDtoByIdAsync(key);
+            return SingleResult.Create(result != null ? new[] { result }.AsQueryable() : Enumerable.Empty<SalesOrderDto>().AsQueryable());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] SalesOrderDto salesOrderDto)
+        {
+            var result = await _salesOrderService.CreateAsync(salesOrderDto);
+            return Created(result);
+        }
 
+        [HttpPut("{key}")]
+        public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] SalesOrderDto salesOrderDto)
+        {
+            if (key != salesOrderDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var result = await _salesOrderService.UpdateAsync(salesOrderDto);
+            return Updated(result);
+        }
+
+        [HttpDelete("{key}")]
+        public async Task<IActionResult> Delete([FromODataUri] int key)
+        {
+            await _salesOrderService.DeleteByIdAsync(key);
+            return NoContent();
+        }
     }
 }
