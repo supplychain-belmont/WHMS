@@ -1,26 +1,68 @@
-﻿using System.Security.Claims;
-
+﻿using AutoMapper;
 using DeviceDetectorNET;
-
 using Indotalent.Data;
+using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
-
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using UAParser;
 
 namespace Indotalent.Applications.LogAnalytics
 {
     public class LogAnalyticService : Repository<LogAnalytic>
     {
+        private readonly IMapper _mapper;
+
         public LogAnalyticService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
-            IAuditColumnTransformer auditColumnTransformer) :
+            IAuditColumnTransformer auditColumnTransformer,
+            IMapper mapper) :
                 base(
                     context,
                     httpContextAccessor,
                     auditColumnTransformer)
         {
+            _mapper = mapper;
+        }
+
+        public IQueryable<LogAnalyticDto> GetAllDtos()
+        {
+            return _mapper.ProjectTo<LogAnalyticDto>(_context.Set<LogAnalytic>().AsQueryable());
+        }
+
+        public async Task<LogAnalyticDto?> GetDtoByIdAsync(int id)
+        {
+            var logAnalytic = await _context.Set<LogAnalytic>().FindAsync(id);
+            return _mapper.Map<LogAnalyticDto>(logAnalytic);
+        }
+
+        public async Task<LogAnalyticDto> CreateAsync(LogAnalyticDto logAnalyticDto)
+        {
+            var logAnalytic = _mapper.Map<LogAnalytic>(logAnalyticDto);
+            await AddAsync(logAnalytic);
+            return _mapper.Map<LogAnalyticDto>(logAnalytic);
+        }
+
+        public async Task<LogAnalyticDto> UpdateAsync(LogAnalyticDto logAnalyticDto)
+        {
+            var logAnalytic = await _context.Set<LogAnalytic>().FindAsync(logAnalyticDto.Id);
+            if (logAnalytic == null)
+            {
+                throw new Exception("LogAnalytic not found.");
+            }
+
+            _mapper.Map(logAnalyticDto, logAnalytic);
+            await UpdateAsync(logAnalytic);
+            return _mapper.Map<LogAnalyticDto>(logAnalytic);
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            await base.DeleteByIdAsync(id);
         }
 
         public async Task CollectAnalyticDataAsync()
@@ -59,6 +101,5 @@ namespace Indotalent.Applications.LogAnalytics
             _context.LogAnalytic.RemoveRange(_context.LogAnalytic);
             _context.SaveChanges();
         }
-
     }
 }

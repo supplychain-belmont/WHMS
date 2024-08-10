@@ -10,6 +10,12 @@ public class ApplicationProfile : Profile
     public ApplicationProfile()
     {
         #region Purchase DTOs
+        CreateMap<LogError, LogErrorDto>();
+        CreateMap<LogErrorDto, LogError>();
+        CreateMap<LogAnalytic, LogAnalyticDto>();
+        CreateMap<LogAnalyticDto, LogAnalytic>();
+        CreateMap<LogSession, LogSessionDto>();
+        CreateMap<LogSessionDto, LogSession>();
         CreateMap<SalesReturn, SalesReturnDto>()
             .ForMember(dest => dest.DeliveryOrder, opt => opt.MapFrom(src => src.DeliveryOrder!.Number))
             .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.DeliveryOrder!.DeliveryDate))
