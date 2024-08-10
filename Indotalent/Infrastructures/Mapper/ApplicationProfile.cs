@@ -10,7 +10,23 @@ public class ApplicationProfile : Profile
     public ApplicationProfile()
     {
         #region Purchase DTOs
+        CreateMap<SalesReturn, SalesReturnDto>()
+            .ForMember(dest => dest.DeliveryOrder, opt => opt.MapFrom(src => src.DeliveryOrder!.Number))
+            .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.DeliveryOrder!.DeliveryDate))
+            .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.DeliveryOrder!.SalesOrder!.Customer!.Name));
 
+        CreateMap<SalesReturnDto, SalesReturn>();
+        CreateMap<SalesOrder, SalesOrderDto>()
+            .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer!.Name))
+            .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.Tax!.Name));
+
+        CreateMap<SalesOrderDto, SalesOrder>();
+        CreateMap<SalesOrderItem, SalesOrderItemDto>()
+            .ForMember(dest => dest.SalesOrder, opt => opt.MapFrom(src => src.SalesOrder!.Number))
+            .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.SalesOrder!.Customer!.Name))
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name));
+
+        CreateMap<SalesOrderItemDto, SalesOrderItem>();
         CreateMap<Vendor, VendorDto>()
             .ForMember(dest => dest.VendorGroup,
                 opt =>
