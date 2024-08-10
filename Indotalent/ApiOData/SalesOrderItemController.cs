@@ -1,45 +1,63 @@
-﻿using Indotalent.Applications.SalesOrderItems;
+﻿using AutoMapper;
+using Indotalent.Applications.SalesOrderItems;
 using Indotalent.DTOs;
-
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
     public class SalesOrderItemController : ODataController
     {
         private readonly SalesOrderItemService _salesOrderItemService;
+        private readonly IMapper _mapper;
 
-        public SalesOrderItemController(SalesOrderItemService salesOrderItemService)
+        public SalesOrderItemController(SalesOrderItemService salesOrderItemService, IMapper mapper)
         {
             _salesOrderItemService = salesOrderItemService;
+            _mapper = mapper;
         }
 
         [EnableQuery]
         public IQueryable<SalesOrderItemDto> Get()
         {
-            return _salesOrderItemService
-                .GetAll()
-                .Include(x => x.SalesOrder)
-                    .ThenInclude(x => x!.Customer)
-                .Include(x => x.Product)
-                .Select(rec => new SalesOrderItemDto
-                {
-                    Id = rec.Id,
-                    RowGuid = rec.RowGuid,
-                    CreatedAtUtc = rec.CreatedAtUtc,
-                    SalesOrder = rec.SalesOrder!.Number,
-                    Customer = rec.SalesOrder.Customer!.Name,
-                    Product = rec.Product!.Name,
-                    Summary = rec.Summary,
-                    UnitPrice = rec.UnitPrice,
-                    Quantity = rec.Quantity,
-                    Total = rec.Total,
-                    OrderDate = rec.SalesOrder!.OrderDate
-                });
+            return _salesOrderItemService.GetAllDtos();
         }
 
+        [EnableQuery]
+        [HttpGet("{key}")]
+        public async Task<SingleResult<SalesOrderItemDto>> Get([FromODataUri] int key)
+        {
+            var result = await _salesOrderItemService.GetDtoByIdAsync(key);
+            return SingleResult.Create(result != null ? new[] { result }.AsQueryable() : Enumerable.Empty<SalesOrderItemDto>().AsQueryable());
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] SalesOrderItemDto salesOrderItemDto)
+        {
+            var result = await _salesOrderItemService.CreateAsync(salesOrderItemDto);
+            return Created(result);
+        }
+
+        [HttpPut("{key}")]
+        public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] SalesOrderItemDto salesOrderItemDto)
+        {
+            if (key != salesOrderItemDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var result = await _salesOrderItemService.UpdateAsync(salesOrderItemDto);
+            return Updated(result);
+        }
+
+        [HttpDelete("{key}")]
+        public async Task<IActionResult> Delete([FromODataUri] int key)
+        {
+            await _salesOrderItemService.DeleteByIdAsync(key);
+            return NoContent();
+        }
     }
 }

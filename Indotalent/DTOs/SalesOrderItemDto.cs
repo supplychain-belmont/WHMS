@@ -1,9 +1,11 @@
-﻿namespace Indotalent.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Indotalent.DTOs
 {
     public class SalesOrderItemDto
     {
         public int? Id { get; set; }
-        public Guid? RowGuid { get; set; }
+        [Key]public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
         public string? SalesOrder { get; set; }
         public string? Customer { get; set; }
