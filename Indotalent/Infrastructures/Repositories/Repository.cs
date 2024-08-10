@@ -72,7 +72,7 @@ namespace Indotalent.Infrastructures.Repositories
             return entity;
         }
 
-        public virtual async Task<T?> GetByIdAsync(int? id, params Expression<Func<T, _Base?>>[] includes)
+        public virtual IQueryable<T> GetByIdAsync(int? id, params Expression<Func<T, _Base?>>[] includes)
         {
             if (!id.HasValue)
             {
@@ -82,14 +82,7 @@ namespace Indotalent.Infrastructures.Repositories
             IQueryable<T> query = _context.Set<T>();
             query = includes.Aggregate(query,
                 (current, include) => current.Include(include));
-            var entity = await query.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (entity != null)
-            {
-                await _auditColumnTransformer.TransformAsync(entity, _context);
-            }
-
-            return entity;
+            return query.Where(x => x.Id == id);
         }
 
         public virtual IQueryable<T> GetByRowGuidAsync(Guid? rowGuid,

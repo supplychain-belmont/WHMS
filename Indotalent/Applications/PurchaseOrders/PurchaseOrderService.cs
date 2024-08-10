@@ -1,4 +1,5 @@
-﻿using Indotalent.Data;
+﻿using Indotalent.Applications.NumberSequences;
+using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
@@ -9,21 +10,29 @@ namespace Indotalent.Applications.PurchaseOrders
 {
     public class PurchaseOrderService : Repository<PurchaseOrder>
     {
+        private readonly NumberSequenceService _numberSequenceService;
+
         public PurchaseOrderService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
-            IAuditColumnTransformer auditColumnTransformer) :
-                base(
-                    context,
-                    httpContextAccessor,
-                    auditColumnTransformer)
+            IAuditColumnTransformer auditColumnTransformer,
+            NumberSequenceService numberSequenceService) :
+            base(
+                context,
+                httpContextAccessor,
+                auditColumnTransformer)
         {
+            _numberSequenceService = numberSequenceService;
         }
 
+        public override Task AddAsync(PurchaseOrder? entity)
+        {
+            entity!.Number = _numberSequenceService.GenerateNumber(nameof(PurchaseOrder), "", "PO");
+            return base.AddAsync(entity);
+        }
 
         public async Task RecalculateParentAsync(int? masterId)
         {
-
             var master = await _context.Set<PurchaseOrder>()
                 .Include(x => x.Tax)
                 .Where(x => x.Id == masterId && x.IsNotDeleted == true)
@@ -40,16 +49,17 @@ namespace Indotalent.Applications.PurchaseOrders
                 {
                     master.BeforeTaxAmount += item.Total;
                 }
+
                 if (master.Tax != null)
                 {
                     master.TaxAmount = (master.Tax.Percentage / 100.0) * master.BeforeTaxAmount;
                 }
+
                 master.AfterTaxAmount = master.BeforeTaxAmount + master.TaxAmount;
                 _context.Set<PurchaseOrder>().Update(master);
                 await _context.SaveChangesAsync();
             }
         }
-
 
 
         public override async Task UpdateAsync(PurchaseOrder? entity)
@@ -60,6 +70,7 @@ namespace Indotalent.Applications.PurchaseOrders
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
@@ -75,6 +86,5 @@ namespace Indotalent.Applications.PurchaseOrders
                 throw new Exception("Unable to process, entity is null");
             }
         }
-
     }
 }

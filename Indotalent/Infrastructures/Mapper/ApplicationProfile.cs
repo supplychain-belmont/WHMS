@@ -50,6 +50,28 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+        CreateMap<PurchaseOrder, PurchaseOrderDto>()
+            .ForMember(dest => dest.Vendor,
+                opt
+                    => opt.MapFrom(src => src.Vendor!.Name))
+            .ForMember(dest => dest.Tax,
+                opt =>
+                    opt.MapFrom(src => src.Tax!.Name))
+            .ForMember(dest => dest.Status,
+                opt =>
+                    opt.MapFrom(src => src.OrderStatus));
+        CreateMap<PurchaseOrderDto, PurchaseOrder>()
+            .ForMember(dest => dest.Vendor,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Tax,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.OrderStatus,
+                opt =>
+                    opt.MapFrom(src => src.Status));
 
         #endregion
     }
