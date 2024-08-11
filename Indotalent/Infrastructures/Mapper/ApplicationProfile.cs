@@ -72,6 +72,34 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.OrderStatus,
                 opt =>
                     opt.MapFrom(src => src.Status));
+        CreateMap<PurchaseOrderItem, PurchaseOrderItemDto>()
+            .ForMember(dest => dest.PurchaseOrder,
+                opt =>
+                    opt.MapFrom(src => src.PurchaseOrder!.Number))
+            .ForMember(dest => dest.OrderDate,
+                opt =>
+                    opt.MapFrom(src => src.PurchaseOrder!.OrderDate))
+            .ForMember(dest => dest.Vendor,
+                opt =>
+                    opt.MapFrom(src => src.PurchaseOrder!.Vendor!.Name))
+            .ForMember(dest => dest.Product,
+                opt =>
+                    opt.MapFrom(src => src.Product!.Name));
+        CreateMap<PurchaseOrderItemDto, PurchaseOrderItem>()
+            .ForMember(dest => dest.PurchaseOrder,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Product,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>();
+        CreateMap<PurchaseOrderItemChildDto, PurchaseOrderItem>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
 
         #endregion
     }
