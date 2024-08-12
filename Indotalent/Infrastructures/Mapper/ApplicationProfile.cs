@@ -102,5 +102,38 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore());
 
         #endregion
+
+        #region Settings DTOs
+
+        CreateMap<Tax, TaxDto>();
+        CreateMap<TaxDto, Tax>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        CreateMap<ApplicationUser, UserProfileDto>()
+            .ForMember(dest => dest.SelectedCompany, opt
+                => opt.MapFrom(src => src.SelectedCompany!.Name));
+        CreateMap<UserProfileDto, ApplicationUser>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.SelectedCompany,
+                opt => opt.Ignore());
+        CreateMap<ApplicationUser, ApplicationUserDto>()
+            .ForMember(dest => dest.SelectedCompany, opt
+                => opt.MapFrom(src => src.SelectedCompany!.Name));
+        CreateMap<ApplicationUserDto, ApplicationUser>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.SelectedCompany,
+                opt => opt.Ignore());
+        CreateMap<NumberSequence, NumberSequenceDto>();
+        CreateMap<NumberSequenceDto, NumberSequence>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+
+        #endregion
     }
 }

@@ -7,6 +7,7 @@
         public string? Prefix { get; set; }
         public string? Suffix { get; set; }
         public int? LastUsedCount { get; set; }
+        public Guid RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq.Expressions;
+using System.Security.Claims;
 
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
@@ -37,6 +38,7 @@ namespace Indotalent.Applications.ApplicationUsers
             {
                 result = false;
             }
+
             return result;
         }
 
@@ -48,12 +50,15 @@ namespace Indotalent.Applications.ApplicationUsers
             {
                 result = user.Avatar;
             }
+
             return result;
         }
+
         private static string GetUserId(IHttpContextAccessor httpContextAccessor)
         {
             return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
+
         private static string GetUserName(IHttpContextAccessor httpContextAccessor)
         {
             return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
@@ -91,6 +96,20 @@ namespace Indotalent.Applications.ApplicationUsers
             return entity;
         }
 
+        public virtual IQueryable<ApplicationUser> GetByIdAsync(string? rowGuid,
+            params Expression<Func<ApplicationUser, _Base?>>[] includes)
+        {
+            if (string.IsNullOrEmpty(rowGuid))
+            {
+                throw new Exception("Unable to process, rowGuid is null");
+            }
+
+            IQueryable<ApplicationUser> query = _context.Set<ApplicationUser>();
+            query = includes.Aggregate(query,
+                (current, include) => current.Include(include));
+            return query.Where(x => x.Id == rowGuid);
+        }
+
         public virtual async Task AddAsync(ApplicationUser? entity)
         {
             if (entity != null)
@@ -99,6 +118,7 @@ namespace Indotalent.Applications.ApplicationUsers
                 {
                     auditEntity.CreatedByUserId = _userId;
                 }
+
                 _context.Set<ApplicationUser>().Add(entity);
                 await _context.SaveChangesAsync();
             }
@@ -116,13 +136,14 @@ namespace Indotalent.Applications.ApplicationUsers
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
                 }
+
                 _context.Set<ApplicationUser>().Update(entity);
                 await _context.SaveChangesAsync();
-
             }
             else
             {
@@ -142,11 +163,11 @@ namespace Indotalent.Applications.ApplicationUsers
 
             if (entity != null)
             {
-
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
@@ -165,7 +186,5 @@ namespace Indotalent.Applications.ApplicationUsers
                 await _context.SaveChangesAsync();
             }
         }
-
-
     }
 }
