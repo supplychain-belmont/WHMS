@@ -1,4 +1,7 @@
-﻿using Indotalent.Data;
+﻿using AutoMapper;
+
+using Indotalent.Data;
+using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
@@ -9,71 +12,62 @@ namespace Indotalent.Applications.SalesOrders
 {
     public class SalesOrderService : Repository<SalesOrder>
     {
+        private readonly IMapper _mapper;
+
         public SalesOrderService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
-            IAuditColumnTransformer auditColumnTransformer) :
+            IAuditColumnTransformer auditColumnTransformer,
+            IMapper mapper) :
                 base(
                     context,
                     httpContextAccessor,
                     auditColumnTransformer)
         {
+            _mapper = mapper;
         }
 
-
-        public async Task RecalculateParentAsync(int? masterId)
+        public IQueryable<SalesOrderDto> GetAllDtos()
         {
-
-            var master = await _context.Set<SalesOrder>()
+            return _mapper.ProjectTo<SalesOrderDto>(_context.Set<SalesOrder>()
+                .Include(x => x.Customer)
                 .Include(x => x.Tax)
-                .Where(x => x.Id == masterId && x.IsNotDeleted == true)
-                .FirstOrDefaultAsync();
-
-            var childs = await _context.Set<SalesOrderItem>()
-                .Where(x => x.SalesOrderId == masterId && x.IsNotDeleted == true)
-                .ToListAsync();
-
-            if (master != null)
-            {
-                master.BeforeTaxAmount = 0;
-                foreach (var item in childs)
-                {
-                    master.BeforeTaxAmount += item.Total;
-                }
-                if (master.Tax != null)
-                {
-                    master.TaxAmount = (master.Tax.Percentage / 100.0) * master.BeforeTaxAmount;
-                }
-                master.AfterTaxAmount = master.BeforeTaxAmount + master.TaxAmount;
-                _context.Set<SalesOrder>().Update(master);
-                await _context.SaveChangesAsync();
-            }
+                .AsQueryable());
         }
 
-
-
-        public override async Task UpdateAsync(SalesOrder? entity)
+        public async Task<SalesOrderDto?> GetDtoByIdAsync(int id)
         {
-            if (entity != null)
-            {
-                if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
-                {
-                    auditEntity.UpdatedByUserId = _userId;
-                }
-                if (entity is IHasAudit auditedEntity)
-                {
-                    auditedEntity.UpdatedAtUtc = DateTime.Now;
-                }
+            var salesOrder = await _context.Set<SalesOrder>()
+                .Include(x => x.Customer)
+                .Include(x => x.Tax)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-                _context.Set<SalesOrder>().Update(entity);
-                await _context.SaveChangesAsync();
+            return _mapper.Map<SalesOrderDto>(salesOrder);
+        }
 
-                await RecalculateParentAsync(entity.Id);
-            }
-            else
+        public async Task<SalesOrderDto> CreateAsync(SalesOrderDto salesOrderDto)
+        {
+            var salesOrder = _mapper.Map<SalesOrder>(salesOrderDto);
+            await AddAsync(salesOrder);
+            return _mapper.Map<SalesOrderDto>(salesOrder);
+        }
+
+        public async Task<SalesOrderDto> UpdateAsync(SalesOrderDto salesOrderDto)
+        {
+            var salesOrder = await _context.Set<SalesOrder>().FindAsync(salesOrderDto.Id);
+            if (salesOrder == null)
             {
-                throw new Exception("Unable to process, entity is null");
+                throw new Exception("SalesOrder not found.");
             }
+
+            _mapper.Map(salesOrderDto, salesOrder);
+            await UpdateAsync(salesOrder);
+            return _mapper.Map<SalesOrderDto>(salesOrder);
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            await base.DeleteByIdAsync(id);
         }
 
     }

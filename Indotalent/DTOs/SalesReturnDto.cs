@@ -1,4 +1,6 @@
-﻿using Indotalent.Models.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Indotalent.Models.Enums;
 
 namespace Indotalent.DTOs
 {
@@ -11,7 +13,7 @@ namespace Indotalent.DTOs
         public string? DeliveryOrder { get; set; }
         public DateTime? DeliveryDate { get; set; }
         public string? Customer { get; set; }
-        public Guid? RowGuid { get; set; }
+        [Key] public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
     }
 }
