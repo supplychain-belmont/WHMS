@@ -13,7 +13,7 @@ namespace Indotalent.DTOs
         public string? DeliveryOrder { get; set; }
         public DateTime? DeliveryDate { get; set; }
         public string? Customer { get; set; }
-        [Key]public Guid? RowGuid { get; set; }
+        [Key] public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
     }
 }

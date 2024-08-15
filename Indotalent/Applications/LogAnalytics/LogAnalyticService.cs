@@ -1,13 +1,18 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+using AutoMapper;
+
 using DeviceDetectorNET;
+
 using Indotalent.Data;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
+
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+
 using UAParser;
 
 namespace Indotalent.Applications.LogAnalytics

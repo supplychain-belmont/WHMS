@@ -1,14 +1,16 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Threading.Tasks;
+
+using AutoMapper;
+
 using Indotalent.Applications.LogSessions;
 using Indotalent.DTOs;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.OData.Formatter;
 
 namespace Indotalent.ApiOData
 {

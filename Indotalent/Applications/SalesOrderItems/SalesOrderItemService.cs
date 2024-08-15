@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+
 using Indotalent.Applications.SalesOrders;
 using Indotalent.Data;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.SalesOrderItems

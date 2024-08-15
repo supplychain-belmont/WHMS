@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+
+using AutoMapper;
+
 using Indotalent.Data;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
+
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Indotalent.Applications.LogErrors
 {

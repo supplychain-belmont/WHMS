@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using Indotalent.Data;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
