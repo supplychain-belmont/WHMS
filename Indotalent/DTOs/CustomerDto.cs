@@ -1,4 +1,6 @@
-﻿namespace Indotalent.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Indotalent.DTOs
 {
     public class CustomerDto
     {
@@ -21,9 +23,11 @@
         public string? Instagram { get; set; }
         public string? TwitterX { get; set; }
         public string? TikTok { get; set; }
+        [Required] public int CustomerGroupId { get; set; }
         public string? CustomerGroup { get; set; }
+        [Required] public int CustomerCategoryId { get; set; }
         public string? CustomerCategory { get; set; }
-        public Guid? RowGuid { get; set; }
+        [Key] public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
     }
 }

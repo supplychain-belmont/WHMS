@@ -149,6 +149,45 @@ public class ApplicationProfile : Profile
 
         #region Sales DTOs
 
+        CreateMap<Customer, CustomerDto>()
+            .ForMember(dest => dest.CustomerGroup,
+                opt =>
+                    opt.MapFrom(src => src.CustomerGroup!.Name))
+            .ForMember(dest => dest.CustomerCategory,
+                opt =>
+                    opt.MapFrom(src => src.CustomerCategory!.Name));
+        CreateMap<CustomerDto, Customer>()
+            .ForMember(dest => dest.CustomerCategory,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.CustomerGroup,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        CreateMap<CustomerContact, CustomerContactDto>()
+            .ForMember(dest => dest.Customer,
+                opt =>
+                    opt.MapFrom(src => src.Customer!.Name));
+        CreateMap<CustomerContactDto, CustomerContact>()
+            .ForMember(dest => dest.Customer,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        CreateMap<CustomerGroup, CustomerGroupDto>();
+        CreateMap<CustomerGroupDto, CustomerGroup>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        CreateMap<CustomerCategory, CustomerCategoryDto>();
+        CreateMap<CustomerCategoryDto, CustomerCategory>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
         CreateMap<SalesReturn, SalesReturnDto>()
             .ForMember(dest => dest.DeliveryOrder, opt => opt.MapFrom(src => src.DeliveryOrder!.Number))
             .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.DeliveryOrder!.DeliveryDate))
