@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Applications.PurchaseOrders;
@@ -15,19 +16,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
-
     public class PurchaseOrderItemChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>();
-                CreateMap<PurchaseOrderItemChildDto, PurchaseOrderItem>();
-            }
-        }
-
+        private const string HeaderKeyName = "PurchaseOrderId";
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly PurchaseOrderItemService _purchaseOrderItemService;
         private readonly IMapper _mapper;
@@ -45,14 +36,13 @@ namespace Indotalent.ApiOData
         [EnableQuery]
         public IQueryable<PurchaseOrderItemChildDto> Get()
         {
-            const string HeaderKeyName = "ParentId";
             Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
             var parentId = int.Parse(headerValue.ToString());
 
             return _purchaseOrderItemService
                 .GetAll()
                 .Where(x => x.PurchaseOrderId == parentId)
-                .Select(x => _mapper.Map<PurchaseOrderItemChildDto>(x));
+                .ProjectTo<PurchaseOrderItemChildDto>(_mapper.ConfigurationProvider);
         }
 
 
@@ -63,13 +53,12 @@ namespace Indotalent.ApiOData
             return SingleResult.Create(_purchaseOrderItemService
                 .GetAll()
                 .Where(x => x.Id == key)
-            .Select(x => _mapper.Map<PurchaseOrderItemChildDto>(x)));
+                .ProjectTo<PurchaseOrderItemChildDto>(_mapper.ConfigurationProvider));
         }
 
-
-
         [HttpPatch]
-        public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] Delta<PurchaseOrderItemChildDto> delta)
+        public async Task<IActionResult> Patch([FromODataUri] int key,
+            [FromBody] Delta<PurchaseOrderItemChildDto> delta)
         {
             try
             {
@@ -89,7 +78,6 @@ namespace Indotalent.ApiOData
                 await _purchaseOrderItemService.UpdateAsync(entity);
 
                 return Ok(_mapper.Map<PurchaseOrderItemChildDto>(entity));
-
             }
             catch (Exception ex)
             {
@@ -103,8 +91,6 @@ namespace Indotalent.ApiOData
         {
             try
             {
-
-                const string HeaderKeyName = "ParentId";
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
 
@@ -112,9 +98,8 @@ namespace Indotalent.ApiOData
                 var entity = _mapper.Map<PurchaseOrderItem>(purchaseOrderItem);
                 await _purchaseOrderItemService.AddAsync(entity);
 
-                var dto = _mapper.Map<PurchaseOrderItem>(entity);
+                var dto = _mapper.Map<PurchaseOrderItemDto>(entity);
                 return Created("PurchaseOrderItemChild", dto);
-
             }
             catch (Exception ex)
             {
@@ -139,7 +124,6 @@ namespace Indotalent.ApiOData
                 await _purchaseOrderItemService.DeleteByIdAsync(purchaseOrderItem.Id);
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {

@@ -1,4 +1,7 @@
-﻿using System.Security.Claims;
+﻿using System.Linq.Expressions;
+using System.Security.Claims;
+
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Data;
 using Indotalent.Models.Contracts;
@@ -26,10 +29,12 @@ namespace Indotalent.Infrastructures.Repositories
             _userId = GetUserId(_httpContextAccessor);
             _userName = GetUserName(_httpContextAccessor);
         }
+
         private static string GetUserId(IHttpContextAccessor httpContextAccessor)
         {
             return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
+
         private static string GetUserName(IHttpContextAccessor httpContextAccessor)
         {
             return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
@@ -67,6 +72,33 @@ namespace Indotalent.Infrastructures.Repositories
             return entity;
         }
 
+        public virtual IQueryable<T> GetByIdAsync(int? id, params Expression<Func<T, _Base?>>[] includes)
+        {
+            if (!id.HasValue)
+            {
+                throw new Exception("Unable to process, id is null");
+            }
+
+            IQueryable<T> query = _context.Set<T>();
+            query = includes.Aggregate(query,
+                (current, include) => current.Include(include));
+            return query.Where(x => x.Id == id);
+        }
+
+        public virtual IQueryable<T> GetByRowGuidAsync(Guid? rowGuid,
+            params Expression<Func<T, _Base?>>[] includes)
+        {
+            if (!rowGuid.HasValue)
+            {
+                throw new Exception("Unable to process, rowGuid is null");
+            }
+
+            IQueryable<T> query = _context.Set<T>();
+            query = includes.Aggregate(query,
+                (current, include) => current.Include(include));
+            return query.Where(x => x.RowGuid == rowGuid);
+        }
+
         public virtual async Task<T?> GetByRowGuidAsync(Guid? rowGuid)
         {
             if (!rowGuid.HasValue)
@@ -94,6 +126,9 @@ namespace Indotalent.Infrastructures.Repositories
                     auditEntity.CreatedAtUtc = DateTime.Now;
                     auditEntity.CreatedByUserId = _userId;
                 }
+
+                entity.RowGuid = Guid.NewGuid();
+
                 _context.Set<T>().Add(entity);
                 await _context.SaveChangesAsync();
             }
@@ -111,13 +146,14 @@ namespace Indotalent.Infrastructures.Repositories
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
                 }
+
                 _context.Set<T>().Update(entity);
                 await _context.SaveChangesAsync();
-
             }
             else
             {
@@ -137,11 +173,11 @@ namespace Indotalent.Infrastructures.Repositories
 
             if (entity != null)
             {
-
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
@@ -173,11 +209,11 @@ namespace Indotalent.Infrastructures.Repositories
 
             if (entity != null)
             {
-
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
