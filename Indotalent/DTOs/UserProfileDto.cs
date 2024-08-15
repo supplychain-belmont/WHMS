@@ -14,6 +14,7 @@
         public string? UserType { get; set; }
         public bool IsDefaultAdmin { get; set; } = false;
         public bool IsOnline { get; set; } = false;
+        public int SelectedCompanyId { get; set; }
         public string? SelectedCompany { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
     }
