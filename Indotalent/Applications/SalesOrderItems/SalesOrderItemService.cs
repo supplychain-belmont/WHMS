@@ -7,6 +7,7 @@ using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
 
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.SalesOrderItems
@@ -94,5 +95,29 @@ namespace Indotalent.Applications.SalesOrderItems
                 throw new Exception("SalesOrderItem not found.");
             }
         }
+        
+        public async Task<SalesOrderItemDto?> PatchAsync(int id, JsonPatchDocument<SalesOrderItemDto> patchDoc)
+        {
+            var salesOrderItem = await _context.Set<SalesOrderItem>()
+                .Include(x => x.SalesOrder)
+                .ThenInclude(x => x!.Customer)
+                .Include(x => x.Product)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (salesOrderItem == null)
+            {
+                return null;
+            }
+
+            var salesOrderItemDto = _mapper.Map<SalesOrderItemDto>(salesOrderItem);
+            patchDoc.ApplyTo(salesOrderItemDto);
+
+            _mapper.Map(salesOrderItemDto, salesOrderItem);
+
+            await UpdateAsync(salesOrderItem);
+
+            return _mapper.Map<SalesOrderItemDto>(salesOrderItem);
+        }
+
     }
 }
