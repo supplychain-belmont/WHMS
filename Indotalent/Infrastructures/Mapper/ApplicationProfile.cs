@@ -1,6 +1,7 @@
 using AutoMapper;
 
 using Indotalent.DTOs;
+using Indotalent.Infrastructures.Images;
 using Indotalent.Models.Entities;
 
 namespace Indotalent.Infrastructures.Mapper;
@@ -205,6 +206,50 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name));
 
         CreateMap<SalesOrderItemDto, SalesOrderItem>();
+
+        #endregion
+        
+        #region File Image DTOs
+
+        CreateMap<FileImage, FileImageDto>()
+            .ForMember(dest => dest.CreatedAtUtc, opt => opt.MapFrom(src => src.CreatedAtUtc))
+            .ForMember(dest => dest.UpdatedAtUtc, opt => opt.MapFrom(src => src.UpdatedAtUtc))
+            .ForMember(dest => dest.CreatedByUserId, opt => opt.MapFrom(src => src.CreatedByUserId))
+            .ForMember(dest => dest.UpdatedByUserId, opt => opt.MapFrom(src => src.UpdatedByUserId))
+            .ForMember(dest => dest.ImageData, opt => opt.MapFrom(src => src.ImageData))
+            .ForMember(dest => dest.OriginalFileName, opt => opt.MapFrom(src => src.OriginalFileName));
+
+        CreateMap<FileImageDto, FileImage>()    
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAtUtc, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAtUtc, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedByUserId, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedByUserId, opt => opt.Ignore())
+            .ForMember(dest => dest.ImageData, opt => opt.MapFrom(src => src.ImageData))
+            .ForMember(dest => dest.OriginalFileName, opt => opt.MapFrom(src => src.OriginalFileName));
+
+        #endregion
+        #region ProductDetail DTOs
+
+        CreateMap<ProductDetails, ProductDetailsDto>()
+            .ForMember(dest => dest.ProductId, 
+                opt => opt.MapFrom(src => src.ProductId))
+            .ForMember(dest => dest.NationalProductOrderId, 
+                opt => opt.MapFrom(src => src.NationalProductOrderId))
+            .ForMember(dest => dest.Dimensions, 
+                opt => opt.MapFrom(src => src.Dimensions))
+            .ForMember(dest => dest.Brand, 
+                opt => opt.MapFrom(src => src.Brand))
+            .ForMember(dest => dest.Service, 
+                opt => opt.MapFrom(src => src.Service));
+
+        CreateMap<ProductDetailsDto, ProductDetails>()
+            .ForMember(dest => dest.ProductId, 
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id, 
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, 
+                opt => opt.Ignore());
 
         #endregion
     }
