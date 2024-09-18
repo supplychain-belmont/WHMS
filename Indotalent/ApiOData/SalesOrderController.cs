@@ -3,6 +3,7 @@
 using Indotalent.Applications.SalesOrders;
 using Indotalent.DTOs;
 
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
@@ -60,5 +61,23 @@ namespace Indotalent.ApiOData
             await _salesOrderService.DeleteByIdAsync(key);
             return NoContent();
         }
+        
+        [HttpPatch("{key}")]
+        public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] JsonPatchDocument<SalesOrderDto> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                return BadRequest();
+            }
+
+            var result = await _salesOrderService.PatchAsync(key, patchDoc);
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Updated(result);
+        }
+
     }
 }

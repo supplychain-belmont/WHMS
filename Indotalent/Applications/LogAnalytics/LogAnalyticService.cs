@@ -1,18 +1,13 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
 using AutoMapper;
-
 using DeviceDetectorNET;
-
 using Indotalent.Data;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
-
 using Microsoft.EntityFrameworkCore;
-
 using UAParser;
 
 namespace Indotalent.Applications.LogAnalytics
@@ -36,12 +31,12 @@ namespace Indotalent.Applications.LogAnalytics
 
         public IQueryable<LogAnalyticDto> GetAllDtos()
         {
-            return _mapper.ProjectTo<LogAnalyticDto>(_context.Set<LogAnalytic>().AsQueryable());
+            return _mapper.ProjectTo<LogAnalyticDto>(_context.LogAnalytic.AsQueryable());
         }
 
         public async Task<LogAnalyticDto?> GetDtoByIdAsync(int id)
         {
-            var logAnalytic = await _context.Set<LogAnalytic>().FindAsync(id);
+            var logAnalytic = await GetByIdAsync(id);
             return _mapper.Map<LogAnalyticDto>(logAnalytic);
         }
 
@@ -54,7 +49,7 @@ namespace Indotalent.Applications.LogAnalytics
 
         public async Task<LogAnalyticDto> UpdateAsync(LogAnalyticDto logAnalyticDto)
         {
-            var logAnalytic = await _context.Set<LogAnalytic>().FindAsync(logAnalyticDto.Id);
+            var logAnalytic = await GetByIdAsync(logAnalyticDto.Id);
             if (logAnalytic == null)
             {
                 throw new Exception("LogAnalytic not found.");
@@ -65,7 +60,7 @@ namespace Indotalent.Applications.LogAnalytics
             return _mapper.Map<LogAnalyticDto>(logAnalytic);
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public new async Task DeleteByIdAsync(int id)
         {
             await base.DeleteByIdAsync(id);
         }
@@ -74,9 +69,9 @@ namespace Indotalent.Applications.LogAnalytics
         {
             var userName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
             var userId = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userAgentString = _httpContextAccessor?.HttpContext?.Request.Headers["User-Agent"];
+            var userAgentString = _httpContextAccessor?.HttpContext?.Request.Headers["User-Agent"].ToString();
             var userIpAddress = _httpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString();
-            var url = _httpContextAccessor?.HttpContext?.Request.Path;
+            var url = _httpContextAccessor?.HttpContext?.Request.Path.ToString();
 
             var deviceDetector = new DeviceDetector(userAgentString);
             deviceDetector.Parse();
