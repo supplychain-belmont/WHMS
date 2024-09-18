@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 
+using Indotalent.Applications.NumberSequences;
 using Indotalent.Data;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
-using Indotalent.Applications.NumberSequences;
 using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.JsonPatch;

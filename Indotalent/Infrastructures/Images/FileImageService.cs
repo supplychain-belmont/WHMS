@@ -2,8 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Indotalent.Infrastructures.Images

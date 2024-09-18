@@ -61,7 +61,7 @@ namespace Indotalent.ApiOData
             await _salesOrderService.DeleteByIdAsync(key);
             return NoContent();
         }
-        
+
         [HttpPatch("{key}")]
         public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] JsonPatchDocument<SalesOrderDto> patchDoc)
         {

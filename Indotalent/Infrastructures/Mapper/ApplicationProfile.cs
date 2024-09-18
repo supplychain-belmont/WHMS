@@ -208,7 +208,7 @@ public class ApplicationProfile : Profile
         CreateMap<SalesOrderItemDto, SalesOrderItem>();
 
         #endregion
-        
+
         #region File Image DTOs
 
         CreateMap<FileImage, FileImageDto>()
@@ -219,7 +219,7 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.ImageData, opt => opt.MapFrom(src => src.ImageData))
             .ForMember(dest => dest.OriginalFileName, opt => opt.MapFrom(src => src.OriginalFileName));
 
-        CreateMap<FileImageDto, FileImage>()    
+        CreateMap<FileImageDto, FileImage>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAtUtc, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAtUtc, opt => opt.Ignore())
@@ -232,23 +232,23 @@ public class ApplicationProfile : Profile
         #region ProductDetail DTOs
 
         CreateMap<ProductDetails, ProductDetailsDto>()
-            .ForMember(dest => dest.ProductId, 
+            .ForMember(dest => dest.ProductId,
                 opt => opt.MapFrom(src => src.ProductId))
-            .ForMember(dest => dest.NationalProductOrderId, 
+            .ForMember(dest => dest.NationalProductOrderId,
                 opt => opt.MapFrom(src => src.NationalProductOrderId))
-            .ForMember(dest => dest.Dimensions, 
+            .ForMember(dest => dest.Dimensions,
                 opt => opt.MapFrom(src => src.Dimensions))
-            .ForMember(dest => dest.Brand, 
+            .ForMember(dest => dest.Brand,
                 opt => opt.MapFrom(src => src.Brand))
-            .ForMember(dest => dest.Service, 
+            .ForMember(dest => dest.Service,
                 opt => opt.MapFrom(src => src.Service));
 
         CreateMap<ProductDetailsDto, ProductDetails>()
-            .ForMember(dest => dest.ProductId, 
+            .ForMember(dest => dest.ProductId,
                 opt => opt.Ignore())
-            .ForMember(dest => dest.Id, 
+            .ForMember(dest => dest.Id,
                 opt => opt.Ignore())
-            .ForMember(dest => dest.RowGuid, 
+            .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
 
         #endregion

@@ -13,7 +13,7 @@ namespace Indotalent.Infrastructures.Images
         public DateTime? CreatedAtUtc { get; set; }
         public string? UpdatedByUserId { get; set; }
         public DateTime? UpdatedAtUtc { get; set; }
-        
+
         public bool IsNotDeleted { get; set; } = true;
     }
 }
