@@ -1,12 +1,14 @@
-﻿using Indotalent.Applications.ProductGroups;
+﻿using AutoMapper;
+
+using Indotalent.Applications.ProductGroups;
 using Indotalent.DTOs;
+using Indotalent.Models.Entities;
+
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.AspNetCore.OData.Formatter;
-using AutoMapper;
-using Indotalent.Models.Entities;
-using Microsoft.AspNetCore.JsonPatch;
 
 namespace Indotalent.ApiOData
 {
@@ -35,7 +37,7 @@ namespace Indotalent.ApiOData
                     CreatedAtUtc = rec.CreatedAtUtc
                 });
         }
-         [EnableQuery]
+        [EnableQuery]
         [HttpGet("{key}")]
         public async Task<ActionResult<ProductGroupDto>> Get([FromODataUri] int key)
         {

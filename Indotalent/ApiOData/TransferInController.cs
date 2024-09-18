@@ -1,14 +1,14 @@
-﻿using Indotalent.Applications.TransferIns;
+﻿using AutoMapper;
+
+using Indotalent.Applications.TransferIns;
 using Indotalent.DTOs;
+using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-
-using Indotalent.Models.Entities;
-
-using Microsoft.AspNetCore.OData.Formatter;
 
 
 namespace Indotalent.ApiOData

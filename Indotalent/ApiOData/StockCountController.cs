@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+
 using Indotalent.Applications.StockCounts;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
@@ -41,7 +43,7 @@ namespace Indotalent.ApiOData
                 });
         }
 
-        
+
         [EnableQuery]
         [HttpGet("{key}")]
         public async Task<ActionResult<StockCountDto>> Get([FromODataUri] int key)

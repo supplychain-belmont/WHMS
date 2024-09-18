@@ -1,21 +1,21 @@
 ﻿using System.Linq;
 
-using Indotalent.Applications.Products;
-using Indotalent.DTOs;
-
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.EntityFrameworkCore;
-using Indotalent.Applications.Products;
-using Indotalent.DTOs;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+
+using Indotalent.Applications.Products;
+using Indotalent.Applications.Products;
+using Indotalent.DTOs;
+using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
@@ -59,7 +59,7 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var product =  _productService.GetByIdAsync(key, x => x.ProductGroup, x => x.UnitMeasure);
+            var product = _productService.GetByIdAsync(key, x => x.ProductGroup, x => x.UnitMeasure);
             if (product == null)
             {
                 return NotFound();

@@ -290,8 +290,8 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.ModuleName, opt => opt.MapFrom(src => src.ModuleName))
             .ForMember(dest => dest.ModuleCode, opt => opt.MapFrom(src => src.ModuleCode))
             .ForMember(dest => dest.ModuleNumber, opt => opt.MapFrom(src => src.ModuleNumber))
-            .ForMember(dest => dest.WarehouseId, opt => opt.Ignore()) 
-            .ForMember(dest => dest.ProductId, opt => opt.Ignore()) 
+            .ForMember(dest => dest.WarehouseId, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore())
             .ForMember(dest => dest.WarehouseFromId, opt => opt.Ignore())
             .ForMember(dest => dest.WarehouseToId, opt => opt.Ignore());
 
@@ -305,7 +305,7 @@ public class ApplicationProfile : Profile
 
         CreateMap<InvenStockDto, InventoryTransaction>()
             .ForMember(dest => dest.WarehouseId, opt => opt.Ignore())
-            .ForMember(dest => dest.ProductId, opt => opt.Ignore()); 
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore());
 
         #endregion
 
@@ -341,7 +341,7 @@ public class ApplicationProfile : Profile
 
         #region StockDTOs
 
-        
+
         CreateMap<StockCount, StockCountDto>()
             .ForMember(dest => dest.Warehouse,
                 opt => opt.MapFrom(src => src.Warehouse!.Name));
@@ -378,6 +378,6 @@ public class ApplicationProfile : Profile
             .ReverseMap();
 
         #endregion
-        
+
     }
 }

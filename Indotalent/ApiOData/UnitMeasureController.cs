@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
+
 using Indotalent.Applications.UnitMeasures;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Indotalent.ApiOData
 {

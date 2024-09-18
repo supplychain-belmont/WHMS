@@ -1,12 +1,13 @@
-﻿using Indotalent.Applications.InventoryTransactions;
+﻿using AutoMapper;
+
+using Indotalent.Applications.InventoryTransactions;
 using Indotalent.DTOs;
+using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using AutoMapper;
-using Indotalent.Models.Entities;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData

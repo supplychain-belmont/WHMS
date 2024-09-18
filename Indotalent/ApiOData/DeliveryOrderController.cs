@@ -36,7 +36,7 @@ namespace Indotalent.ApiOData
                     CreatedAtUtc = rec.CreatedAtUtc,
                 });
         }
-        
+
 
     }
 }

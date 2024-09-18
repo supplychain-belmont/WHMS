@@ -1,16 +1,17 @@
-﻿using Indotalent.Applications.InventoryTransactions;
-using Indotalent.DTOs;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.OData.Deltas;
-using System.Linq;
+﻿using System.Linq;
 
+using AutoMapper;
+
+using Indotalent.Applications.InventoryTransactions;
+using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData

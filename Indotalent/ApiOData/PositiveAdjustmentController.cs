@@ -1,14 +1,16 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Threading.Tasks;
+
+using AutoMapper;
+
 using Indotalent.Applications.AdjustmentPluss;
 using Indotalent.DTOs;
+using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Indotalent.Models.Entities;
 
 namespace Indotalent.ApiOData
 {
