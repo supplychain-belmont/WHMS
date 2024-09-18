@@ -95,7 +95,7 @@ namespace Indotalent.Applications.SalesOrderItems
                 throw new Exception("SalesOrderItem not found.");
             }
         }
-        
+
         public async Task<SalesOrderItemDto?> PatchAsync(int id, JsonPatchDocument<SalesOrderItemDto> patchDoc)
         {
             var salesOrderItem = await _context.Set<SalesOrderItem>()

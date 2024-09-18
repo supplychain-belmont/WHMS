@@ -11,8 +11,8 @@ namespace Indotalent.Models.Entities
         public required int NationalProductOrderId { get; set; }
         public NationalProductOrder? NationalProductOrder { get; set; }
 
-        public string? Dimensions { get; set; } 
-        public string? Brand { get; set; } 
-        public string? Service { get; set; } 
+        public string? Dimensions { get; set; }
+        public string? Brand { get; set; }
+        public string? Service { get; set; }
     }
 }

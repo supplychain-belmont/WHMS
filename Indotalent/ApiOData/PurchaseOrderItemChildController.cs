@@ -18,7 +18,7 @@ namespace Indotalent.ApiOData
 {
     public class PurchaseOrderItemChildController : ODataController
     {
-        private const string HeaderKeyName = "PurchaseOrderId";
+        private const string HeaderKeyName = "ParentId";
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly PurchaseOrderItemService _purchaseOrderItemService;
         private readonly IMapper _mapper;

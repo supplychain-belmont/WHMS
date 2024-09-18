@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Indotalent.Applications.Products;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;

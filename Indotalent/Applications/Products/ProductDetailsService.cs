@@ -1,6 +1,6 @@
 using Indotalent.Data;
-using Indotalent.Models.Entities;
 using Indotalent.Infrastructures.Repositories;
+using Indotalent.Models.Entities;
 
 namespace Indotalent.Applications.Products
 {

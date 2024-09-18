@@ -1,11 +1,13 @@
 using System;
 using System.Threading.Tasks;
+
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Images;
 using Indotalent.Models.Entities;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
