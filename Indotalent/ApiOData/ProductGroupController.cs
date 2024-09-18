@@ -102,7 +102,7 @@ namespace Indotalent.ApiOData
             }
 
             var productGroupDto = _mapper.Map<ProductGroupDto>(currentProductGroup);
-            patchDto.ApplyTo(productGroupDto, ModelState);
+            patchDto.ApplyTo(productGroupDto, (error) => ModelState.AddModelError(string.Empty, error.ErrorMessage));
 
             if (!ModelState.IsValid)
             {
@@ -111,8 +111,10 @@ namespace Indotalent.ApiOData
 
             _mapper.Map(productGroupDto, currentProductGroup);
             await _productGroupService.UpdateAsync(currentProductGroup);
+
             return NoContent();
         }
+
 
         public async Task<ActionResult> Delete([FromRoute] int key)
         {

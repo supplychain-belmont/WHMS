@@ -70,7 +70,7 @@ namespace Indotalent.ApiOData
             if (transaction == null) return NotFound();
 
             var dto = _mapper.Map<InvenStockDto>(transaction);
-            patchDoc.ApplyTo(dto, ModelState);
+            patchDoc.ApplyTo(dto, (error) => ModelState.AddModelError(string.Empty, error.ErrorMessage));
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
