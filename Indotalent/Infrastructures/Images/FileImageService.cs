@@ -1,47 +1,88 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
+using Indotalent.Models.Contracts;
 
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Infrastructures.Images
 {
     public class FileImageService : IFileImageService
     {
-        private readonly Repository<FileImage> _fileImageRepository;
+        private readonly ApplicationDbContext _context;
 
-        public FileImageService(Repository<FileImage> fileImageRepository)
+        public FileImageService(ApplicationDbContext context)
         {
-            _fileImageRepository = fileImageRepository;
+            _context = context;
         }
 
         public IQueryable<FileImage> GetAll()
         {
-            return _fileImageRepository.GetAll();
+            return _context.FileImages.ApplyIsDeletedFilter().AsNoTracking();
         }
 
         public async Task<FileImage?> GetByRowGuidAsync(Guid? rowGuid)
         {
-            return await _fileImageRepository.GetByRowGuidAsync(rowGuid);
+            var entity = await _context.FileImages.ApplyIsNotDeletedFilter()
+                .FirstOrDefaultAsync(x => x.Id == rowGuid);
+            if (entity == null)
+            {
+                throw new Exception("Unable to process, entity is null");
+            }
+
+            return entity;
         }
 
         public async Task AddAsync(FileImage fileImage)
         {
-            await _fileImageRepository.AddAsync(fileImage);
+            if (fileImage == null)
+            {
+                throw new Exception("Unable to process, entity is null");
+            }
+
+            _context.FileImages.Add(fileImage);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(FileImage fileImage)
         {
-            await _fileImageRepository.UpdateAsync(fileImage);
+            if (fileImage == null)
+            {
+                throw new Exception("Unable to process, entity is null");
+            }
+
+            _context.FileImages.Update(fileImage);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteByRowGuidAsync(Guid? rowGuid)
         {
-            await _fileImageRepository.DeleteByRowGuidAsync(rowGuid);
+            if (!rowGuid.HasValue)
+            {
+                throw new Exception("Unable to process, id is null");
+            }
+
+            var entity = await _context.FileImages.ApplyIsNotDeletedFilter()
+                .FirstOrDefaultAsync(x => x.Id == rowGuid);
+
+            if (entity != null)
+            {
+                if (entity is IHasAudit auditEntity)
+                {
+                    auditEntity.UpdatedAtUtc = DateTime.Now;
+                }
+
+                if (entity is IHasSoftDelete softDeleteEntity)
+                {
+                    softDeleteEntity.IsNotDeleted = false;
+                    _context.SetModifiedState(entity);
+                }
+                else
+                {
+                    _context.FileImages.Remove(entity);
+                }
+
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<Guid> UploadImageAsync(IFormFile? file)
@@ -61,11 +102,7 @@ namespace Indotalent.Infrastructures.Images
                 throw new ArgumentException("File size exceeds the maximum allowed size of 5 MB.");
             }
 
-            var image = new FileImage
-            {
-                Id = Guid.NewGuid(),
-                OriginalFileName = file.FileName
-            };
+            var image = new FileImage { Id = Guid.NewGuid(), OriginalFileName = file.FileName };
 
             using (var memoryStream = new MemoryStream())
             {
@@ -73,9 +110,9 @@ namespace Indotalent.Infrastructures.Images
                 image.ImageData = memoryStream.ToArray();
             }
 
-            await _fileImageRepository.AddAsync(image);
+            await _context.FileImages.AddAsync(image);
 
-            return image.Id;
+            return image.RowGuid;
         }
 
         public async Task<Guid> UpdateImageAsync(Guid? imageId, IFormFile? newFile)
@@ -100,7 +137,7 @@ namespace Indotalent.Infrastructures.Images
                 throw new ArgumentException("File size exceeds the maximum allowed size of 5 MB.");
             }
 
-            var existingImage = await _fileImageRepository.GetByRowGuidAsync(imageId);
+            var existingImage = await GetByRowGuidAsync(imageId);
 
             if (existingImage == null)
             {
@@ -116,7 +153,7 @@ namespace Indotalent.Infrastructures.Images
                 existingImage.ImageData = memoryStream.ToArray();
             }
 
-            await _fileImageRepository.UpdateAsync(existingImage);
+            await UpdateAsync(existingImage);
 
             return existingImage.Id;
         }
@@ -128,19 +165,19 @@ namespace Indotalent.Infrastructures.Images
                 id = new Guid(Guid.Empty.ToString());
             }
 
-            var fileImage = await _fileImageRepository.GetByRowGuidAsync(id);
+            var fileImage = await GetByRowGuidAsync(id);
 
-            if (fileImage == null)
+            if (fileImage != null)
             {
-                var defaultImagePath = Path.Combine("wwwroot", "noimage.png");
-
-                fileImage = new FileImage
-                {
-                    Id = Guid.Empty,
-                    OriginalFileName = "NoImage.png",
-                    ImageData = File.ReadAllBytes(defaultImagePath)
-                };
+                return fileImage;
             }
+
+            var defaultImagePath = Path.Combine("wwwroot", "noimage.png");
+
+            fileImage = new FileImage
+            {
+                Id = Guid.Empty, OriginalFileName = "NoImage.png", ImageData = File.ReadAllBytes(defaultImagePath)
+            };
 
             return fileImage;
         }
@@ -171,9 +208,13 @@ namespace Indotalent.Infrastructures.Images
 
         private bool IsImageFile(IFormFile file)
         {
-            var allowedImageTypes = new[] { "image/jpeg", "image/jpg", "image/png", "image/gif", "image/bmp", "image/webp" };
+            var allowedImageTypes = new[]
+            {
+                "image/jpeg", "image/jpg", "image/png", "image/gif", "image/bmp", "image/webp"
+            };
             return allowedImageTypes.Contains(file.ContentType);
         }
+
         public FileImage GetImage(Guid? id)
         {
             if (id == null)
@@ -181,7 +222,7 @@ namespace Indotalent.Infrastructures.Images
                 id = new Guid(Guid.Empty.ToString());
             }
 
-            var fileImage = _fileImageRepository.GetByRowGuidAsync(id).Result;
+            var fileImage = GetByRowGuidAsync(id).Result;
 
             if (fileImage == null)
             {
@@ -197,6 +238,5 @@ namespace Indotalent.Infrastructures.Images
 
             return fileImage;
         }
-
     }
 }
