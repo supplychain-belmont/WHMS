@@ -38,7 +38,5 @@ namespace Indotalent.ApiOData
         }
 
 
-
-
     }
 }

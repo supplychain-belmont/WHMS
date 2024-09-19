@@ -252,5 +252,132 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore());
 
         #endregion
+
+        #region TrasnfersDTOs
+
+        CreateMap<TransferIn, TransferInDto>()
+            .ForMember(dest => dest.TransferOut, opt => opt.MapFrom(src => src.TransferOut!.Number))
+            .ForMember(dest => dest.WarehouseFrom, opt => opt.MapFrom(src => src.TransferOut!.WarehouseFrom!.Name))
+            .ForMember(dest => dest.WarehouseTo, opt => opt.MapFrom(src => src.TransferOut!.WarehouseTo!.Name));
+        CreateMap<TransferInDto, TransferIn>();
+        CreateMap<TransferOut, TransferOutDto>()
+            .ForMember(dest => dest.WarehouseFrom, opt => opt.MapFrom(src => src.WarehouseFrom!.Name))
+            .ForMember(dest => dest.WarehouseTo, opt => opt.MapFrom(src => src.WarehouseTo!.Name));
+
+        CreateMap<TransferOutDto, TransferOut>();
+        #endregion
+
+        #region productDTOs
+        CreateMap<Product, ProductDto>()
+            .ForMember(dest => dest.ProductGroup, opt => opt.MapFrom(src => src.ProductGroup!.Name))
+            .ForMember(dest => dest.UnitMeasure, opt => opt.MapFrom(src => src.UnitMeasure!.Name));
+
+        CreateMap<ProductDto, Product>();
+        CreateMap<ProductGroup, ProductGroupDto>().ReverseMap();
+
+        #endregion
+        #region InventoryTransactionDTOs
+        CreateMap<InventoryTransaction, InvenTransDto>()
+            .ForMember(dest => dest.ModuleName, opt => opt.MapFrom(src => src.ModuleName))
+            .ForMember(dest => dest.ModuleCode, opt => opt.MapFrom(src => src.ModuleCode))
+            .ForMember(dest => dest.ModuleNumber, opt => opt.MapFrom(src => src.ModuleNumber))
+            .ForMember(dest => dest.Warehouse, opt => opt.MapFrom(src => src.Warehouse!.Name))
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name))
+            .ForMember(dest => dest.WarehouseFrom, opt => opt.MapFrom(src => src.WarehouseFrom!.Name))
+            .ForMember(dest => dest.WarehouseTo, opt => opt.MapFrom(src => src.WarehouseTo!.Name));
+
+        CreateMap<InvenTransDto, InventoryTransaction>()
+            .ForMember(dest => dest.ModuleName, opt => opt.MapFrom(src => src.ModuleName))
+            .ForMember(dest => dest.ModuleCode, opt => opt.MapFrom(src => src.ModuleCode))
+            .ForMember(dest => dest.ModuleNumber, opt => opt.MapFrom(src => src.ModuleNumber))
+            .ForMember(dest => dest.WarehouseId, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore())
+            .ForMember(dest => dest.WarehouseFromId, opt => opt.Ignore())
+            .ForMember(dest => dest.WarehouseToId, opt => opt.Ignore());
+
+        #endregion
+
+        #region InventoryStockDTOs
+        CreateMap<InventoryTransaction, InvenStockDto>()
+            .ForMember(dest => dest.Warehouse, opt => opt.MapFrom(src => src.Warehouse!.Name))
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name))
+            .ForMember(dest => dest.Stock, opt => opt.MapFrom(src => src.Stock));
+
+        CreateMap<InvenStockDto, InventoryTransaction>()
+            .ForMember(dest => dest.WarehouseId, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore());
+
+        #endregion
+
+        #region AdjusmentDTOs
+
+        CreateMap<AdjustmentMinus, NegativeAdjustmentDto>()
+            .ForMember(dest => dest.Status,
+                opt => opt.MapFrom(src => src.Status));
+        CreateMap<NegativeAdjustmentDto, AdjustmentMinus>()
+            .ForMember(dest => dest.Status,
+                opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        CreateMap<AdjustmentPlus, PositiveAdjustmentDto>()
+            .ForMember(dest => dest.Status,
+                opt => opt.MapFrom(src => src.Status));
+        CreateMap<PositiveAdjustmentDto, AdjustmentPlus>()
+            .ForMember(dest => dest.Status,
+                opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        #endregion
+
+        #region WarehouseDTOs
+
+        CreateMap<Warehouse, WarehouseDto>().ReverseMap();
+
+        #endregion
+
+        #region StockDTOs
+
+
+        CreateMap<StockCount, StockCountDto>()
+            .ForMember(dest => dest.Warehouse,
+                opt => opt.MapFrom(src => src.Warehouse!.Name));
+
+        CreateMap<StockCountDto, StockCount>()
+            .ForMember(dest => dest.Warehouse,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
+        #endregion
+
+        #region ScrappingDTOs
+
+        CreateMap<Scrapping, ScrappingDto>()
+            .ForMember(dest => dest.Warehouse, opt => opt.MapFrom(src => src.Warehouse!.Name));
+        CreateMap<ScrappingDto, Scrapping>();
+
+        #endregion
+
+        #region UnitMesureDTOs
+
+        CreateMap<UnitMeasure, UnitMeasureDto>().ReverseMap();
+
+        #endregion
+
+        #region GoodsReceiveDTOs
+
+        CreateMap<GoodsReceive, GoodsReceiveDto>()
+            .ForMember(dest => dest.PurchaseOrder, opt => opt.MapFrom(src => src.PurchaseOrder!.Number))
+            .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.PurchaseOrder!.OrderDate))
+            .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.PurchaseOrder!.Vendor!.Name))
+            .ReverseMap();
+
+        #endregion
+
     }
 }
