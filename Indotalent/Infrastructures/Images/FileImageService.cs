@@ -176,7 +176,9 @@ namespace Indotalent.Infrastructures.Images
 
             fileImage = new FileImage
             {
-                Id = Guid.Empty, OriginalFileName = "NoImage.png", ImageData = File.ReadAllBytes(defaultImagePath)
+                Id = Guid.Empty,
+                OriginalFileName = "NoImage.png",
+                ImageData = File.ReadAllBytes(defaultImagePath)
             };
 
             return fileImage;
