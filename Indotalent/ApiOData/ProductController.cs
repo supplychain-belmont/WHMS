@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.Products;
 using Indotalent.Applications.Products;
@@ -37,19 +38,9 @@ namespace Indotalent.ApiOData
                 .GetAll()
                 .Include(x => x.ProductGroup)
                 .Include(x => x.UnitMeasure)
-                .Select(rec => new ProductDto
-                {
-                    Id = rec.Id,
-                    Name = rec.Name,
-                    Number = rec.Number,
-                    RowGuid = rec.RowGuid,
-                    CreatedAtUtc = rec.CreatedAtUtc,
-                    ProductGroup = rec.ProductGroup != null ? rec.ProductGroup.Name : null,
-                    UnitMeasure = rec.UnitMeasure != null ? rec.UnitMeasure.Name : null,
-                    UnitPrice = rec.UnitPrice,
-                    Physical = rec.Physical,
-                });
+                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider);
         }
+
         [EnableQuery]
         [HttpGet("{key}")]
         public async Task<ActionResult<ProductDto>> Get([FromODataUri] int key)
@@ -68,6 +59,7 @@ namespace Indotalent.ApiOData
             var dto = _mapper.Map<ProductDto>(product);
             return Ok(dto);
         }
+
         public async Task<ActionResult<ProductDto>> Post([FromBody] ProductDto productDto)
         {
             if (!ModelState.IsValid)
@@ -81,6 +73,7 @@ namespace Indotalent.ApiOData
 
             return Created(createdDto);
         }
+
         public async Task<ActionResult<ProductDto>> Put([FromRoute] int key, [FromBody] ProductDto productDto)
         {
             if (!ModelState.IsValid)

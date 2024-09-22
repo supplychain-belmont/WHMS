@@ -229,6 +229,7 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.OriginalFileName, opt => opt.MapFrom(src => src.OriginalFileName));
 
         #endregion
+
         #region ProductDetail DTOs
 
         CreateMap<ProductDetails, ProductDetailsDto>()
@@ -265,18 +266,26 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.WarehouseTo, opt => opt.MapFrom(src => src.WarehouseTo!.Name));
 
         CreateMap<TransferOutDto, TransferOut>();
+
         #endregion
 
         #region productDTOs
+
         CreateMap<Product, ProductDto>()
             .ForMember(dest => dest.ProductGroup, opt => opt.MapFrom(src => src.ProductGroup!.Name))
             .ForMember(dest => dest.UnitMeasure, opt => opt.MapFrom(src => src.UnitMeasure!.Name));
 
-        CreateMap<ProductDto, Product>();
+        CreateMap<ProductDto, Product>()
+            .ForMember(dest => dest.ProductGroup, opt => opt.Ignore())
+            .ForMember(dest => dest.UnitMeasure, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
         CreateMap<ProductGroup, ProductGroupDto>().ReverseMap();
 
         #endregion
+
         #region InventoryTransactionDTOs
+
         CreateMap<InventoryTransaction, InvenTransDto>()
             .ForMember(dest => dest.ModuleName, opt => opt.MapFrom(src => src.ModuleName))
             .ForMember(dest => dest.ModuleCode, opt => opt.MapFrom(src => src.ModuleCode))
@@ -298,6 +307,7 @@ public class ApplicationProfile : Profile
         #endregion
 
         #region InventoryStockDTOs
+
         CreateMap<InventoryTransaction, InvenStockDto>()
             .ForMember(dest => dest.Warehouse, opt => opt.MapFrom(src => src.Warehouse!.Name))
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name))
@@ -331,6 +341,7 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+
         #endregion
 
         #region WarehouseDTOs
@@ -340,7 +351,6 @@ public class ApplicationProfile : Profile
         #endregion
 
         #region StockDTOs
-
 
         CreateMap<StockCount, StockCountDto>()
             .ForMember(dest => dest.Warehouse,
@@ -353,6 +363,7 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+
         #endregion
 
         #region ScrappingDTOs
@@ -374,10 +385,12 @@ public class ApplicationProfile : Profile
         CreateMap<GoodsReceive, GoodsReceiveDto>()
             .ForMember(dest => dest.PurchaseOrder, opt => opt.MapFrom(src => src.PurchaseOrder!.Number))
             .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.PurchaseOrder!.OrderDate))
-            .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.PurchaseOrder!.Vendor!.Name))
-            .ReverseMap();
+            .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.PurchaseOrder!.Vendor!.Name));
+        CreateMap<GoodsReceiveDto, GoodsReceive>()
+            .ForMember(dest => dest.PurchaseOrder, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
 
         #endregion
-
     }
 }
