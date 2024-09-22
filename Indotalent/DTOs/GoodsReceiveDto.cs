@@ -8,6 +8,8 @@ namespace Indotalent.DTOs
         public string? Number { get; set; }
         public DateTime? ReceiveDate { get; set; }
         public GoodsReceiveStatus? Status { get; set; }
+        public string? Description { get; set; }
+        public int PurchaseOrderId { get; set; }
         public string? PurchaseOrder { get; set; }
         public DateTime? OrderDate { get; set; }
         public string? Vendor { get; set; }

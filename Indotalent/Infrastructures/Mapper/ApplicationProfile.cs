@@ -390,6 +390,8 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.PurchaseOrder, opt => opt.Ignore())
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
+        CreateMap<InventoryTransaction, GoodsReceiveItemChildDto>();
+        CreateMap<GoodsReceiveItemChildDto, InventoryTransaction>();
 
         #endregion
     }
