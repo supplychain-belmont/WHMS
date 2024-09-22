@@ -118,6 +118,7 @@ namespace Indotalent.ApiOData
                     entity.Status = (InventoryTransactionStatus)parent.Status!;
                 }
 
+                entity.CreatedAtUtc = DateTime.Now;
                 entity.Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT");
                 await _inventoryTransactionService.AddAsync(entity);
 

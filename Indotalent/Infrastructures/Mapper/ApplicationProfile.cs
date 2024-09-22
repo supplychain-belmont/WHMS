@@ -390,7 +390,11 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.PurchaseOrder, opt => opt.Ignore())
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
-        CreateMap<InventoryTransaction, GoodsReceiveItemChildDto>();
+        CreateMap<InventoryTransaction, GoodsReceiveItemChildDto>()
+            .ForMember(dest => dest.WarehouseId, opt => opt.MapFrom(src => src.WarehouseId))
+            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+            .ForMember(dest => dest.RequestedMovement, opt => opt.MapFrom(src => src.RequestedMovement))
+            .ForMember(dest => dest.Movement, opt => opt.MapFrom(src => src.Movement));
         CreateMap<GoodsReceiveItemChildDto, InventoryTransaction>();
 
         #endregion

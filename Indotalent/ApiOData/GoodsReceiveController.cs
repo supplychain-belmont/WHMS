@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.GoodsReceives;
+using Indotalent.Applications.NumberSequences;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
@@ -19,11 +20,14 @@ namespace Indotalent.ApiOData
     {
         private readonly GoodsReceiveService _goodsReceiveService;
         private readonly IMapper _mapper;
+        private readonly NumberSequenceService _numberSequenceService;
 
-        public GoodsReceiveController(GoodsReceiveService goodsReceiveService, IMapper mapper)
+        public GoodsReceiveController(GoodsReceiveService goodsReceiveService, IMapper mapper,
+            NumberSequenceService numberSequenceService)
         {
             _goodsReceiveService = goodsReceiveService;
             _mapper = mapper;
+            _numberSequenceService = numberSequenceService;
         }
 
         [EnableQuery]
@@ -52,6 +56,8 @@ namespace Indotalent.ApiOData
         public async Task<IActionResult> Post([FromBody] GoodsReceiveDto dto)
         {
             var entity = _mapper.Map<GoodsReceive>(dto);
+            entity.Number = _numberSequenceService.GenerateNumber(nameof(GoodsReceive), "", "GR");
+
             await _goodsReceiveService.AddAsync(entity);
             var createdDto = _mapper.Map<GoodsReceiveDto>(entity);
             return Created(createdDto);

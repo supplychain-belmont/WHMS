@@ -22,6 +22,7 @@ namespace Indotalent.Models.Entities
         public Warehouse? Warehouse { get; set; }
         public required int ProductId { get; set; }
         public Product? Product { get; set; }
+        public double RequestedMovement { get; set; }
         public double Movement { get; set; }
         public InventoryTransType TransType { get; set; }
         public double Stock { get; set; }
