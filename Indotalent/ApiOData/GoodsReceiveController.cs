@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.GoodsReceives;
+using Indotalent.Applications.NumberSequences;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -17,11 +20,14 @@ namespace Indotalent.ApiOData
     {
         private readonly GoodsReceiveService _goodsReceiveService;
         private readonly IMapper _mapper;
+        private readonly NumberSequenceService _numberSequenceService;
 
-        public GoodsReceiveController(GoodsReceiveService goodsReceiveService, IMapper mapper)
+        public GoodsReceiveController(GoodsReceiveService goodsReceiveService, IMapper mapper,
+            NumberSequenceService numberSequenceService)
         {
             _goodsReceiveService = goodsReceiveService;
             _mapper = mapper;
+            _numberSequenceService = numberSequenceService;
         }
 
         [EnableQuery]
@@ -30,19 +36,8 @@ namespace Indotalent.ApiOData
             return _goodsReceiveService
                 .GetAll()
                 .Include(x => x.PurchaseOrder)
-                    .ThenInclude(x => x!.Vendor)
-                .Select(rec => new GoodsReceiveDto
-                {
-                    Id = rec.Id,
-                    Number = rec.Number,
-                    ReceiveDate = rec.ReceiveDate,
-                    Status = rec.Status,
-                    PurchaseOrder = rec.PurchaseOrder!.Number,
-                    OrderDate = rec.PurchaseOrder!.OrderDate,
-                    Vendor = rec.PurchaseOrder!.Vendor!.Name,
-                    RowGuid = rec.RowGuid,
-                    CreatedAtUtc = rec.CreatedAtUtc,
-                });
+                .ThenInclude(x => x!.Vendor)
+                .ProjectTo<GoodsReceiveDto>(_mapper.ConfigurationProvider);
         }
 
         [EnableQuery]
@@ -61,6 +56,8 @@ namespace Indotalent.ApiOData
         public async Task<IActionResult> Post([FromBody] GoodsReceiveDto dto)
         {
             var entity = _mapper.Map<GoodsReceive>(dto);
+            entity.Number = _numberSequenceService.GenerateNumber(nameof(GoodsReceive), "", "GR");
+
             await _goodsReceiveService.AddAsync(entity);
             var createdDto = _mapper.Map<GoodsReceiveDto>(entity);
             return Created(createdDto);
@@ -85,17 +82,31 @@ namespace Indotalent.ApiOData
         }
 
         [HttpPatch]
-        public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] JsonPatchDocument<GoodsReceiveDto> patch)
+        public async Task<IActionResult> Patch([FromODataUri] int key,
+            [FromBody] Delta<GoodsReceiveDto> goodReceiveDto)
         {
-            var entity = await _goodsReceiveService.GetByIdAsync(key);
-            if (entity == null)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var current = await _goodsReceiveService.GetByIdAsync(key);
+            if (current == null)
             {
                 return NotFound();
             }
 
-            var dto = _mapper.Map<GoodsReceiveDto>(entity);
-            patch.ApplyTo(dto);
-            _mapper.Map(dto, entity);
+            goodReceiveDto.TryGetPropertyValue("Number", out var numberProperty);
+            if (numberProperty is string number && current.Number != number)
+            {
+                return BadRequest("Unable to update vendor");
+            }
+
+            var dto = _mapper.Map<GoodsReceiveDto>(current);
+            goodReceiveDto.Patch(dto);
+
+            var entity = _mapper.Map(dto, current);
+
             await _goodsReceiveService.UpdateAsync(entity);
             return Updated(_mapper.Map<GoodsReceiveDto>(entity));
         }

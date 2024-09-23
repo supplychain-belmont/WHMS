@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.UnitMeasures;
 using Indotalent.DTOs;
@@ -28,14 +29,7 @@ namespace Indotalent.ApiOData
         {
             return _unitMeasureService
                 .GetAll()
-                .Select(rec => new UnitMeasureDto
-                {
-                    Id = rec.Id,
-                    RowGuid = rec.RowGuid,
-                    Name = rec.Name,
-                    Description = rec.Description,
-                    CreatedAtUtc = rec.CreatedAtUtc
-                });
+                .ProjectTo<UnitMeasureDto>(_mapper.ConfigurationProvider);
         }
 
         [EnableQuery]
@@ -78,7 +72,8 @@ namespace Indotalent.ApiOData
         }
 
         [HttpPatch]
-        public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] JsonPatchDocument<UnitMeasureDto> patch)
+        public async Task<IActionResult> Patch([FromODataUri] int key,
+            [FromBody] JsonPatchDocument<UnitMeasureDto> patch)
         {
             var entity = await _unitMeasureService.GetByIdAsync(key);
             if (entity == null)

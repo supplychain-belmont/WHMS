@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
+using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.DTOs;
@@ -21,16 +22,18 @@ namespace Indotalent.ApiOData
         private const string HeaderKeyName = "ParentId";
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly PurchaseOrderItemService _purchaseOrderItemService;
+        private readonly ProductService _productService;
         private readonly IMapper _mapper;
 
         public PurchaseOrderItemChildController(
             PurchaseOrderService purchaseOrderService,
             IMapper mapper,
-            PurchaseOrderItemService purchaseOrderItemService)
+            PurchaseOrderItemService purchaseOrderItemService, ProductService productService)
         {
             _mapper = mapper;
             _purchaseOrderService = purchaseOrderService;
             _purchaseOrderItemService = purchaseOrderItemService;
+            _productService = productService;
         }
 
         [EnableQuery]
@@ -94,7 +97,13 @@ namespace Indotalent.ApiOData
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
 
+                var product = await _productService.GetByIdAsync(purchaseOrderItem.ProductId);
+
                 purchaseOrderItem.PurchaseOrderId = parentId;
+                purchaseOrderItem.Summary = product?.Number;
+                purchaseOrderItem.UnitPrice = product?.UnitPrice;
+                purchaseOrderItem.Quantity = 1;
+
                 var entity = _mapper.Map<PurchaseOrderItem>(purchaseOrderItem);
                 await _purchaseOrderItemService.AddAsync(entity);
 

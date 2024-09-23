@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.GoodsReceives;
 using Indotalent.Applications.InventoryTransactions;
@@ -17,19 +18,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
-
     public class GoodsReceiveItemChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<InventoryTransaction, GoodsReceiveItemChildDto>();
-                CreateMap<GoodsReceiveItemChildDto, InventoryTransaction>();
-            }
-        }
-
         private readonly NumberSequenceService _numberSequenceService;
         private readonly GoodsReceiveService _goodsReceiveService;
         private readonly InventoryTransactionService _inventoryTransactionService;
@@ -59,7 +49,7 @@ namespace Indotalent.ApiOData
             return _inventoryTransactionService
                 .GetAll()
                 .Where(x => x.ModuleId == parentId && x.ModuleName == moduleName)
-                .Select(x => _mapper.Map<GoodsReceiveItemChildDto>(x));
+                .ProjectTo<GoodsReceiveItemChildDto>(_mapper.ConfigurationProvider);
         }
 
 
@@ -70,9 +60,8 @@ namespace Indotalent.ApiOData
             return SingleResult.Create(_inventoryTransactionService
                 .GetAll()
                 .Where(x => x.Id == key)
-            .Select(x => _mapper.Map<GoodsReceiveItemChildDto>(x)));
+                .Select(x => _mapper.Map<GoodsReceiveItemChildDto>(x)));
         }
-
 
 
         [HttpPatch]
@@ -97,7 +86,6 @@ namespace Indotalent.ApiOData
                 await _inventoryTransactionService.UpdateAsync(entity);
 
                 return Ok(_mapper.Map<GoodsReceiveItemChildDto>(entity));
-
             }
             catch (Exception ex)
             {
@@ -111,7 +99,6 @@ namespace Indotalent.ApiOData
         {
             try
             {
-
                 const string HeaderKeyName = "ParentId";
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
@@ -131,12 +118,12 @@ namespace Indotalent.ApiOData
                     entity.Status = (InventoryTransactionStatus)parent.Status!;
                 }
 
+                entity.CreatedAtUtc = DateTime.Now;
                 entity.Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT");
                 await _inventoryTransactionService.AddAsync(entity);
 
                 var dto = _mapper.Map<InventoryTransaction>(entity);
                 return Created("GoodsReceiveItemChild", dto);
-
             }
             catch (Exception ex)
             {
@@ -161,7 +148,6 @@ namespace Indotalent.ApiOData
                 await _inventoryTransactionService.DeleteByIdAsync(child.Id);
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {
