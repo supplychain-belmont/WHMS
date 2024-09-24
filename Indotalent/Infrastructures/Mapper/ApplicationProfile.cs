@@ -193,19 +193,25 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.DeliveryOrder, opt => opt.MapFrom(src => src.DeliveryOrder!.Number))
             .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.DeliveryOrder!.DeliveryDate))
             .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.DeliveryOrder!.SalesOrder!.Customer!.Name));
-
         CreateMap<SalesReturnDto, SalesReturn>();
         CreateMap<SalesOrder, SalesOrderDto>()
             .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer!.Name))
-            .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.Tax!.Name));
-
+            .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.Tax!.Name))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.OrderStatus));
         CreateMap<SalesOrderDto, SalesOrder>();
         CreateMap<SalesOrderItem, SalesOrderItemDto>()
             .ForMember(dest => dest.SalesOrder, opt => opt.MapFrom(src => src.SalesOrder!.Number))
             .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.SalesOrder!.Customer!.Name))
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name));
-
-        CreateMap<SalesOrderItemDto, SalesOrderItem>();
+        CreateMap<SalesOrderItemDto, SalesOrderItem>()
+            .ForMember(dest => dest.SalesOrder, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
+        CreateMap<SalesOrderItem, SalesOrderItemChildDto>();
+        CreateMap<SalesOrderItemChildDto, SalesOrderItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
 
         #endregion
 

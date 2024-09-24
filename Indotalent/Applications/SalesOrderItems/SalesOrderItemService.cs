@@ -14,110 +14,144 @@ namespace Indotalent.Applications.SalesOrderItems
 {
     public class SalesOrderItemService : Repository<SalesOrderItem>
     {
-        private readonly IMapper _mapper;
+        private readonly SalesOrderService _salesOrderService;
 
         public SalesOrderItemService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
-            IMapper mapper) :
-                base(context, httpContextAccessor, auditColumnTransformer)
+            SalesOrderService salesOrderService) :
+            base(context, httpContextAccessor, auditColumnTransformer)
         {
-            _mapper = mapper;
+            _salesOrderService = salesOrderService;
         }
 
-        public IQueryable<SalesOrderItemDto> GetAllDtos()
+        public override async Task AddAsync(SalesOrderItem? entity)
         {
-            return _mapper.ProjectTo<SalesOrderItemDto>(
-                _context.Set<SalesOrderItem>()
-                    .Include(x => x.SalesOrder)
-                        .ThenInclude(x => x!.Customer)
-                    .Include(x => x.Product)
-                    .AsQueryable()
-            );
-        }
-
-        public async Task<SalesOrderItemDto?> GetDtoByIdAsync(int id)
-        {
-            var salesOrderItem = await _context.Set<SalesOrderItem>()
-                .Include(x => x.SalesOrder)
-                    .ThenInclude(x => x!.Customer)
-                .Include(x => x.Product)
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            return _mapper.Map<SalesOrderItemDto>(salesOrderItem);
-        }
-
-        public async Task<SalesOrderItemDto> CreateAsync(SalesOrderItemDto salesOrderItemDto)
-        {
-            var salesOrderItem = _mapper.Map<SalesOrderItem>(salesOrderItemDto);
-            await AddAsync(salesOrderItem);
-            return _mapper.Map<SalesOrderItemDto>(salesOrderItem);
-        }
-
-        public async Task<SalesOrderItemDto> UpdateAsync(SalesOrderItemDto salesOrderItemDto)
-        {
-            var salesOrderItem = await _context.Set<SalesOrderItem>().FindAsync(salesOrderItemDto.Id);
-            if (salesOrderItem == null)
+            if (entity != null)
             {
-                throw new Exception("SalesOrderItem not found.");
-            }
+                if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
+                {
+                    auditEntity.CreatedAtUtc = DateTime.Now;
+                    auditEntity.CreatedByUserId = _userId;
+                }
 
-            _mapper.Map(salesOrderItemDto, salesOrderItem);
-            await UpdateAsync(salesOrderItem);
-            return _mapper.Map<SalesOrderItemDto>(salesOrderItem);
-        }
-
-        public async Task DeleteByIdAsync(int id)
-        {
-            var salesOrderItem = await _context.Set<SalesOrderItem>().FindAsync(id);
-            if (salesOrderItem != null)
-            {
-                _context.Set<SalesOrderItem>().Remove(salesOrderItem);
+                entity.RecalculateTotal();
+                _context.Set<SalesOrderItem>().Add(entity);
                 await _context.SaveChangesAsync();
+
+                await _salesOrderService.RecalculateParentAsync(entity.SalesOrderId);
             }
             else
             {
-                throw new Exception("SalesOrderItem not found.");
+                throw new Exception("Unable to process, entity is null");
             }
         }
 
-        public async Task DeleteByRowGuidAsync(Guid rowGuid)
+        public override async Task UpdateAsync(SalesOrderItem? entity)
         {
-            var salesOrderItem = await _context.Set<SalesOrderItem>().FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
-            if (salesOrderItem != null)
+            if (entity != null)
             {
-                _context.Set<SalesOrderItem>().Remove(salesOrderItem);
+                if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
+                {
+                    auditEntity.UpdatedByUserId = _userId;
+                }
+
+                if (entity is IHasAudit auditedEntity)
+                {
+                    auditedEntity.UpdatedAtUtc = DateTime.Now;
+                }
+
+                entity.RecalculateTotal();
+                _context.Set<SalesOrderItem>().Update(entity);
                 await _context.SaveChangesAsync();
+
+
+                await _salesOrderService.RecalculateParentAsync(entity.SalesOrderId);
             }
             else
             {
-                throw new Exception("SalesOrderItem not found.");
+                throw new Exception("Unable to process, entity is null");
             }
         }
 
-        public async Task<SalesOrderItemDto?> PatchAsync(int id, JsonPatchDocument<SalesOrderItemDto> patchDoc)
+
+        public override async Task DeleteByIdAsync(int? id)
         {
-            var salesOrderItem = await _context.Set<SalesOrderItem>()
-                .Include(x => x.SalesOrder)
-                .ThenInclude(x => x!.Customer)
-                .Include(x => x.Product)
+            if (!id.HasValue)
+            {
+                throw new Exception("Unable to process, id is null");
+            }
+
+            var entity = await _context.Set<SalesOrderItem>()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (salesOrderItem == null)
+            if (entity != null)
             {
-                return null;
+                if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
+                {
+                    auditEntity.UpdatedByUserId = _userId;
+                }
+
+                if (entity is IHasAudit auditedEntity)
+                {
+                    auditedEntity.UpdatedAtUtc = DateTime.Now;
+                }
+
+                if (entity is IHasSoftDelete softDeleteEntity)
+                {
+                    softDeleteEntity.IsNotDeleted = false;
+                    _context.Entry(entity).State = EntityState.Modified;
+                }
+                else
+                {
+                    _context.Set<SalesOrderItem>().Remove(entity);
+                }
+
+                await _context.SaveChangesAsync();
+
+
+                await _salesOrderService.RecalculateParentAsync(entity.SalesOrderId);
             }
-
-            var salesOrderItemDto = _mapper.Map<SalesOrderItemDto>(salesOrderItem);
-            patchDoc.ApplyTo(salesOrderItemDto);
-
-            _mapper.Map(salesOrderItemDto, salesOrderItem);
-
-            await UpdateAsync(salesOrderItem);
-
-            return _mapper.Map<SalesOrderItemDto>(salesOrderItem);
         }
 
+        public override async Task DeleteByRowGuidAsync(Guid? rowGuid)
+        {
+            if (!rowGuid.HasValue)
+            {
+                throw new Exception("Unable to process, row guid is null");
+            }
+
+            var entity = await _context.Set<SalesOrderItem>()
+                .FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
+
+            if (entity != null)
+            {
+                if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
+                {
+                    auditEntity.UpdatedByUserId = _userId;
+                }
+
+                if (entity is IHasAudit auditedEntity)
+                {
+                    auditedEntity.UpdatedAtUtc = DateTime.Now;
+                }
+
+                if (entity is IHasSoftDelete softDeleteEntity)
+                {
+                    softDeleteEntity.IsNotDeleted = false;
+                    _context.Entry(entity).State = EntityState.Modified;
+                }
+                else
+                {
+                    _context.Set<SalesOrderItem>().Remove(entity);
+                }
+
+                await _context.SaveChangesAsync();
+
+
+                await _salesOrderService.RecalculateParentAsync(entity.SalesOrderId);
+            }
+        }
     }
 }
