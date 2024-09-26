@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
+using Indotalent.Models.Enums;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -71,19 +72,24 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var currentPurchaseOrder = await _purchaseOrderService.GetByIdAsync(key);
-            if (currentPurchaseOrder == null)
+            var order = await _purchaseOrderService.GetByIdAsync(key);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            if (currentPurchaseOrder.Number != purchaseOrderDto.Number)
+            if (order.Number != purchaseOrderDto.Number)
             {
                 return BadRequest("Unable to update vendor");
             }
 
-            _mapper.Map(purchaseOrderDto, currentPurchaseOrder);
-            await _purchaseOrderService.UpdateAsync(currentPurchaseOrder);
+            if (order.OrderStatus is PurchaseOrderStatus.Confirmed or PurchaseOrderStatus.Archived)
+            {
+                return BadRequest("This order has been confirmed or archived");
+            }
+
+            _mapper.Map(purchaseOrderDto, order);
+            await _purchaseOrderService.UpdateAsync(order);
             return NoContent();
         }
 
@@ -95,22 +101,29 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var currentVendor = await _purchaseOrderService.GetByIdAsync(key);
-            if (currentVendor == null)
+            var order = await _purchaseOrderService.GetByIdAsync(key);
+            if (order == null)
             {
                 return NotFound();
             }
 
             purchaseOrderDto.TryGetPropertyValue("Number", out var numberProperty);
-            if (numberProperty is string number && currentVendor.Number != number)
+            if (numberProperty is string number && order.Number != number)
             {
-                return BadRequest("Unable to update vendor");
+                return BadRequest("Unable to update order");
             }
 
-            var dto = _mapper.Map<PurchaseOrderDto>(currentVendor);
+            purchaseOrderDto.TryGetPropertyValue("Status", out var statusProperty);
+            if (statusProperty is PurchaseOrderStatus status &&
+                status is PurchaseOrderStatus.Confirmed or PurchaseOrderStatus.Archived)
+            {
+                return BadRequest("This order has been confirmed or archived");
+            }
+
+            var dto = _mapper.Map<PurchaseOrderDto>(order);
             purchaseOrderDto.Patch(dto);
 
-            var entity = _mapper.Map(dto, currentVendor);
+            var entity = _mapper.Map(dto, order);
 
             await _purchaseOrderService.UpdateAsync(entity);
             return Updated(_mapper.Map<PurchaseOrderDto>(entity));
