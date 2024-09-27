@@ -219,9 +219,6 @@ public class ApplicationProfile : Profile
 
         CreateMap<FileImage, FileImageDto>()
             .ForMember(dest => dest.CreatedAtUtc, opt => opt.MapFrom(src => src.CreatedAtUtc))
-            .ForMember(dest => dest.UpdatedAtUtc, opt => opt.MapFrom(src => src.UpdatedAtUtc))
-            .ForMember(dest => dest.CreatedByUserId, opt => opt.MapFrom(src => src.CreatedByUserId))
-            .ForMember(dest => dest.UpdatedByUserId, opt => opt.MapFrom(src => src.UpdatedByUserId))
             .ForMember(dest => dest.ImageData, opt => opt.MapFrom(src => src.ImageData))
             .ForMember(dest => dest.OriginalFileName, opt => opt.MapFrom(src => src.OriginalFileName));
 

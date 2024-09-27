@@ -8,6 +8,7 @@ namespace Indotalent.Infrastructures.Images
     {
         public Guid Id { get; set; }
         public string OriginalFileName { get; set; }
+        public int? ProductId { get; set; }
         public byte[] ImageData { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Indotalent.Infrastructures.Images
 
         public IQueryable<FileImage> GetAll()
         {
-            return _context.FileImages.ApplyIsDeletedFilter().AsNoTracking();
+            return _context.FileImages.ApplyIsNotDeletedFilter().AsNoTracking();
         }
 
         public async Task<FileImage?> GetByRowGuidAsync(Guid? rowGuid)
@@ -39,7 +39,7 @@ namespace Indotalent.Infrastructures.Images
                 throw new Exception("Unable to process, entity is null");
             }
 
-            _context.FileImages.Add(fileImage);
+            await _context.FileImages.AddAsync(fileImage);
             await _context.SaveChangesAsync();
         }
 
@@ -206,6 +206,27 @@ namespace Indotalent.Infrastructures.Images
             var image = await GetImageAsync(new Guid(id));
             var url = $"data:image/png;base64,{Convert.ToBase64String(image.ImageData)}";
             return url;
+        }
+
+        public string GetImageContentType(string fileImageOriginalFileName)
+        {
+            if (string.IsNullOrEmpty(fileImageOriginalFileName))
+            {
+                throw new ArgumentException("Invalid file name");
+            }
+
+            if (fileImageOriginalFileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                fileImageOriginalFileName.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase))
+            {
+                return "image/jpeg";
+            }
+
+            if (fileImageOriginalFileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+            {
+                return "image/png";
+            }
+
+            return string.Empty;
         }
 
         private bool IsImageFile(IFormFile file)
