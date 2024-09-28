@@ -62,6 +62,7 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<AdjustmentMinusItemChildDto>("AdjustmentMinusItemChild");
             builder.EntitySet<ScrappingItemChildDto>("ScrappingItemChild");
             builder.EntitySet<StockCountItemChildDto>("StockCountItemChild");
+            builder.EntitySet<FileImageDto>("FileImage");
 
             services.AddControllers()
                 .AddOData(options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null)

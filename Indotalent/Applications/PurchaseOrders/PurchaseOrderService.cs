@@ -28,6 +28,9 @@ namespace Indotalent.Applications.PurchaseOrders
         public override Task AddAsync(PurchaseOrder? entity)
         {
             entity!.Number = _numberSequenceService.GenerateNumber(nameof(PurchaseOrder), "", "PO");
+            entity.TaxAmount = 0.0;
+            entity.AfterTaxAmount = 0.0;
+            entity.BeforeTaxAmount = 0.0;
             return base.AddAsync(entity);
         }
 

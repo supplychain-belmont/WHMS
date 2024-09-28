@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.SalesOrders;
 using Indotalent.DTOs;
+using Indotalent.Models.Entities;
 
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,31 +17,51 @@ namespace Indotalent.ApiOData
     public class SalesOrderController : ODataController
     {
         private readonly SalesOrderService _salesOrderService;
+        private readonly IMapper _mapper;
 
-        public SalesOrderController(SalesOrderService salesOrderService)
+        public SalesOrderController(SalesOrderService salesOrderService, IMapper mapper)
         {
             _salesOrderService = salesOrderService;
+            _mapper = mapper;
         }
 
         [EnableQuery]
         public IQueryable<SalesOrderDto> Get()
         {
-            return _salesOrderService.GetAllDtos();
+            return _salesOrderService
+                .GetAll()
+                .Include(x => x.Customer)
+                .Include(x => x.Tax)
+                .ProjectTo<SalesOrderDto>(_mapper.ConfigurationProvider);
         }
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public async Task<SingleResult<SalesOrderDto>> Get([FromODataUri] int key)
+        public async Task<ActionResult<SalesOrderDto>> Get([FromODataUri] int key)
         {
-            var result = await _salesOrderService.GetDtoByIdAsync(key);
-            return SingleResult.Create(result != null ? new[] { result }.AsQueryable() : Enumerable.Empty<SalesOrderDto>().AsQueryable());
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var salesOrder = await _salesOrderService.GetByIdAsync(key,
+                    x => x.Customer, x => x.Tax)
+                .ProjectTo<SalesOrderDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+            return Ok(salesOrder);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] SalesOrderDto salesOrderDto)
         {
-            var result = await _salesOrderService.CreateAsync(salesOrderDto);
-            return Created(result);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var salesOrder = _mapper.Map<SalesOrder>(salesOrderDto);
+            await _salesOrderService.AddAsync(salesOrder);
+            return Created();
         }
 
         [HttpPut("{key}")]
@@ -51,33 +72,60 @@ namespace Indotalent.ApiOData
                 return BadRequest();
             }
 
-            var result = await _salesOrderService.UpdateAsync(salesOrderDto);
-            return Updated(result);
+            var current = await _salesOrderService.GetByIdAsync(key);
+            if (current == null)
+            {
+                return NotFound();
+            }
+
+            if (current.Number != salesOrderDto.Number)
+            {
+                return BadRequest("Unable to update vendor");
+            }
+
+            _mapper.Map(salesOrderDto, current);
+            await _salesOrderService.UpdateAsync(current);
+            return NoContent();
         }
 
         [HttpDelete("{key}")]
         public async Task<IActionResult> Delete([FromODataUri] int key)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             await _salesOrderService.DeleteByIdAsync(key);
             return NoContent();
         }
 
-        [HttpPatch("{key}")]
-        public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] JsonPatchDocument<SalesOrderDto> patchDoc)
+        public async Task<IActionResult> Patch([FromRoute] int key, [FromBody] Delta<SalesOrderDto> patchDoc)
         {
-            if (patchDoc == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            var result = await _salesOrderService.PatchAsync(key, patchDoc);
-            if (result == null)
+            var current = await _salesOrderService.GetByIdAsync(key);
+            if (current == null)
             {
                 return NotFound();
             }
 
-            return Updated(result);
-        }
+            patchDoc.TryGetPropertyValue("Number", out var numberProperty);
+            if (numberProperty is string number && current.Number != number)
+            {
+                return BadRequest("Unable to update vendor");
+            }
 
+            var dto = _mapper.Map<SalesOrderDto>(current);
+            patchDoc.Patch(dto);
+
+            var entity = _mapper.Map(dto, current);
+
+            await _salesOrderService.UpdateAsync(entity);
+            return Updated(_mapper.Map<PurchaseOrderDto>(entity));
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace Indotalent.Models.Entities
         public required string Name { get; set; }
         public string? Number { get; set; }
         public string? Description { get; set; }
+        public required double UnitCost { get; set; }
         public required double UnitPrice { get; set; }
         public double? UnitPrice1 { get; set; }
         public double? UnitPrice2 { get; set; }
@@ -22,5 +23,6 @@ namespace Indotalent.Models.Entities
         public string? Material { get; set; }
         public string? TapestryCode { get; set; }
         public bool IsNationalProduct { get; set; }
+        public string? ProductCategory { get; set; }
     }
 }

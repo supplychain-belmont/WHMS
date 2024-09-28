@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.DeliveryOrders;
 using Indotalent.Applications.InventoryTransactions;
@@ -17,19 +18,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
-
     public class DeliveryOrderItemChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<InventoryTransaction, DeliveryOrderItemChildDto>();
-                CreateMap<DeliveryOrderItemChildDto, InventoryTransaction>();
-            }
-        }
-
         private readonly NumberSequenceService _numberSequenceService;
         private readonly DeliveryOrderService _deliveryOrderService;
         private readonly InventoryTransactionService _inventoryTransactionService;
@@ -59,7 +49,7 @@ namespace Indotalent.ApiOData
             return _inventoryTransactionService
                 .GetAll()
                 .Where(x => x.ModuleId == parentId && x.ModuleName == moduleName)
-                .Select(x => _mapper.Map<DeliveryOrderItemChildDto>(x));
+                .ProjectTo<DeliveryOrderItemChildDto>(_mapper.ConfigurationProvider);
         }
 
 
@@ -70,13 +60,13 @@ namespace Indotalent.ApiOData
             return SingleResult.Create(_inventoryTransactionService
                 .GetAll()
                 .Where(x => x.Id == key)
-            .Select(x => _mapper.Map<DeliveryOrderItemChildDto>(x)));
+                .ProjectTo<DeliveryOrderItemChildDto>(_mapper.ConfigurationProvider));
         }
 
 
-
         [HttpPatch]
-        public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] Delta<DeliveryOrderItemChildDto> delta)
+        public async Task<IActionResult> Patch([FromODataUri] int key,
+            [FromBody] Delta<DeliveryOrderItemChildDto> delta)
         {
             try
             {
@@ -97,7 +87,6 @@ namespace Indotalent.ApiOData
                 await _inventoryTransactionService.UpdateAsync(entity);
 
                 return Ok(_mapper.Map<DeliveryOrderItemChildDto>(entity));
-
             }
             catch (Exception ex)
             {
@@ -111,7 +100,6 @@ namespace Indotalent.ApiOData
         {
             try
             {
-
                 const string HeaderKeyName = "ParentId";
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
@@ -136,7 +124,6 @@ namespace Indotalent.ApiOData
 
                 var dto = _mapper.Map<InventoryTransaction>(entity);
                 return Created("DeliveryOrderItemChild", dto);
-
             }
             catch (Exception ex)
             {
@@ -161,7 +148,6 @@ namespace Indotalent.ApiOData
                 await _inventoryTransactionService.DeleteByIdAsync(child.Id);
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {

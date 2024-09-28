@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
+using Indotalent.Applications.Products;
 using Indotalent.Applications.SalesOrderItems;
 using Indotalent.Applications.SalesOrders;
 using Indotalent.DTOs;
@@ -15,31 +17,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
-
     public class SalesOrderItemChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<SalesOrderItem, SalesOrderItemChildDto>();
-                CreateMap<SalesOrderItemChildDto, SalesOrderItem>();
-            }
-        }
-
         private readonly SalesOrderService _salesOrderService;
         private readonly SalesOrderItemService _salesOrderItemService;
+        private readonly ProductService _productService;
         private readonly IMapper _mapper;
 
         public SalesOrderItemChildController(
             SalesOrderService salesOrderService,
             IMapper mapper,
-            SalesOrderItemService salesOrderItemService)
+            SalesOrderItemService salesOrderItemService,
+            ProductService productService)
         {
             _mapper = mapper;
             _salesOrderService = salesOrderService;
             _salesOrderItemService = salesOrderItemService;
+            _productService = productService;
         }
 
         [EnableQuery]
@@ -52,7 +46,7 @@ namespace Indotalent.ApiOData
             return _salesOrderItemService
                 .GetAll()
                 .Where(x => x.SalesOrderId == parentId)
-                .Select(x => _mapper.Map<SalesOrderItemChildDto>(x));
+                .ProjectTo<SalesOrderItemChildDto>(_mapper.ConfigurationProvider);
         }
 
 
@@ -63,9 +57,8 @@ namespace Indotalent.ApiOData
             return SingleResult.Create(_salesOrderItemService
                 .GetAll()
                 .Where(x => x.Id == key)
-            .Select(x => _mapper.Map<SalesOrderItemChildDto>(x)));
+                .Select(x => _mapper.Map<SalesOrderItemChildDto>(x)));
         }
-
 
 
         [HttpPatch]
@@ -89,7 +82,6 @@ namespace Indotalent.ApiOData
                 await _salesOrderItemService.UpdateAsync(entity);
 
                 return Ok(_mapper.Map<SalesOrderItemChildDto>(entity));
-
             }
             catch (Exception ex)
             {
@@ -103,18 +95,22 @@ namespace Indotalent.ApiOData
         {
             try
             {
-
                 const string HeaderKeyName = "ParentId";
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
 
+                var product = await _productService.GetByIdAsync(salesOrderItem.ProductId);
+
                 salesOrderItem.SalesOrderId = parentId;
+                salesOrderItem.Summary = product?.Number;
+                salesOrderItem.UnitPrice = product?.UnitPrice;
+                salesOrderItem.Quantity = 1;
+
                 var entity = _mapper.Map<SalesOrderItem>(salesOrderItem);
                 await _salesOrderItemService.AddAsync(entity);
 
                 var dto = _mapper.Map<SalesOrderItem>(entity);
                 return Created("SalesOrderItemChild", dto);
-
             }
             catch (Exception ex)
             {
@@ -139,7 +135,6 @@ namespace Indotalent.ApiOData
                 await _salesOrderItemService.DeleteByIdAsync(salesOrderItem.Id);
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {

@@ -12,5 +12,6 @@
         Task<FileImage> GetImageAsync(Guid? id);
         string GetImageUrlFromImageId(string? id);
         Task<string> GetImageUrlFromImageIdAsync(string? id);
+        string GetImageContentType(string fileImageOriginalFileName);
     }
 }

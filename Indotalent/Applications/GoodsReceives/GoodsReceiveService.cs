@@ -3,6 +3,7 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
+using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
 using Indotalent.Models.Enums;
 
@@ -60,6 +61,35 @@ namespace Indotalent.Applications.GoodsReceives
             foreach (InventoryTransaction inventoryTransaction in transactions)
             {
                 await _inventoryTransactionService.AddAsync(inventoryTransaction);
+            }
+        }
+
+        public override async Task UpdateAsync(GoodsReceive? entity)
+        {
+            await base.UpdateAsync(entity);
+            await RecalculateChildAsync(entity?.Id);
+        }
+
+
+        private async Task RecalculateChildAsync(int? masterId)
+        {
+            var master = await _context.Set<GoodsReceive>()
+                .Include(x => x.PurchaseOrder)
+                .ThenInclude(x => x!.Vendor)
+                .Where(x => x.Id == masterId && x.IsNotDeleted)
+                .FirstOrDefaultAsync();
+
+            var children = await _inventoryTransactionService.GetAll()
+                .Where(x => x.ModuleId == masterId)
+                .ToListAsync();
+
+            if (master != null)
+            {
+                foreach (InventoryTransaction inventoryTransaction in children)
+                {
+                    inventoryTransaction.Status = (InventoryTransactionStatus)master.Status!;
+                    await _inventoryTransactionService.UpdateAsync(inventoryTransaction);
+                }
             }
         }
     }

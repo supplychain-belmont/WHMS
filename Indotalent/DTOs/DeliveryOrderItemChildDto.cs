@@ -7,6 +7,7 @@
         public DateTime? CreatedAtUtc { get; set; }
         public int? WarehouseId { get; set; }
         public int? ProductId { get; set; }
+        public double RequestedMovement { get; set; }
         public double? Movement { get; set; }
     }
 }
