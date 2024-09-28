@@ -67,11 +67,11 @@ namespace Indotalent.Applications.GoodsReceives
         public override async Task UpdateAsync(GoodsReceive? entity)
         {
             await base.UpdateAsync(entity);
-            await RecalculateParentAsync(entity?.Id);
+            await RecalculateChildAsync(entity?.Id);
         }
 
 
-        private async Task RecalculateParentAsync(int? masterId)
+        private async Task RecalculateChildAsync(int? masterId)
         {
             var master = await _context.Set<GoodsReceive>()
                 .Include(x => x.PurchaseOrder)
@@ -79,13 +79,13 @@ namespace Indotalent.Applications.GoodsReceives
                 .Where(x => x.Id == masterId && x.IsNotDeleted)
                 .FirstOrDefaultAsync();
 
-            var childs = await _inventoryTransactionService.GetAll()
+            var children = await _inventoryTransactionService.GetAll()
                 .Where(x => x.ModuleId == masterId)
                 .ToListAsync();
 
             if (master != null)
             {
-                foreach (InventoryTransaction inventoryTransaction in childs)
+                foreach (InventoryTransaction inventoryTransaction in children)
                 {
                     inventoryTransaction.Status = (InventoryTransactionStatus)master.Status!;
                     await _inventoryTransactionService.UpdateAsync(inventoryTransaction);

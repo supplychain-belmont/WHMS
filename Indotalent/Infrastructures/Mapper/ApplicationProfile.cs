@@ -412,5 +412,20 @@ public class ApplicationProfile : Profile
         CreateMap<GoodsReceiveItemChildDto, InventoryTransaction>();
 
         #endregion
+
+        #region DeliveryOrders
+
+        CreateMap<DeliveryOrder, DeliveryOrderDto>()
+            .ForMember(dest => dest.SalesOrder, opt => opt.MapFrom(src => src.SalesOrder!.Number))
+            .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.SalesOrder!.OrderDate))
+            .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.SalesOrder!.Customer!.Name));
+        CreateMap<DeliveryOrderDto, DeliveryOrder>()
+            .ForMember(dest => dest.SalesOrder, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
+        CreateMap<InventoryTransaction, DeliveryOrderItemChildDto>();
+        CreateMap<DeliveryOrderItemChildDto, InventoryTransaction>();
+
+        #endregion
     }
 }

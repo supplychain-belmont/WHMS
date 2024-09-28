@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
+using Indotalent.Applications.Products;
 using Indotalent.Applications.SalesOrderItems;
 using Indotalent.Applications.SalesOrders;
 using Indotalent.DTOs;
@@ -20,16 +21,19 @@ namespace Indotalent.ApiOData
     {
         private readonly SalesOrderService _salesOrderService;
         private readonly SalesOrderItemService _salesOrderItemService;
+        private readonly ProductService _productService;
         private readonly IMapper _mapper;
 
         public SalesOrderItemChildController(
             SalesOrderService salesOrderService,
             IMapper mapper,
-            SalesOrderItemService salesOrderItemService)
+            SalesOrderItemService salesOrderItemService,
+            ProductService productService)
         {
             _mapper = mapper;
             _salesOrderService = salesOrderService;
             _salesOrderItemService = salesOrderItemService;
+            _productService = productService;
         }
 
         [EnableQuery]
@@ -95,7 +99,13 @@ namespace Indotalent.ApiOData
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
 
+                var product = await _productService.GetByIdAsync(salesOrderItem.ProductId);
+
                 salesOrderItem.SalesOrderId = parentId;
+                salesOrderItem.Summary = product?.Number;
+                salesOrderItem.UnitPrice = product?.UnitPrice;
+                salesOrderItem.Quantity = 1;
+
                 var entity = _mapper.Map<SalesOrderItem>(salesOrderItem);
                 await _salesOrderItemService.AddAsync(entity);
 
