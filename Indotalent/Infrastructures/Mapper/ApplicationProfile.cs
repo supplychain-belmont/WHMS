@@ -198,7 +198,18 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer!.Name))
             .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.Tax!.Name))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.OrderStatus));
-        CreateMap<SalesOrderDto, SalesOrder>();
+        CreateMap<SalesOrderDto, SalesOrder>()
+            .ForMember(dest => dest.Customer,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Tax,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.OrderStatus,
+                opt =>
+                    opt.MapFrom(src => src.Status));
         CreateMap<SalesOrderItem, SalesOrderItemDto>()
             .ForMember(dest => dest.SalesOrder, opt => opt.MapFrom(src => src.SalesOrder!.Number))
             .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.SalesOrder!.Customer!.Name))

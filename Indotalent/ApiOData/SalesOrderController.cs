@@ -100,8 +100,7 @@ namespace Indotalent.ApiOData
             return NoContent();
         }
 
-        [HttpPatch("{key}")]
-        public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] Delta<SalesOrderDto> patchDoc)
+        public async Task<IActionResult> Patch([FromRoute] int key, [FromBody] Delta<SalesOrderDto> patchDoc)
         {
             if (!ModelState.IsValid)
             {
