@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.VendorContacts;
@@ -14,20 +15,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Indotalent.ApiOData
 {
-
     public class VendorContactChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<VendorContact, VendorContactChildDto>();
-                CreateMap<VendorContactChildDto, VendorContact>();
-            }
-        }
-
-
         private readonly VendorContactService _vendorContactService;
         private readonly NumberSequenceService _numberSequenceService;
         private readonly IMapper _mapper;
@@ -52,7 +41,7 @@ namespace Indotalent.ApiOData
             return _vendorContactService
                 .GetAll()
                 .Where(x => x.VendorId == parentId)
-                .Select(x => _mapper.Map<VendorContactChildDto>(x));
+                .ProjectTo<VendorContactChildDto>(_mapper.ConfigurationProvider);
         }
 
 
@@ -63,9 +52,8 @@ namespace Indotalent.ApiOData
             return SingleResult.Create(_vendorContactService
                 .GetAll()
                 .Where(x => x.Id == key)
-                .Select(x => _mapper.Map<VendorContactChildDto>(x)));
+                .ProjectTo<VendorContactChildDto>(_mapper.ConfigurationProvider));
         }
-
 
 
         [HttpPatch]
@@ -85,7 +73,6 @@ namespace Indotalent.ApiOData
                 await _vendorContactService.UpdateAsync(entity);
 
                 return Ok(_mapper.Map<VendorContactChildDto>(entity));
-
             }
             catch (Exception ex)
             {
@@ -99,7 +86,6 @@ namespace Indotalent.ApiOData
         {
             try
             {
-
                 const string HeaderKeyName = "ParentId";
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
@@ -111,7 +97,6 @@ namespace Indotalent.ApiOData
                 var dto = _mapper.Map<VendorContact>(entity);
 
                 return Created("VendorContactChild", dto);
-
             }
             catch (Exception ex)
             {
@@ -133,7 +118,6 @@ namespace Indotalent.ApiOData
                 await _vendorContactService.DeleteByIdAsync(vendorContact.Id);
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {

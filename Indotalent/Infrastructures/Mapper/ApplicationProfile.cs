@@ -51,6 +51,12 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+        CreateMap<VendorContact, VendorContactChildDto>();
+        CreateMap<VendorContactChildDto, VendorContact>()
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
         CreateMap<PurchaseOrder, PurchaseOrderDto>()
             .ForMember(dest => dest.Vendor,
                 opt
