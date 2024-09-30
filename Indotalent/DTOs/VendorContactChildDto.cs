@@ -11,5 +11,6 @@
         public string? EmailAddress { get; set; }
         public int? VendorId { get; set; }
         public Guid? RowGuid { get; set; }
+        public DateTime? CreatedAtUtc { get; set; }
     }
 }
