@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.TransferIns;
 using Indotalent.DTOs;
@@ -30,22 +31,10 @@ namespace Indotalent.ApiOData
             return _transferInService
                 .GetAll()
                 .Include(x => x.TransferOut)
-                    .ThenInclude(x => x!.WarehouseFrom)
+                .ThenInclude(x => x!.WarehouseFrom)
                 .Include(x => x.TransferOut)
-                    .ThenInclude(x => x!.WarehouseTo)
-                .Select(rec => new TransferInDto
-                {
-                    Id = rec.Id,
-                    Number = rec.Number,
-                    ReceiveDate = rec.TransferReceiveDate,
-                    Status = rec.Status,
-                    TransferOut = rec.TransferOut!.Number,
-                    ReleaseDate = rec.TransferOut!.TransferReleaseDate,
-                    WarehouseFrom = rec.TransferOut!.WarehouseFrom!.Name,
-                    WarehouseTo = rec.TransferOut!.WarehouseTo!.Name,
-                    RowGuid = rec.RowGuid,
-                    CreatedAtUtc = rec.CreatedAtUtc,
-                });
+                .ThenInclude(x => x!.WarehouseTo)
+                .ProjectTo<TransferInDto>(_mapper.ConfigurationProvider);
         }
 
         [EnableQuery]
@@ -57,7 +46,10 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var transferIn = _transferInService.GetByIdAsync(key, x => x.TransferOut);
+            var transferIn = await _transferInService
+                .GetByIdAsync(key, x => x.TransferOut)
+                .ProjectTo<TransferInDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
             if (transferIn == null)
             {
                 return NotFound();
