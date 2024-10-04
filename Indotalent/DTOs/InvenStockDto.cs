@@ -9,6 +9,6 @@
         public string? Warehouse { get; set; }
         public int? ProductId { get; set; }
         public string? Product { get; set; }
-        public double Stock { get; set; }
+        public decimal Stock { get; set; }
     }
 }
