@@ -53,7 +53,7 @@ namespace Indotalent.Applications.DeliveryOrders
                     MovementDate = entity.DeliveryDate!.Value,
                     Status = (InventoryTransactionStatus)entity.Status!,
                     RequestedMovement = item.Quantity,
-                    Movement = 0,
+                    Movement = item.Quantity,
                     Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT")
                 }).ToList();
 

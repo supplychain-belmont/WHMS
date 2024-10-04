@@ -230,8 +230,10 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
         CreateMap<SalesOrderItem, SalesOrderItemChildDto>();
         CreateMap<SalesOrderItemChildDto, SalesOrderItem>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
 
         #endregion
 
