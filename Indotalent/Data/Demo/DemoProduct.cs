@@ -27,9 +27,12 @@ namespace Indotalent.Data.Demo
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
                 Physical = true,
-                UnitPrice = 5000.0,
-                UnitCost = 0.0,
+                UnitPrice = 5000.0m,
+                M3 = 1.2m
             });
             await productService.AddAsync(new Product
             {
@@ -38,8 +41,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 2000.0,
-                UnitCost = 0.0,
+                UnitPrice = 2000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.8m
             });
             await productService.AddAsync(new Product
             {
@@ -48,8 +54,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 3000.0,
-                UnitCost = 0.0,
+                UnitPrice = 3000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.5m
             });
             await productService.AddAsync(new Product
             {
@@ -58,8 +67,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1500.0,
-                UnitCost = 0.0,
+                UnitPrice = 1500.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.7m
             });
             await productService.AddAsync(new Product
             {
@@ -68,48 +80,67 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1000.0,
-                UnitCost = 0.0,
+                UnitPrice = 1000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.3m
             });
             await productService.AddAsync(new Product
             {
                 Name = "Network Cables",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
+                ProductGroupId =
+                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "m").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 100.0,
-                UnitCost = 0.0,
+                UnitPrice = 100.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.1m
             });
             await productService.AddAsync(new Product
             {
                 Name = "Routers and Switches",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
+                ProductGroupId =
+                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1000.0,
-                UnitCost = 0.0,
+                UnitPrice = 1000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.2m
             });
             await productService.AddAsync(new Product
             {
                 Name = "Antennas and Signal Boosters",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
+                ProductGroupId =
+                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 2000.0,
-                UnitCost = 0.0,
+                UnitPrice = 2000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 2.0m
             });
             await productService.AddAsync(new Product
             {
                 Name = "Wifii",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
+                ProductGroupId =
+                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1000.0,
-                UnitCost = 0.0,
+                UnitPrice = 1000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.1m
             });
             await productService.AddAsync(new Product
             {
@@ -118,8 +149,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 500.0,
-                UnitCost = 0.0,
+                UnitPrice = 500.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.1m
             });
             await productService.AddAsync(new Product
             {
@@ -128,8 +162,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 800.0,
-                UnitCost = 0.0,
+                UnitPrice = 800.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.2m
             });
             await productService.AddAsync(new Product
             {
@@ -138,8 +175,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1000.0,
-                UnitCost = 0.0,
+                UnitPrice = 1000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.1m
             });
             await productService.AddAsync(new Product
             {
@@ -148,8 +188,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1500.0,
-                UnitCost = 0.0,
+                UnitPrice = 1500.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.2m
             });
             await productService.AddAsync(new Product
             {
@@ -158,8 +201,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 700.0,
-                UnitCost = 0.0,
+                UnitPrice = 700.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.1m
             });
             await productService.AddAsync(new Product
             {
@@ -168,8 +214,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 500.0,
-                UnitCost = 0.0,
+                UnitPrice = 500.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.1m
             });
             await productService.AddAsync(new Product
             {
@@ -178,8 +227,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1000.0,
-                UnitCost = 0.0,
+                UnitPrice = 1000.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 2.4m
             });
             await productService.AddAsync(new Product
             {
@@ -188,8 +240,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1500.0,
-                UnitCost = 0.0,
+                UnitPrice = 1500.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 1.8m
             });
             await productService.AddAsync(new Product
             {
@@ -198,8 +253,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 500.0,
-                UnitCost = 0.0,
+                UnitPrice = 500.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 3.0m
             });
             await productService.AddAsync(new Product
             {
@@ -208,8 +266,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Software").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
                 Physical = false,
-                UnitPrice = 800.0,
-                UnitCost = 0.0,
+                UnitPrice = 800.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.4m
             });
             await productService.AddAsync(new Product
             {
@@ -218,8 +279,11 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Service").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "hour").FirstOrDefault()!.Id,
                 Physical = false,
-                UnitPrice = 500.0,
-                UnitCost = 0.0,
+                UnitPrice = 500.0m,
+                UnitCost = 2500.0m,
+                UnitCostBolivia = 2600m,
+                UnitCostBrazil = 2400m,
+                M3 = 0.0m
             });
         }
     }
