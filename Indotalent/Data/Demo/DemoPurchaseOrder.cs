@@ -40,7 +40,9 @@ namespace Indotalent.Data.Demo
                         Number = numberSequenceService.GenerateNumber(nameof(PurchaseOrder), "", "PO"),
                         OrderDate = transDate,
                         OrderStatus = (PurchaseOrderStatus)random.Next(0, orderStatusLength),
-                        VendorId = DbInitializer.GetRandomValue(vendors, random),
+                        ContainerM3 = 83.33m,
+                        VendorId = DbInitializer.GetRandomValue(vendors,
+                        random),
                         TaxId = DbInitializer.GetRandomValue(taxes, random),
                     };
                     await purchaseOrderService.AddAsync(purchaseOrder);
@@ -48,20 +50,21 @@ namespace Indotalent.Data.Demo
                     int numberOfProducts = random.Next(3, 6);
                     for (int i = 0; i < numberOfProducts; i++)
                     {
-                        var product = products[random.Next(0, products.Count())];
+                        var product = products[random.Next(0, products.Count)];
                         var purchaseOrderItem = new PurchaseOrderItem
                         {
                             PurchaseOrderId = purchaseOrder.Id,
                             ProductId = product.Id,
                             Summary = product.Number,
+                            UnitCost = product.UnitCost,
+                            UnitCostBolivia = product.UnitCostBolivia,
+                            UnitCostBrazil = product.UnitCostBrazil,
                             UnitPrice = product.UnitPrice,
                             Quantity = random.Next(20, 50),
                         };
                         purchaseOrderItem.RecalculateTotal();
                         await purchaseOrderItemService.AddAsync(purchaseOrderItem);
                     }
-
-
                 }
             }
         }

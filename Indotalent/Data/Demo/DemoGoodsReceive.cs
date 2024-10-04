@@ -64,7 +64,7 @@ namespace Indotalent.Data.Demo
                         Number = numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT"),
                         WarehouseId = DbInitializer.GetRandomValue(warehouses, random),
                         ProductId = item.ProductId,
-                        Movement = item.Quantity!.Value
+                        Movement = item.Quantity
                     };
 
                     inventoryTransactionService.CalculateInvenTrans(inventoryTransaction);
