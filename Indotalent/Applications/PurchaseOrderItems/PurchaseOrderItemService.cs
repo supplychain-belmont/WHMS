@@ -1,4 +1,5 @@
-﻿using Indotalent.Applications.PurchaseOrders;
+﻿using Indotalent.Applications.Products;
+using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Contracts;
@@ -11,18 +12,21 @@ namespace Indotalent.Applications.PurchaseOrderItems
     public class PurchaseOrderItemService : Repository<PurchaseOrderItem>
     {
         private readonly PurchaseOrderService _purchaseOrderService;
+        private readonly ProductService _productService;
 
         public PurchaseOrderItemService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
-            PurchaseOrderService purchaseOrderService) :
-                base(
-                    context,
-                    httpContextAccessor,
-                    auditColumnTransformer)
+            PurchaseOrderService purchaseOrderService,
+            ProductService productService) :
+            base(
+                context,
+                httpContextAccessor,
+                auditColumnTransformer)
         {
             _purchaseOrderService = purchaseOrderService;
+            _productService = productService;
         }
 
         public override async Task AddAsync(PurchaseOrderItem? entity)
@@ -34,7 +38,18 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     auditEntity.CreatedAtUtc = DateTime.Now;
                     auditEntity.CreatedByUserId = _userId;
                 }
+
+                var order = await _purchaseOrderService.GetAll()
+                    .Where(x => x.Id == entity.PurchaseOrderId)
+                    .Select(x => new { x.ContainerM3 })
+                    .FirstOrDefaultAsync();
+                var product = await _productService.GetAll()
+                    .Where(x => x.Id == entity.ProductId)
+                    .Select(x => new { x.M3 })
+                    .FirstOrDefaultAsync();
+
                 entity.RecalculateTotal();
+                entity.RecalculateWeightedM3(product!.M3, order!.ContainerM3);
                 _context.Set<PurchaseOrderItem>().Add(entity);
                 await _context.SaveChangesAsync();
 
@@ -54,11 +69,23 @@ namespace Indotalent.Applications.PurchaseOrderItems
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
                 }
+
+                var order = await _purchaseOrderService.GetAll()
+                    .Where(x => x.Id == entity.PurchaseOrderId)
+                    .Select(x => new { x.ContainerM3 })
+                    .FirstOrDefaultAsync();
+                var product = await _productService.GetAll()
+                    .Where(x => x.Id == entity.ProductId)
+                    .Select(x => new { x.M3 })
+                    .FirstOrDefaultAsync();
+
                 entity.RecalculateTotal();
+                entity.RecalculateWeightedM3(product!.M3, order!.ContainerM3);
                 _context.Set<PurchaseOrderItem>().Update(entity);
                 await _context.SaveChangesAsync();
 
@@ -84,11 +111,11 @@ namespace Indotalent.Applications.PurchaseOrderItems
 
             if (entity != null)
             {
-
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
@@ -123,11 +150,11 @@ namespace Indotalent.Applications.PurchaseOrderItems
 
             if (entity != null)
             {
-
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
                 }
+
                 if (entity is IHasAudit auditedEntity)
                 {
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
@@ -149,8 +176,5 @@ namespace Indotalent.Applications.PurchaseOrderItems
                 await _purchaseOrderService.RecalculateParentAsync(entity.PurchaseOrderId);
             }
         }
-
-
-
     }
 }

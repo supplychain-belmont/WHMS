@@ -101,7 +101,10 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
-        CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>();
+        CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>()
+            .ForMember(dest => dest.M3,
+                opt
+                    => opt.MapFrom(src => src.Product!.M3));
         CreateMap<PurchaseOrderItemChildDto, PurchaseOrderItem>()
             .ForMember(dest => dest.Id,
                 opt => opt.Ignore())

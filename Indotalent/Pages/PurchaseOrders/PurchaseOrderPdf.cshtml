@@ -123,8 +123,8 @@
                                 {
                                     <tr>
                                         <td class="text-start">@item.Product?.Name</td>
-                                        <td class="text-end">@item.Quantity?.ToString("N2") @item.Product?.UnitMeasure?.Name</td>
-                                        <td class="text-end">@item.UnitPrice?.ToString("N2")</td>
+                                        <td class="text-end">@item.Quantity.ToString("N2") @item.Product?.UnitMeasure?.Name</td>
+                                        <td class="text-end">@item.UnitCost.ToString("N2")</td>
                                         <td class="text-end">@item.Total?.ToString("N2")</td>
                                     </tr>
 
