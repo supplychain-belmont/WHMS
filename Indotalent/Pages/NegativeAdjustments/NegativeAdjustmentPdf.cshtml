@@ -120,7 +120,7 @@
                                     <tr>
                                         <td class="text-start">@item.Warehouse?.Name</td>
                                         <td class="text-start">@item.Product?.Name</td>
-                                        <td class="text-end">@((item.Movement * -1.0).ToString("+0.00;-0.00;0.00")) @item.Product?.UnitMeasure?.Name</td>
+                                        <td class="text-end">@((item.Movement * -1.0m).ToString("+0.00;-0.00;0.00")) @item.Product?.UnitMeasure?.Name</td>
                                     </tr>
 
                                 }

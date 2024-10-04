@@ -121,7 +121,7 @@ namespace Indotalent.Pages.Dashboards
                 .Include(x => x.SalesOrder)
                 .Include(x => x.Product)
                 .Where(x => x.Product!.Physical == true && x.SalesOrder!.OrderStatus >= Models.Enums.SalesOrderStatus.Confirmed)
-                .Sum(x => x.Quantity)!.Value
+                .Sum(x => x.Quantity)
                 .ToString("N2") + " Qty.";
 
             CardSalesReturnQty = _inventoryTransactionService
@@ -136,7 +136,7 @@ namespace Indotalent.Pages.Dashboards
                 .Include(x => x.PurchaseOrder)
                 .Include(x => x.Product)
                 .Where(x => x.Product!.Physical == true && x.PurchaseOrder!.OrderStatus >= Models.Enums.PurchaseOrderStatus.Confirmed)
-                .Sum(x => x.Quantity)!.Value
+                .Sum(x => x.Quantity)
                 .ToString("N2") + " Qty.";
 
             CardPurchaseReturnQty = _inventoryTransactionService
@@ -335,7 +335,7 @@ namespace Indotalent.Pages.Dashboards
                             {
                                 x = x.Group,
                                 tooltipMappingName = x.Group,
-                                y = (int)x.Quantity!.Value
+                                y = (int)x.Quantity
                             }).ToList()
                     })
                     .ToList()
@@ -384,7 +384,7 @@ namespace Indotalent.Pages.Dashboards
                             {
                                 x = x.VendorCategoryName,
                                 tooltipMappingName = x.VendorCategoryName,
-                                y = (int)x.Quantity!.Value
+                                y = (int)x.Quantity
                             }).ToList()
                     })
                     .ToList()
@@ -432,7 +432,7 @@ namespace Indotalent.Pages.Dashboards
                             {
                                 x = x.CustomerCategoryName,
                                 tooltipMappingName = x.CustomerCategoryName,
-                                y = (int)x.Quantity!.Value
+                                y = (int)x.Quantity
                             }).ToList()
                     })
                     .ToList()
@@ -481,7 +481,7 @@ namespace Indotalent.Pages.Dashboards
                             {
                                 x = x.VendorGroupName,
                                 tooltipMappingName = x.VendorGroupName,
-                                y = (int)x.Quantity!.Value
+                                y = (int)x.Quantity
                             }).ToList()
                     })
                     .ToList()
@@ -531,7 +531,7 @@ namespace Indotalent.Pages.Dashboards
                             {
                                 x = x.CustomerGroupName,
                                 tooltipMappingName = x.CustomerGroupName,
-                                y = (int)x.Quantity!.Value
+                                y = (int)x.Quantity
                             }).ToList()
                     })
                     .ToList()
