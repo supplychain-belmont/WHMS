@@ -113,13 +113,6 @@ namespace Indotalent.ApiOData
                 return BadRequest("Unable to update order");
             }
 
-            purchaseOrderDto.TryGetPropertyValue("Status", out var statusProperty);
-            if (statusProperty is PurchaseOrderStatus status &&
-                status is PurchaseOrderStatus.Confirmed or PurchaseOrderStatus.Archived)
-            {
-                return BadRequest("This order has been confirmed or archived");
-            }
-
             var dto = _mapper.Map<PurchaseOrderDto>(order);
             purchaseOrderDto.Patch(dto);
 

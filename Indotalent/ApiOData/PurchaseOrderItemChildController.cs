@@ -68,6 +68,7 @@ namespace Indotalent.ApiOData
             {
                 var purchaseOrderItem = await _purchaseOrderItemService
                     .GetAll()
+                    .Include(x => x.Product)
                     .Where(x => x.Id == key)
                     .FirstOrDefaultAsync();
 

@@ -29,7 +29,7 @@ namespace Indotalent.Applications.InventoryTransactions
         {
             if (entity != null)
             {
-                if (entity.QtySCCount < 0.0 && entity.ModuleName != nameof(StockCount))
+                if (entity.QtySCCount < 0.0m && entity.ModuleName != nameof(StockCount))
                 {
                     throw new Exception("Quantity count must not negatif");
                 }
@@ -55,7 +55,7 @@ namespace Indotalent.Applications.InventoryTransactions
         {
             if (entity != null)
             {
-                if (entity.QtySCCount < 0.0 && entity.ModuleName != nameof(StockCount))
+                if (entity.QtySCCount < 0.0m && entity.ModuleName != nameof(StockCount))
                 {
                     throw new Exception("Quantity count must not negatif");
                 }
@@ -82,9 +82,9 @@ namespace Indotalent.Applications.InventoryTransactions
             }
         }
 
-        public double GetStock(int warehouseId, int productId)
+        public decimal GetStock(int warehouseId, int productId)
         {
-            var result = 0.0;
+            var result = 0.0m;
             result = GetAll()
                 .Include(x => x.Product)
                 .Where(x =>
@@ -243,7 +243,7 @@ namespace Indotalent.Applications.InventoryTransactions
 
             transaction.CalculateStockCountDelta();
 
-            if (transaction.QtySCDelta < 0.0)
+            if (transaction.QtySCDelta < 0.0m)
             {
 
                 transaction.TransType = InventoryTransType.In;

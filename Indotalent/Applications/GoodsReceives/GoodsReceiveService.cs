@@ -53,8 +53,8 @@ namespace Indotalent.Applications.GoodsReceives
                     ModuleNumber = entity.Number ?? string.Empty,
                     MovementDate = entity.ReceiveDate!.Value,
                     Status = (InventoryTransactionStatus)entity.Status!,
-                    RequestedMovement = item.Quantity ?? 0,
-                    Movement = 0,
+                    RequestedMovement = item.Quantity,
+                    Movement = item.Quantity,
                     Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT")
                 }).ToList();
 

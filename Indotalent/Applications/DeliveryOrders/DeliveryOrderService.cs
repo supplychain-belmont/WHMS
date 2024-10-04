@@ -52,7 +52,7 @@ namespace Indotalent.Applications.DeliveryOrders
                     ModuleNumber = entity.Number ?? string.Empty,
                     MovementDate = entity.DeliveryDate!.Value,
                     Status = (InventoryTransactionStatus)entity.Status!,
-                    RequestedMovement = item.Quantity ?? 0,
+                    RequestedMovement = item.Quantity,
                     Movement = 0,
                     Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT")
                 }).ToList();
