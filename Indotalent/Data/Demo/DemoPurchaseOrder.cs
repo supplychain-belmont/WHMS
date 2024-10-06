@@ -42,7 +42,7 @@ namespace Indotalent.Data.Demo
                         OrderStatus = (PurchaseOrderStatus)random.Next(0, orderStatusLength),
                         ContainerM3 = 83.33m,
                         VendorId = DbInitializer.GetRandomValue(vendors,
-                        random),
+                            random),
                         TaxId = DbInitializer.GetRandomValue(taxes, random),
                     };
                     await purchaseOrderService.AddAsync(purchaseOrder);
@@ -59,7 +59,10 @@ namespace Indotalent.Data.Demo
                             UnitCost = product.UnitCost,
                             UnitCostBolivia = product.UnitCostBolivia,
                             UnitCostBrazil = product.UnitCostBrazil,
+                            TransportCost = random.Next(100, 500),
+                            AgencyCost = random.Next(100, 500),
                             UnitPrice = product.UnitPrice,
+                            UnitCostDiscounted = product.UnitCost,
                             Quantity = random.Next(20, 50),
                         };
                         purchaseOrderItem.RecalculateTotal();

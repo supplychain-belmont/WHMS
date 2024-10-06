@@ -32,7 +32,7 @@ namespace Indotalent.Data.Demo
                 UnitCostBrazil = 2400m,
                 Physical = true,
                 UnitPrice = 5000.0m,
-                M3 = 1.2m
+                M3 = 1.2m,
             });
             await productService.AddAsync(new Product
             {
