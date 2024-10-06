@@ -17,8 +17,8 @@ namespace Indotalent.DTOs
         public int? TaxId { get; set; }
         public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
-        public double? BeforeTaxAmount { get; set; }
-        public double? TaxAmount { get; set; }
-        public double? AfterTaxAmount { get; set; }
+        public decimal? BeforeTaxAmount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? AfterTaxAmount { get; set; }
     }
 }

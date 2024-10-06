@@ -8,6 +8,7 @@ namespace Indotalent.DTOs
         public string? Number { get; set; }
         public DateTime? ReceiveDate { get; set; }
         public TransferStatus? Status { get; set; }
+        public required int TransferOutId { get; set; }
         public string? TransferOut { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string? WarehouseFrom { get; set; }

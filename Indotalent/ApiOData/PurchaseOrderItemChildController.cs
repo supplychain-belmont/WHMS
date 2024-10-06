@@ -44,6 +44,7 @@ namespace Indotalent.ApiOData
 
             return _purchaseOrderItemService
                 .GetAll()
+                .Include(x => x.Product)
                 .Where(x => x.PurchaseOrderId == parentId)
                 .ProjectTo<PurchaseOrderItemChildDto>(_mapper.ConfigurationProvider);
         }
@@ -67,6 +68,7 @@ namespace Indotalent.ApiOData
             {
                 var purchaseOrderItem = await _purchaseOrderItemService
                     .GetAll()
+                    .Include(x => x.Product)
                     .Where(x => x.Id == key)
                     .FirstOrDefaultAsync();
 
@@ -100,8 +102,12 @@ namespace Indotalent.ApiOData
                 var product = await _productService.GetByIdAsync(purchaseOrderItem.ProductId);
 
                 purchaseOrderItem.PurchaseOrderId = parentId;
-                purchaseOrderItem.Summary = product?.Number;
-                purchaseOrderItem.UnitPrice = product?.UnitPrice;
+                purchaseOrderItem.Summary = product!.Number;
+                purchaseOrderItem.UnitCost = product!.UnitCost;
+                purchaseOrderItem.UnitCostDiscounted = product!.UnitCost;
+                purchaseOrderItem.UnitCostBolivia = product!.UnitCostBolivia;
+                purchaseOrderItem.UnitCostBrazil = product!.UnitCostBrazil;
+                purchaseOrderItem.M3 = product!.M3;
                 purchaseOrderItem.Quantity = 1;
 
                 var entity = _mapper.Map<PurchaseOrderItem>(purchaseOrderItem);

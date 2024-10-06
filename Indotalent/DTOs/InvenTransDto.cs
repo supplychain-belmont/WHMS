@@ -16,9 +16,9 @@ namespace Indotalent.DTOs
         public string? Number { get; set; }
         public string? Warehouse { get; set; }
         public string? Product { get; set; }
-        public double Movement { get; set; }
+        public decimal Movement { get; set; }
         public InventoryTransType TransType { get; set; }
-        public double Stock { get; set; }
+        public decimal Stock { get; set; }
         public string? WarehouseFrom { get; set; }
         public string? WarehouseTo { get; set; }
     }

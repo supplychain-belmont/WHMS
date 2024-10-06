@@ -8,11 +8,16 @@ namespace Indotalent.Models.Entities
         public required string Name { get; set; }
         public string? Number { get; set; }
         public string? Description { get; set; }
-        public required double UnitCost { get; set; }
-        public required double UnitPrice { get; set; }
-        public double? UnitPrice1 { get; set; }
-        public double? UnitPrice2 { get; set; }
-        public double? UnitPrice3 { get; set; }
+        public required decimal UnitCost { get; set; }
+        public required decimal UnitCostBrazil { get; set; }
+        public required decimal UnitCostBolivia { get; set; }
+        public required decimal UnitPrice { get; set; }
+        public decimal? UnitPrice1 { get; set; }
+        public decimal? UnitPrice2 { get; set; }
+        public decimal? UnitPrice3 { get; set; }
+
+        public decimal M3 { get; set; }
+
         public bool Physical { get; set; } = true;
         public required int UnitMeasureId { get; set; }
         public UnitMeasure? UnitMeasure { get; set; }

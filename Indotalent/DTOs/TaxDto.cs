@@ -7,6 +7,6 @@
         public string? Description { get; set; }
         public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
-        public double? Percentage { get; set; }
+        public decimal? Percentage { get; set; }
     }
 }

@@ -103,7 +103,7 @@ namespace Indotalent.ApiOData
 
                 salesOrderItem.SalesOrderId = parentId;
                 salesOrderItem.Summary = product?.Number;
-                salesOrderItem.UnitPrice = product?.UnitPrice;
+                salesOrderItem.UnitPrice = product!.UnitPrice;
                 salesOrderItem.Quantity = 1;
 
                 var entity = _mapper.Map<SalesOrderItem>(salesOrderItem);

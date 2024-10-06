@@ -33,9 +33,9 @@ namespace Indotalent.Applications.SalesOrders
         public override Task AddAsync(SalesOrder? entity)
         {
             entity!.Number = _numberSequenceService.GenerateNumber(nameof(SalesOrder), "", "SO");
-            entity.TaxAmount = 0.0;
-            entity.AfterTaxAmount = 0.0;
-            entity.BeforeTaxAmount = 0.0;
+            entity.TaxAmount = 0.0m;
+            entity.AfterTaxAmount = 0.0m;
+            entity.BeforeTaxAmount = 0.0m;
             return base.AddAsync(entity);
         }
 
@@ -60,7 +60,7 @@ namespace Indotalent.Applications.SalesOrders
 
                 if (master.Tax != null)
                 {
-                    master.TaxAmount = (master.Tax.Percentage / 100.0) * master.BeforeTaxAmount;
+                    master.TaxAmount = (master.Tax.Percentage / 100.0m) * master.BeforeTaxAmount;
                 }
 
                 master.AfterTaxAmount = master.BeforeTaxAmount + master.TaxAmount;

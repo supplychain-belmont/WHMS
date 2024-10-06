@@ -14,9 +14,9 @@ namespace Indotalent.Models.Entities
         public Customer? Customer { get; set; }
         public required int TaxId { get; set; }
         public Tax? Tax { get; set; }
-        public double? BeforeTaxAmount { get; set; }
-        public double? TaxAmount { get; set; }
-        public double? AfterTaxAmount { get; set; }
+        public decimal? BeforeTaxAmount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? AfterTaxAmount { get; set; }
         public int? FinalSaleAmount { get; set; }
         public string? PaymentId { get; set; }
         public int? CreditDuesId { get; set; }

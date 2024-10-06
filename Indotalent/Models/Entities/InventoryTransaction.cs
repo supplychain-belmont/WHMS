@@ -22,17 +22,17 @@ namespace Indotalent.Models.Entities
         public Warehouse? Warehouse { get; set; }
         public required int ProductId { get; set; }
         public Product? Product { get; set; }
-        public double RequestedMovement { get; set; }
-        public double Movement { get; set; }
+        public decimal RequestedMovement { get; set; }
+        public decimal Movement { get; set; }
         public InventoryTransType TransType { get; set; }
-        public double Stock { get; set; }
+        public decimal Stock { get; set; }
         public int WarehouseFromId { get; set; }
         public Warehouse? WarehouseFrom { get; set; }
         public int WarehouseToId { get; set; }
         public Warehouse? WarehouseTo { get; set; }
-        public double QtySCSys { get; set; }
-        public double QtySCCount { get; set; }
-        public double QtySCDelta { get; set; }
+        public decimal QtySCSys { get; set; }
+        public decimal QtySCCount { get; set; }
+        public decimal QtySCDelta { get; set; }
 
         public void CalculateStockCountDelta()
         {

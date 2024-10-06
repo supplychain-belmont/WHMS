@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.TransferOuts;
 using Indotalent.DTOs;
@@ -30,7 +31,7 @@ namespace Indotalent.ApiOData
                 .GetAll()
                 .Include(x => x.WarehouseFrom)
                 .Include(x => x.WarehouseTo)
-                .Select(rec => _mapper.Map<TransferOutDto>(rec));
+                .ProjectTo<TransferOutDto>(_mapper.ConfigurationProvider);
         }
 
         [EnableQuery]
@@ -42,7 +43,10 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var transferOut = _transferOutService.GetByIdAsync(key, x => x.WarehouseFrom, x => x.WarehouseTo);
+            var transferOut = await _transferOutService
+                .GetByIdAsync(key, x => x.WarehouseFrom, x => x.WarehouseTo)
+                .ProjectTo<TransferOutDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
             if (transferOut == null)
             {
                 return NotFound();
@@ -66,7 +70,8 @@ namespace Indotalent.ApiOData
             return Created(createdDto);
         }
 
-        public async Task<ActionResult<TransferOutDto>> Put([FromRoute] int key, [FromBody] TransferOutDto transferOutDto)
+        public async Task<ActionResult<TransferOutDto>> Put([FromRoute] int key,
+            [FromBody] TransferOutDto transferOutDto)
         {
             if (!ModelState.IsValid)
             {

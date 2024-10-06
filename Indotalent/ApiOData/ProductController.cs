@@ -1,21 +1,15 @@
-﻿using System.Linq;
-
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.Products;
-using Indotalent.Applications.Products;
-using Indotalent.DTOs;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
@@ -50,7 +44,9 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var product = _productService.GetByIdAsync(key, x => x.ProductGroup, x => x.UnitMeasure);
+            var product = await _productService
+                .GetByIdAsync(key, x => x.ProductGroup, x => x.UnitMeasure)
+                .FirstOrDefaultAsync();
             if (product == null)
             {
                 return NotFound();
@@ -95,6 +91,29 @@ namespace Indotalent.ApiOData
             _mapper.Map(productDto, currentProduct);
             await _productService.UpdateAsync(currentProduct);
             return NoContent();
+        }
+
+        public async Task<IActionResult> Patch([FromRoute] int key, [FromBody] Delta<ProductDto> patchDoc)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var current = await _productService.GetByIdAsync(key);
+            if (current == null)
+            {
+                return NotFound();
+            }
+
+
+            var dto = _mapper.Map<ProductDto>(current);
+            patchDoc.Patch(dto);
+
+            var entity = _mapper.Map(dto, current);
+
+            await _productService.UpdateAsync(entity);
+            return Updated(_mapper.Map<PurchaseOrderDto>(entity));
         }
 
         public async Task<ActionResult> Delete([FromRoute] int key)

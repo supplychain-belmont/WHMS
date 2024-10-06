@@ -101,7 +101,10 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
-        CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>();
+        CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>()
+            .ForMember(dest => dest.M3,
+                opt
+                    => opt.MapFrom(src => src.Product!.M3));
         CreateMap<PurchaseOrderItemChildDto, PurchaseOrderItem>()
             .ForMember(dest => dest.Id,
                 opt => opt.Ignore())
@@ -227,8 +230,10 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
         CreateMap<SalesOrderItem, SalesOrderItemChildDto>();
         CreateMap<SalesOrderItemChildDto, SalesOrderItem>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
+            .ForMember(dest => dest.Id,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore());
 
         #endregion
 
@@ -277,13 +282,24 @@ public class ApplicationProfile : Profile
         #region TrasnfersDTOs
 
         CreateMap<TransferIn, TransferInDto>()
-            .ForMember(dest => dest.TransferOut, opt => opt.MapFrom(src => src.TransferOut!.Number))
-            .ForMember(dest => dest.WarehouseFrom, opt => opt.MapFrom(src => src.TransferOut!.WarehouseFrom!.Name))
-            .ForMember(dest => dest.WarehouseTo, opt => opt.MapFrom(src => src.TransferOut!.WarehouseTo!.Name));
+            .ForMember(dest => dest.TransferOut, opt =>
+                opt.MapFrom(src => src.TransferOut!.Number))
+            .ForMember(dest => dest.WarehouseFrom, opt =>
+                opt.MapFrom(src => src.TransferOut!.WarehouseFrom!.Name))
+            .ForMember(dest => dest.WarehouseTo, opt =>
+                opt.MapFrom(src => src.TransferOut!.WarehouseTo!.Name))
+            .ForMember(dest => dest.ReleaseDate, opt =>
+                opt.MapFrom(src => src.TransferOut!.TransferReleaseDate))
+            .ForMember(dest => dest.ReceiveDate, opt =>
+                opt.MapFrom(src => src.TransferReceiveDate));
         CreateMap<TransferInDto, TransferIn>();
         CreateMap<TransferOut, TransferOutDto>()
-            .ForMember(dest => dest.WarehouseFrom, opt => opt.MapFrom(src => src.WarehouseFrom!.Name))
-            .ForMember(dest => dest.WarehouseTo, opt => opt.MapFrom(src => src.WarehouseTo!.Name));
+            .ForMember(dest => dest.WarehouseFrom,
+                opt =>
+                    opt.MapFrom(src => src.WarehouseFrom!.Name))
+            .ForMember(dest => dest.WarehouseTo,
+                opt =>
+                    opt.MapFrom(src => src.WarehouseTo!.Name));
 
         CreateMap<TransferOutDto, TransferOut>();
 

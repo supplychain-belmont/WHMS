@@ -7,6 +7,7 @@ namespace Indotalent.DTOs
         public int? Id { get; set; }
         public string? Number { get; set; }
         public DateTime? OrderDate { get; set; }
+        public decimal ContainerM3 { get; set; }
         public PurchaseOrderStatus? Status { get; set; }
         public string? Description { get; set; }
         public int VendorId { get; set; }
@@ -15,8 +16,8 @@ namespace Indotalent.DTOs
         public string? Tax { get; set; }
         public Guid? RowGuid { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
-        public double? BeforeTaxAmount { get; set; }
-        public double? TaxAmount { get; set; }
-        public double? AfterTaxAmount { get; set; }
+        public decimal? BeforeTaxAmount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? AfterTaxAmount { get; set; }
     }
 }
