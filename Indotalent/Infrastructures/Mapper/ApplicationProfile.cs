@@ -302,6 +302,8 @@ public class ApplicationProfile : Profile
                     opt.MapFrom(src => src.WarehouseTo!.Name));
 
         CreateMap<TransferOutDto, TransferOut>();
+        CreateMap<InventoryTransaction, TransferOutItemChildDto>();
+        CreateMap<TransferOutItemChildDto, InventoryTransaction>();
 
         #endregion
 

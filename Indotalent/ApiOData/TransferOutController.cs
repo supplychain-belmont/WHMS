@@ -6,6 +6,7 @@ using Indotalent.DTOs;
 using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -92,6 +93,29 @@ namespace Indotalent.ApiOData
             _mapper.Map(transferOutDto, currentTransferOut);
             await _transferOutService.UpdateAsync(currentTransferOut);
             return NoContent();
+        }
+
+        public async Task<ActionResult<TransferOutDto>> Patch([FromRoute] int key,
+            [FromBody] Delta<TransferOutDto> transferOutDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var order = await _transferOutService.GetByIdAsync(key);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<TransferOutDto>(order);
+            transferOutDto.Patch(dto);
+
+            var entity = _mapper.Map(dto, order);
+
+            await _transferOutService.UpdateAsync(entity);
+            return Updated(_mapper.Map<TransferOutDto>(entity));
         }
 
         public async Task<ActionResult> Delete([FromRoute] int key)
