@@ -51,7 +51,7 @@ namespace Indotalent.Applications.TransferOuts
 
             var children = await _inventoryTransactionService
                 .GetAll()
-                .Where(x => x.ModuleId == entityId)
+                .Where(x => x.ModuleId == entityId && x.ModuleName == nameof(TransferOut))
                 .ToListAsync();
 
             if (master == null) return;
