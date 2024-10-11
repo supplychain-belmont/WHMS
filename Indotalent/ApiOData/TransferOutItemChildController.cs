@@ -61,7 +61,6 @@ namespace Indotalent.ApiOData
                 .GetAll()
                 .Where(x => x.Id == key)
                 .ProjectTo<TransferOutItemChildDto>(_mapper.ConfigurationProvider));
-
         }
 
 
@@ -120,6 +119,7 @@ namespace Indotalent.ApiOData
                     entity.WarehouseId = parent.WarehouseFromId!.Value;
                 }
 
+                entity.CreatedAtUtc = DateTime.Now;
                 entity.Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT");
                 await _inventoryTransactionService.AddAsync(entity);
 

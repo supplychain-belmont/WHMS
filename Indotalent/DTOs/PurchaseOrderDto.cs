@@ -8,6 +8,8 @@ namespace Indotalent.DTOs
         public string? Number { get; set; }
         public DateTime? OrderDate { get; set; }
         public decimal ContainerM3 { get; set; }
+        public decimal TotalTransportContainerCost { get; set; }
+        public decimal TotalAgencyCost { get; set; }
         public PurchaseOrderStatus? Status { get; set; }
         public string? Description { get; set; }
         public int VendorId { get; set; }

@@ -21,7 +21,7 @@
 
         public decimal? UnitPrice { get; set; }
         public decimal? M3 { get; set; }
-        public decimal? WeightedM3 { get; set; } = 0;
+        public decimal? WeightedPercentageM3 { get; set; } = 0;
         public decimal? Quantity { get; set; }
         public decimal? Total { get; set; }
     }
