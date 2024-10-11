@@ -9,6 +9,9 @@ namespace Indotalent.Models.Entities
         public string? Number { get; set; }
         public DateTime? OrderDate { get; set; }
         public required decimal ContainerM3 { get; set; }
+        public decimal TotalTransportContainerCost { get; set; }
+        public decimal TotalAgencyCost { get; set; }
+        public decimal TotalCost { get; set; }
         public PurchaseOrderStatus? OrderStatus { get; set; }
         public string? Description { get; set; }
         public required int VendorId { get; set; }

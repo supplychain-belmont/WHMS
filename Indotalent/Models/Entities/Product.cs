@@ -8,9 +8,6 @@ namespace Indotalent.Models.Entities
         public required string Name { get; set; }
         public string? Number { get; set; }
         public string? Description { get; set; }
-        public required decimal UnitCost { get; set; }
-        public required decimal UnitCostBrazil { get; set; }
-        public required decimal UnitCostBolivia { get; set; }
         public required decimal UnitPrice { get; set; }
         public decimal? UnitPrice1 { get; set; }
         public decimal? UnitPrice2 { get; set; }

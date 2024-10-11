@@ -103,12 +103,9 @@ namespace Indotalent.ApiOData
 
                 purchaseOrderItem.PurchaseOrderId = parentId;
                 purchaseOrderItem.Summary = product!.Number;
-                purchaseOrderItem.UnitCost = product!.UnitCost;
-                purchaseOrderItem.UnitCostDiscounted = product!.UnitCost;
-                purchaseOrderItem.UnitCostBolivia = product!.UnitCostBolivia;
-                purchaseOrderItem.UnitCostBrazil = product!.UnitCostBrazil;
                 purchaseOrderItem.M3 = product!.M3;
                 purchaseOrderItem.Quantity = 1;
+                purchaseOrderItem.UnitCostDiscounted = purchaseOrderItem.UnitCost;
 
                 var entity = _mapper.Map<PurchaseOrderItem>(purchaseOrderItem);
                 await _purchaseOrderItemService.AddAsync(entity);

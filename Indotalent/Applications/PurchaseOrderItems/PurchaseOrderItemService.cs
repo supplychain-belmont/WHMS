@@ -41,15 +41,16 @@ namespace Indotalent.Applications.PurchaseOrderItems
 
                 var order = await _purchaseOrderService.GetAll()
                     .Where(x => x.Id == entity.PurchaseOrderId)
-                    .Select(x => new { x.ContainerM3 })
+                    .Select(x => new { x.ContainerM3, x.TotalAgencyCost, x.TotalTransportContainerCost })
                     .FirstOrDefaultAsync();
                 var product = await _productService.GetAll()
                     .Where(x => x.Id == entity.ProductId)
                     .Select(x => new { x.M3 })
                     .FirstOrDefaultAsync();
 
-                entity.RecalculateTotal();
                 entity.RecalculateWeightedM3(product!.M3, order!.ContainerM3);
+                entity.RecalculateTransportCost(order.TotalTransportContainerCost, order.TotalAgencyCost);
+                entity.RecalculateTotal();
                 _context.Set<PurchaseOrderItem>().Add(entity);
                 await _context.SaveChangesAsync();
 
@@ -77,15 +78,16 @@ namespace Indotalent.Applications.PurchaseOrderItems
 
                 var order = await _purchaseOrderService.GetAll()
                     .Where(x => x.Id == entity.PurchaseOrderId)
-                    .Select(x => new { x.ContainerM3 })
+                    .Select(x => new { x.ContainerM3, x.TotalAgencyCost, x.TotalTransportContainerCost })
                     .FirstOrDefaultAsync();
                 var product = await _productService.GetAll()
                     .Where(x => x.Id == entity.ProductId)
                     .Select(x => new { x.M3 })
                     .FirstOrDefaultAsync();
 
-                entity.RecalculateTotal();
                 entity.RecalculateWeightedM3(product!.M3, order!.ContainerM3);
+                entity.RecalculateTransportCost(order.TotalTransportContainerCost, order.TotalAgencyCost);
+                entity.RecalculateTotal();
                 _context.Set<PurchaseOrderItem>().Update(entity);
                 await _context.SaveChangesAsync();
 

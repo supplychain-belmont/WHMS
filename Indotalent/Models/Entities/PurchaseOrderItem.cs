@@ -22,7 +22,8 @@ namespace Indotalent.Models.Entities
 
         public decimal UnitPrice { get; set; } = 0;
         public decimal Quantity { get; set; } = 1;
-        public decimal WeightedM3 { get; set; } = 0;
+        public decimal WeightedPercentageM3 { get; set; } = 0;
+        public decimal WeightedByCost { get; set; } = 0;
         public decimal? Total { get; set; } = 0;
 
         public void RecalculateTotal()
@@ -35,7 +36,12 @@ namespace Indotalent.Models.Entities
 
         public void RecalculateWeightedM3(decimal m3, decimal containerM3)
         {
-            WeightedM3 = m3 / containerM3;
+            WeightedPercentageM3 = (m3 / containerM3) * 100;
+        }
+
+        public void RecalculateTransportCost(decimal totalTransportCost, decimal TotalAgencyCost)
+        {
+            TransportCost = (WeightedPercentageM3 * totalTransportCost) / 100;
         }
     }
 }
