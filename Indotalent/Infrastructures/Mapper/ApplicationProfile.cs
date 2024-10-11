@@ -288,11 +288,18 @@ public class ApplicationProfile : Profile
                 opt.MapFrom(src => src.TransferOut!.WarehouseFrom!.Name))
             .ForMember(dest => dest.WarehouseTo, opt =>
                 opt.MapFrom(src => src.TransferOut!.WarehouseTo!.Name))
+            .ForMember(dest => dest.WarehouseFromId, opt =>
+                opt.MapFrom(src => src.TransferOut!.WarehouseFrom!.Id))
+            .ForMember(dest => dest.WarehouseToId, opt =>
+                opt.MapFrom(src => src.TransferOut!.WarehouseTo!.Id))
             .ForMember(dest => dest.ReleaseDate, opt =>
                 opt.MapFrom(src => src.TransferOut!.TransferReleaseDate))
             .ForMember(dest => dest.ReceiveDate, opt =>
                 opt.MapFrom(src => src.TransferReceiveDate));
-        CreateMap<TransferInDto, TransferIn>();
+        CreateMap<TransferInDto, TransferIn>()
+            .ForMember(dest => dest.TransferReceiveDate,
+                opt
+                    => opt.MapFrom(src => src.ReceiveDate));
         CreateMap<TransferOut, TransferOutDto>()
             .ForMember(dest => dest.WarehouseFrom,
                 opt =>
@@ -302,6 +309,10 @@ public class ApplicationProfile : Profile
                     opt.MapFrom(src => src.WarehouseTo!.Name));
 
         CreateMap<TransferOutDto, TransferOut>();
+        CreateMap<InventoryTransaction, TransferOutItemChildDto>();
+        CreateMap<TransferOutItemChildDto, InventoryTransaction>();
+        CreateMap<InventoryTransaction, TransferInItemChildDto>();
+        CreateMap<TransferInItemChildDto, InventoryTransaction>();
 
         #endregion
 

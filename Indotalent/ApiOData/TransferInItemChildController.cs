@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
@@ -17,19 +18,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
-
     public class TransferInItemChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<InventoryTransaction, TransferInItemChildDto>();
-                CreateMap<TransferInItemChildDto, InventoryTransaction>();
-            }
-        }
-
         private readonly NumberSequenceService _numberSequenceService;
         private readonly TransferInService _transferInService;
         private readonly InventoryTransactionService _inventoryTransactionService;
@@ -59,7 +49,7 @@ namespace Indotalent.ApiOData
             return _inventoryTransactionService
                 .GetAll()
                 .Where(x => x.ModuleId == parentId && x.ModuleName == moduleName)
-                .Select(x => _mapper.Map<TransferInItemChildDto>(x));
+                .ProjectTo<TransferInItemChildDto>(_mapper.ConfigurationProvider);
         }
 
 
@@ -70,9 +60,8 @@ namespace Indotalent.ApiOData
             return SingleResult.Create(_inventoryTransactionService
                 .GetAll()
                 .Where(x => x.Id == key)
-            .Select(x => _mapper.Map<TransferInItemChildDto>(x)));
+                .ProjectTo<TransferInItemChildDto>(_mapper.ConfigurationProvider));
         }
-
 
 
         [HttpPatch]
@@ -97,7 +86,6 @@ namespace Indotalent.ApiOData
                 await _inventoryTransactionService.UpdateAsync(entity);
 
                 return Ok(_mapper.Map<TransferInItemChildDto>(entity));
-
             }
             catch (Exception ex)
             {
@@ -111,7 +99,6 @@ namespace Indotalent.ApiOData
         {
             try
             {
-
                 const string HeaderKeyName = "ParentId";
                 Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
                 var parentId = int.Parse(headerValue.ToString());
@@ -142,7 +129,6 @@ namespace Indotalent.ApiOData
 
                 var dto = _mapper.Map<InventoryTransaction>(entity);
                 return Created("TransferInItemChild", dto);
-
             }
             catch (Exception ex)
             {
@@ -167,7 +153,6 @@ namespace Indotalent.ApiOData
                 await _inventoryTransactionService.DeleteByIdAsync(child.Id);
 
                 return NoContent();
-
             }
             catch (Exception ex)
             {

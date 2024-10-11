@@ -80,7 +80,7 @@ namespace Indotalent.Applications.GoodsReceives
                 .FirstOrDefaultAsync();
 
             var children = await _inventoryTransactionService.GetAll()
-                .Where(x => x.ModuleId == masterId)
+                .Where(x => x.ModuleId == masterId && x.ModuleName == nameof(GoodsReceive))
                 .ToListAsync();
 
             if (master != null)

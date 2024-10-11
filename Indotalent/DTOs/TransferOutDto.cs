@@ -6,6 +6,7 @@ namespace Indotalent.DTOs
     {
         public int? Id { get; set; }
         public string? Number { get; set; }
+        public string? Description { get; set; }
         public DateTime? TransferReleaseDate { get; set; }
         public TransferStatus? Status { get; set; }
         public int? WarehouseFromId { get; set; }
