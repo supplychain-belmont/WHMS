@@ -79,7 +79,7 @@ namespace Indotalent.Applications.DeliveryOrders
 
             var children = await _inventoryTransactionService
                 .GetAll()
-                .Where(x => x.ModuleId == masterId)
+                .Where(x => x.ModuleId == masterId && x.ModuleName == nameof(DeliveryOrder))
                 .ToListAsync();
 
             if (master != null)

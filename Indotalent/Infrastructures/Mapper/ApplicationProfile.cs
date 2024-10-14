@@ -221,6 +221,8 @@ public class ApplicationProfile : Profile
                     opt.MapFrom(src => src.Status));
         CreateMap<SalesOrderItem, SalesOrderItemDto>()
             .ForMember(dest => dest.SalesOrder, opt => opt.MapFrom(src => src.SalesOrder!.Number))
+            .ForMember(dest => dest.OrderDate, opt =>
+                opt.MapFrom(src => src.SalesOrder!.OrderDate))
             .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.SalesOrder!.Customer!.Name))
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name));
         CreateMap<SalesOrderItemDto, SalesOrderItem>()

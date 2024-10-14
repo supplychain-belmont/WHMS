@@ -9,10 +9,11 @@ namespace Indotalent.Data.Demo
         {
             var service = services.GetRequiredService<WarehouseService>();
 
-            await service.AddAsync(new Warehouse { Name = "New York" });
-            await service.AddAsync(new Warehouse { Name = "San Francisco" });
-            await service.AddAsync(new Warehouse { Name = "Chicago" });
-            await service.AddAsync(new Warehouse { Name = "Los Angeles" });
+            await service.AddAsync(new Warehouse { Name = "Tienda 1" });
+            await service.AddAsync(new Warehouse { Name = "Garaje" });
+            await service.AddAsync(new Warehouse { Name = "8A" });
+            await service.AddAsync(new Warehouse { Name = "Ubicación Juana" });
+            await service.AddAsync(new Warehouse { Name = "Baulera" });
         }
     }
 }
