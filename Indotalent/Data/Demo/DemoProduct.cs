@@ -26,7 +26,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Servers",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 5000.0m,
                 M3 = 1.2m,
@@ -36,7 +36,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Desktop Computers",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 2000.0m,
                 M3 = 0.8m
@@ -46,7 +46,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Laptops",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 3000.0m,
                 M3 = 0.5m
@@ -56,7 +56,7 @@ namespace Indotalent.Data.Demo
                 Name = "Hitachi Storage",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1500.0m,
                 M3 = 0.7m
@@ -66,7 +66,7 @@ namespace Indotalent.Data.Demo
                 Name = "Epson Printers",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1000.0m,
                 M3 = 0.3m
@@ -88,7 +88,7 @@ namespace Indotalent.Data.Demo
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId =
                     productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1000.0m,
                 M3 = 0.2m
@@ -99,7 +99,7 @@ namespace Indotalent.Data.Demo
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId =
                     productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 2000.0m,
                 M3 = 2.0m
@@ -110,7 +110,7 @@ namespace Indotalent.Data.Demo
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId =
                     productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1000.0m,
                 M3 = 0.1m
@@ -120,7 +120,7 @@ namespace Indotalent.Data.Demo
                 Name = "HDD 500",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 500.0m,
                 M3 = 0.1m
@@ -130,7 +130,7 @@ namespace Indotalent.Data.Demo
                 Name = "HDD 1T",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 800.0m,
                 M3 = 0.2m
@@ -140,7 +140,7 @@ namespace Indotalent.Data.Demo
                 Name = "SSD 500",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1000.0m,
                 M3 = 0.1m
@@ -150,7 +150,7 @@ namespace Indotalent.Data.Demo
                 Name = "SSD 1T",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1500.0m,
                 M3 = 0.2m
@@ -160,7 +160,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Keyboard",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 700.0m,
                 M3 = 0.1m
@@ -170,7 +170,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Mouse",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 500.0m,
                 M3 = 0.1m
@@ -180,7 +180,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Monitor 27inch",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1000.0m,
                 M3 = 2.4m
@@ -190,7 +190,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Monitor 32inch",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 1500.0m,
                 M3 = 1.8m
@@ -200,7 +200,7 @@ namespace Indotalent.Data.Demo
                 Name = "Dell Webcams",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 500.0m,
                 M3 = 3.0m
@@ -210,7 +210,7 @@ namespace Indotalent.Data.Demo
                 Name = "D365 License",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Software").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = false,
                 UnitPrice = 800.0m,
                 M3 = 0.4m
@@ -220,7 +220,7 @@ namespace Indotalent.Data.Demo
                 Name = "IT Security",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Service").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "hour").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "h").FirstOrDefault()!.Id,
                 Physical = false,
                 UnitPrice = 500.0m,
                 M3 = 0.0m
@@ -230,7 +230,7 @@ namespace Indotalent.Data.Demo
                 Name = "Asiento con 1BR",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 250.0m,
                 M3 = 0.65m
@@ -240,7 +240,7 @@ namespace Indotalent.Data.Demo
                 Name = "Canto Curvo",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 500.0m,
                 M3 = 1.2m
@@ -250,7 +250,7 @@ namespace Indotalent.Data.Demo
                 Name = "Puff curvo",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
                 UnitPrice = 150.0m,
                 M3 = 0.26m

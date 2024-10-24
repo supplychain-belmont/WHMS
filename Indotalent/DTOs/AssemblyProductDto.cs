@@ -7,4 +7,5 @@ public class AssemblyProductDto
     public ProductDto? Assembly { get; set; }
     public int ProductId { get; set; }
     public ProductDto? Product { get; set; }
+    public decimal Quantity { get; set; }
 }
