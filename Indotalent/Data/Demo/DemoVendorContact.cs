@@ -15,74 +15,27 @@ namespace Indotalent.Data.Demo
 
             var firsts = new string[]
             {
-                "Adam",
-                "Sarah",
-                "Michael",
-                "Emily",
-                "David",
-                "Jessica",
-                "Kevin",
-                "Samantha",
-                "Jason",
-                "Olivia",
-                "Matthew",
-                "Ashley",
-                "Christopher",
-                "Jennifer",
-                "Nicholas",
-                "Amanda",
-                "Alexander",
-                "Stephanie",
-                "Jonathan",
-                "Lauren"
+                "Adam", "Sarah", "Michael", "Emily", "David", "Jessica", "Kevin", "Samantha", "Jason", "Olivia",
+                "Matthew", "Ashley", "Christopher", "Jennifer", "Nicholas", "Amanda", "Alexander", "Stephanie",
+                "Jonathan", "Lauren"
             };
 
             var lasts = new string[]
             {
-                "Johnson",
-                "Williams",
-                "Brown",
-                "Jones",
-                "Miller",
-                "Davis",
-                "Garcia",
-                "Rodriguez",
-                "Wilson",
-                "Martinez",
-                "Anderson",
-                "Taylor",
-                "Thomas",
-                "Hernandez",
-                "Moore",
-                "Martin",
-                "Jackson",
-                "Thompson",
-                "White",
-                "Lopez"
+                "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson",
+                "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson",
+                "White", "Lopez"
             };
 
             var jobTitles = new string[]
             {
-                "Chief Executive Officer",
-                "Data Scientist",
-                "Product Manager",
-                "Business Development Executive",
-                "IT Consultant",
-                "Social Media Specialist",
-                "Research Analyst",
-                "Content Writer",
-                "Operations Manager",
-                "Financial Planner",
-                "Software Developer",
-                "Vendor Success Manager",
-                "Marketing Coordinator",
-                "Quality Assurance Tester",
-                "HR Specialist",
-                "Event Coordinator",
-                "Account Executive",
-                "Network Administrator",
-                "Sales Manager",
-                "Legal Assistant"
+                "Director Ejecutivo", "Científico de Datos", "Gerente de Producto",
+                "Ejecutivo de Desarrollo de Negocios", "Consultor de TI", "Especialista en Redes Sociales",
+                "Analista de Investigación", "Redactor de Contenidos", "Gerente de Operaciones",
+                "Planificador Financiero", "Desarrollador de Software", "Gerente de Éxito del Proveedor",
+                "Coordinador de Marketing", "Tester de Control de Calidad", "Especialista en Recursos Humanos",
+                "Coordinador de Eventos", "Ejecutivo de Cuentas", "Administrador de Redes", "Gerente de Ventas",
+                "Asistente Legal"
             };
 
             var vendors = vendorService.GetAll().Select(x => x.Id).ToArray();
@@ -104,7 +57,6 @@ namespace Indotalent.Data.Demo
                         JobTitle = DbInitializer.GetRandomString(jobTitles, random),
                         EmailAddress = $"{first.ToLower()}.{last.ToLower()}@gmail.com"
                     });
-
                 }
             }
         }

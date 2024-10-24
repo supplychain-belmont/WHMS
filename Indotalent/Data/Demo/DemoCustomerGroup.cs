@@ -9,12 +9,12 @@ namespace Indotalent.Data.Demo
         {
             var service = services.GetRequiredService<CustomerGroupService>();
 
-            await service.AddAsync(new CustomerGroup { Name = "Corporate" });
-            await service.AddAsync(new CustomerGroup { Name = "Government" });
-            await service.AddAsync(new CustomerGroup { Name = "Foundation" });
-            await service.AddAsync(new CustomerGroup { Name = "Military" });
-            await service.AddAsync(new CustomerGroup { Name = "Education" });
-            await service.AddAsync(new CustomerGroup { Name = "Hospitality" });
+            await service.AddAsync(new CustomerGroup { Name = "Corporativo" });
+            await service.AddAsync(new CustomerGroup { Name = "Gobierno" });
+            await service.AddAsync(new CustomerGroup { Name = "Fundación" });
+            await service.AddAsync(new CustomerGroup { Name = "Militar" });
+            await service.AddAsync(new CustomerGroup { Name = "Educación" });
+            await service.AddAsync(new CustomerGroup { Name = "Hostelería" });
         }
     }
 }

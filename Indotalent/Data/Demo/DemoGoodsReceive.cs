@@ -24,16 +24,16 @@ namespace Indotalent.Data.Demo
             Random random = new Random();
             int goodsReceiveStatusLength = Enum.GetNames(typeof(GoodsReceiveStatus)).Length;
 
-            var purchaseOrders = purchaseOrderService
+            var purchaseOrders = await purchaseOrderService
                 .GetAll()
                 .Where(x => x.OrderStatus >= PurchaseOrderStatus.Confirmed)
-                .ToList();
+                .ToListAsync();
 
-            var warehouses = warehouseService
+            var warehouses = await warehouseService
                 .GetAll()
                 .Where(x => x.SystemWarehouse == false)
                 .Select(x => x.Id)
-                .ToArray();
+                .ToArrayAsync();
 
             foreach (var purchaseOrder in purchaseOrders)
             {
@@ -46,10 +46,11 @@ namespace Indotalent.Data.Demo
                 };
                 await goodsReceiveService.AddAsync(goodsReceive);
 
-                var items = purchaseOrderItemService
+                var items = await purchaseOrderItemService
                     .GetAll()
                     .Include(x => x.Product)
-                    .Where(x => x.PurchaseOrderId == purchaseOrder.Id && x.Product!.Physical == true).ToList();
+                    .Where(x => x.PurchaseOrderId == purchaseOrder.Id && x.Product!.Physical == true)
+                    .ToListAsync();
 
                 foreach (var item in items)
                 {
@@ -70,10 +71,7 @@ namespace Indotalent.Data.Demo
                     inventoryTransactionService.CalculateInvenTrans(inventoryTransaction);
                     await inventoryTransactionService.AddAsync(inventoryTransaction);
                 }
-
-
             }
-
         }
     }
 }

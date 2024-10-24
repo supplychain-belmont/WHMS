@@ -9,10 +9,10 @@ namespace Indotalent.Data.Demo
         {
             var service = services.GetRequiredService<VendorCategoryService>();
 
-            await service.AddAsync(new VendorCategory { Name = "Large" });
-            await service.AddAsync(new VendorCategory { Name = "Medium" });
-            await service.AddAsync(new VendorCategory { Name = "Small" });
-            await service.AddAsync(new VendorCategory { Name = "Specialty" });
+            await service.AddAsync(new VendorCategory { Name = "Grande" });
+            await service.AddAsync(new VendorCategory { Name = "Mediano" });
+            await service.AddAsync(new VendorCategory { Name = "Pequeño" });
+            await service.AddAsync(new VendorCategory { Name = "Especialidad" });
             await service.AddAsync(new VendorCategory { Name = "Local" });
             await service.AddAsync(new VendorCategory { Name = "Global" });
         }

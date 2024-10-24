@@ -24,16 +24,16 @@ namespace Indotalent.Data.Demo
             Random random = new Random();
             int deliveryOrderStatusLength = Enum.GetNames(typeof(DeliveryOrderStatus)).Length;
 
-            var salesOrders = salesOrderService
+            var salesOrders = await salesOrderService
                 .GetAll()
                 .Where(x => x.OrderStatus >= SalesOrderStatus.Confirmed)
-                .ToList();
+                .ToListAsync();
 
-            var warehouses = warehouseService
+            var warehouses = await warehouseService
                 .GetAll()
                 .Where(x => x.SystemWarehouse == false)
                 .Select(x => x.Id)
-                .ToArray();
+                .ToArrayAsync();
 
             foreach (var salesOrder in salesOrders)
             {
@@ -46,10 +46,11 @@ namespace Indotalent.Data.Demo
                 };
                 await deliveryOrderService.AddAsync(deliveryOrder);
 
-                var items = salesOrderItemService
+                var items = await salesOrderItemService
                     .GetAll()
                     .Include(x => x.Product)
-                    .Where(x => x.SalesOrderId == salesOrder.Id && x.Product!.Physical == true).ToList();
+                    .Where(x => x.SalesOrderId == salesOrder.Id && x.Product!.Physical == true)
+                    .ToListAsync();
 
                 foreach (var item in items)
                 {

@@ -15,6 +15,10 @@ namespace Indotalent.Data.Demo
             await service.AddAsync(new ProductGroup { Name = "Device" });
             await service.AddAsync(new ProductGroup { Name = "Software" });
             await service.AddAsync(new ProductGroup { Name = "Service" });
+            await service.AddAsync(new ProductGroup { Name = "Salón" });
+            await service.AddAsync(new ProductGroup { Name = "Comedor" });
+            await service.AddAsync(new ProductGroup { Name = "Oficina" });
+            await service.AddAsync(new ProductGroup { Name = "Exterior" });
         }
     }
 }

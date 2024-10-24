@@ -225,6 +225,36 @@ namespace Indotalent.Data.Demo
                 UnitPrice = 500.0m,
                 M3 = 0.0m
             });
+            await productService.AddAsync(new Product
+            {
+                Name = "Asiento con 1BR",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 250.0m,
+                M3 = 0.65m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Canto Curvo",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 500.0m,
+                M3 = 1.2m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Puff curvo",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "unit").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 150.0m,
+                M3 = 0.26m
+            });
         }
     }
 }

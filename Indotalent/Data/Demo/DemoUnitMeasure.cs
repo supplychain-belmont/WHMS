@@ -9,10 +9,10 @@ namespace Indotalent.Data.Demo
         {
             var service = services.GetRequiredService<UnitMeasureService>();
 
-            await service.AddAsync(new UnitMeasure { Name = "m" });
-            await service.AddAsync(new UnitMeasure { Name = "kg" });
-            await service.AddAsync(new UnitMeasure { Name = "hour" });
-            await service.AddAsync(new UnitMeasure { Name = "unit" });
+            await service.AddAsync(new UnitMeasure { Name = "m", Description = "Metro" });
+            await service.AddAsync(new UnitMeasure { Name = "kg", Description = "Kilogramo" });
+            await service.AddAsync(new UnitMeasure { Name = "h", Description = "Hora" });
+            await service.AddAsync(new UnitMeasure { Name = "u", Description = "Unidad" });
         }
     }
 }
