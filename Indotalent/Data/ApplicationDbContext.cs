@@ -53,6 +53,7 @@ namespace Indotalent.Data
         public virtual DbSet<NationalProductOrder> NationalProductOrders { get; set; } = default!;
         public virtual DbSet<NationalProductOrderItem> NationalProductOrderItems { get; set; } = default!;
         public virtual DbSet<ProductDetails> ProductDetails { get; set; } = default!;
+        public virtual DbSet<AssemblyProduct> AssemblyProduct { get; set; } = default!;
 
         public virtual void SetModifiedState(object entity) =>
             Entry(entity).State = EntityState.Modified;
@@ -102,6 +103,7 @@ namespace Indotalent.Data
             modelBuilder.ApplyConfiguration(new ScrappingConfiguration());
             modelBuilder.ApplyConfiguration(new NationalProductOrderConfiguration());
             modelBuilder.ApplyConfiguration(new NationalProductOrderItemConfiguration());
+            modelBuilder.ApplyConfiguration(new AssemblyProductConfiguration());
         }
     }
 }
