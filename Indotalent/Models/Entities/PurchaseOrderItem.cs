@@ -26,6 +26,10 @@ namespace Indotalent.Models.Entities
         public decimal WeightedByCost { get; set; } = 0;
         public decimal? Total { get; set; } = 0;
 
+        public int? AssemblyId { get; set; }
+        public bool IsAssembly { get; set; }
+        public bool ShowOrderItem { get; set; } = true;
+
         public void RecalculateTotal()
         {
             TotalShippingCost = TransportCost + AgencyCost;

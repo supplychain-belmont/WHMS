@@ -7,6 +7,7 @@
         public DateTime? CreatedAtUtc { get; set; }
         public int PurchaseOrderId { get; set; }
         public int ProductId { get; set; }
+        public string? Product { get; set; }
         public string? Summary { get; set; }
 
         public decimal? UnitCost { get; set; } = 0;
@@ -24,5 +25,9 @@
         public decimal? WeightedPercentageM3 { get; set; } = 0;
         public decimal? Quantity { get; set; }
         public decimal? Total { get; set; }
+
+        public int? AssemblyId { get; set; }
+        public bool IsAssembly { get; set; }
+        public bool ShowOrderItem { get; set; }
     }
 }

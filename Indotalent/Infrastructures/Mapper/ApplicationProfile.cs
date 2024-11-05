@@ -104,11 +104,16 @@ public class ApplicationProfile : Profile
         CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>()
             .ForMember(dest => dest.M3,
                 opt
-                    => opt.MapFrom(src => src.Product!.M3));
+                    => opt.MapFrom(src => src.Product!.M3))
+            .ForMember(dest => dest.Product,
+                opt =>
+                    opt.MapFrom(src => src.Product!.Name));
         CreateMap<PurchaseOrderItemChildDto, PurchaseOrderItem>()
             .ForMember(dest => dest.Id,
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Product,
                 opt => opt.Ignore());
 
         #endregion

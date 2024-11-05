@@ -38,17 +38,18 @@ namespace Indotalent.Applications.PurchaseOrders
         {
             var master = await _context.Set<PurchaseOrder>()
                 .Include(x => x.Tax)
-                .Where(x => x.Id == masterId && x.IsNotDeleted == true)
+                .Where(x => x.Id == masterId && x.IsNotDeleted)
                 .FirstOrDefaultAsync();
 
-            var childs = await _context.Set<PurchaseOrderItem>()
-                .Where(x => x.PurchaseOrderId == masterId && x.IsNotDeleted == true)
+            var children = await _context.Set<PurchaseOrderItem>()
+                .Where(x => x.PurchaseOrderId == masterId && x.IsNotDeleted && !x.IsAssembly)
+                .AsNoTracking()
                 .ToListAsync();
 
             if (master != null)
             {
                 master.BeforeTaxAmount = 0;
-                foreach (var item in childs)
+                foreach (var item in children)
                 {
                     master.BeforeTaxAmount += item.Total;
                 }
