@@ -18,6 +18,8 @@ namespace Indotalent.Models.Entities
         public Vendor? Vendor { get; set; }
         public required int TaxId { get; set; }
         public Tax? Tax { get; set; }
+        public int? LotId { get; set; }
+        public Lot? Lot { get; set; }
         public decimal? BeforeTaxAmount { get; set; }
         public decimal? TaxAmount { get; set; }
         public decimal? AfterTaxAmount { get; set; }

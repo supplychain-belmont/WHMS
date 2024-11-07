@@ -1,12 +1,17 @@
 ﻿using Indotalent.Models.Contracts;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Indotalent.Models.Entities
 {
     public class PurchaseOrderItem : _Base
     {
         public PurchaseOrderItem() { }
         public required int PurchaseOrderId { get; set; }
+
+        [DeleteBehavior(DeleteBehavior.NoAction)]
         public PurchaseOrder? PurchaseOrder { get; set; }
+
         public required int ProductId { get; set; }
         public Product? Product { get; set; }
         public string? Summary { get; set; }
@@ -29,6 +34,9 @@ namespace Indotalent.Models.Entities
         public int? AssemblyId { get; set; }
         public bool IsAssembly { get; set; }
         public bool ShowOrderItem { get; set; } = true;
+
+        public int? LotItemId { get; set; }
+        public LotItem? LotItem { get; set; }
 
         public void RecalculateTotal()
         {

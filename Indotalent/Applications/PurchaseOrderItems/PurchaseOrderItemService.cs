@@ -1,4 +1,5 @@
-﻿using Indotalent.Applications.Products;
+﻿using Indotalent.Applications.Lots;
+using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
@@ -14,6 +15,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly ProductService _productService;
         private readonly AssemblyProductService _assemblyProductService;
+        private readonly LotService _lotService;
 
         public PurchaseOrderItemService(
             ApplicationDbContext context,
@@ -21,7 +23,8 @@ namespace Indotalent.Applications.PurchaseOrderItems
             IAuditColumnTransformer auditColumnTransformer,
             PurchaseOrderService purchaseOrderService,
             ProductService productService,
-            AssemblyProductService assemblyProductService) :
+            AssemblyProductService assemblyProductService,
+            LotService lotService) :
             base(
                 context,
                 httpContextAccessor,
@@ -30,6 +33,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
             _purchaseOrderService = purchaseOrderService;
             _productService = productService;
             _assemblyProductService = assemblyProductService;
+            _lotService = lotService;
         }
 
         public override async Task AddAsync(PurchaseOrderItem? entity)

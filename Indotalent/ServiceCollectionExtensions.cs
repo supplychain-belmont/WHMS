@@ -12,6 +12,7 @@ using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.LogAnalytics;
 using Indotalent.Applications.LogErrors;
 using Indotalent.Applications.LogSessions;
+using Indotalent.Applications.Lots;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.ProductGroups;
 using Indotalent.Applications.Products;
@@ -92,6 +93,8 @@ namespace Indotalent
             services.AddScoped<AdjustmentMinusService>();
             services.AddScoped<AdjustmentPlusService>();
             services.AddScoped<ScrappingService>();
+            services.AddScoped<LotService>();
+            services.AddScoped<LotItemService>();
 
             return services;
         }

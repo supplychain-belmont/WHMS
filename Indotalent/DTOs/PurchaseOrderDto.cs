@@ -21,5 +21,7 @@ namespace Indotalent.DTOs
         public decimal? BeforeTaxAmount { get; set; }
         public decimal? TaxAmount { get; set; }
         public decimal? AfterTaxAmount { get; set; }
+        public string? Lot { get; set; }
+        public int? LotId { get; set; }
     }
 }
