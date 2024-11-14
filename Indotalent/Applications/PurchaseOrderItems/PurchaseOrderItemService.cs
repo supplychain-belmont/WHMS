@@ -1,4 +1,5 @@
-﻿using Indotalent.Applications.Products;
+﻿using Indotalent.Applications.Lots;
+using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
@@ -13,13 +14,17 @@ namespace Indotalent.Applications.PurchaseOrderItems
     {
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly ProductService _productService;
+        private readonly AssemblyProductService _assemblyProductService;
+        private readonly LotService _lotService;
 
         public PurchaseOrderItemService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
             PurchaseOrderService purchaseOrderService,
-            ProductService productService) :
+            ProductService productService,
+            AssemblyProductService assemblyProductService,
+            LotService lotService) :
             base(
                 context,
                 httpContextAccessor,
@@ -27,6 +32,8 @@ namespace Indotalent.Applications.PurchaseOrderItems
         {
             _purchaseOrderService = purchaseOrderService;
             _productService = productService;
+            _assemblyProductService = assemblyProductService;
+            _lotService = lotService;
         }
 
         public override async Task AddAsync(PurchaseOrderItem? entity)
@@ -45,11 +52,23 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     .FirstOrDefaultAsync();
                 var product = await _productService.GetAll()
                     .Where(x => x.Id == entity.ProductId)
-                    .Select(x => new { x.M3 })
                     .FirstOrDefaultAsync();
 
+                if (product is { IsAssembly: true })
+                {
+                    entity.IsAssembly = true;
+                    entity.AssemblyId = product.Id;
+                    entity.ShowOrderItem = true;
+                    var entityEntry = _context.Set<PurchaseOrderItem>().Add(entity);
+                    await _context.SaveChangesAsync();
+
+                    await CreateAssemblyProductChildAsync(product, entityEntry.Entity);
+                    return;
+                }
+
+                entity.ShowOrderItem = entity.AssemblyId == null;
                 entity.RecalculateWeightedM3(product!.M3, order!.ContainerM3);
-                entity.RecalculateTransportCost(order.TotalTransportContainerCost, order.TotalAgencyCost);
+                entity.RecalculateTransportCost(order!.TotalTransportContainerCost, order.TotalAgencyCost);
                 entity.RecalculateTotal();
                 _context.Set<PurchaseOrderItem>().Add(entity);
                 await _context.SaveChangesAsync();
@@ -59,6 +78,32 @@ namespace Indotalent.Applications.PurchaseOrderItems
             else
             {
                 throw new Exception("Unable to process, entity is null");
+            }
+        }
+
+        private async Task CreateAssemblyProductChildAsync(Product product, PurchaseOrderItem purchaseOrderItem)
+        {
+            var purchaseOrderItemChild = await _assemblyProductService.GetAll()
+                .Where(x => x.AssemblyId == product.Id)
+                .Select(x =>
+                    new PurchaseOrderItem
+                    {
+                        CreatedAtUtc = DateTime.Now,
+                        ProductId = x.Product!.Id,
+                        UnitCost = 0m,
+                        UnitCostBrazil = 0m,
+                        PurchaseOrderId = purchaseOrderItem.PurchaseOrderId,
+                        UnitCostBolivia = 0m,
+                        AssemblyId = purchaseOrderItem.Id,
+                        Quantity = x.Quantity * purchaseOrderItem.Quantity,
+                        Summary = x.Product!.Number,
+                        ShowOrderItem = false,
+                    })
+                .ToListAsync();
+
+            foreach (PurchaseOrderItem orderItem in purchaseOrderItemChild)
+            {
+                await AddAsync(orderItem);
             }
         }
 
@@ -82,15 +127,20 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     .FirstOrDefaultAsync();
                 var product = await _productService.GetAll()
                     .Where(x => x.Id == entity.ProductId)
-                    .Select(x => new { x.M3 })
+                    .Select(x => new { x.M3, x.IsAssembly })
                     .FirstOrDefaultAsync();
+
+                if (product is { IsAssembly: true })
+                {
+                    await UpdateAssemblyProductChildAsync(entity);
+                    return;
+                }
 
                 entity.RecalculateWeightedM3(product!.M3, order!.ContainerM3);
                 entity.RecalculateTransportCost(order.TotalTransportContainerCost, order.TotalAgencyCost);
                 entity.RecalculateTotal();
                 _context.Set<PurchaseOrderItem>().Update(entity);
                 await _context.SaveChangesAsync();
-
 
                 await _purchaseOrderService.RecalculateParentAsync(entity.PurchaseOrderId);
             }
@@ -100,6 +150,27 @@ namespace Indotalent.Applications.PurchaseOrderItems
             }
         }
 
+        private async Task UpdateAssemblyProductChildAsync(PurchaseOrderItem parent)
+        {
+            var purchaseOrderItemChild = await GetAll()
+                .Where(poi => poi.AssemblyId == parent.Id)
+                .AsNoTracking()
+                .ToListAsync();
+
+            foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrderItemChild)
+            {
+                var assemblyProduct = await _assemblyProductService
+                    .GetAll()
+                    .Where(ap => ap.AssemblyId == parent.AssemblyId && ap.ProductId == purchaseOrderItem.ProductId)
+                    .FirstOrDefaultAsync();
+                purchaseOrderItem.Quantity = (assemblyProduct?.Quantity ?? 1) * parent.Quantity;
+                purchaseOrderItem.ShowOrderItem = false;
+                await UpdateAsync(purchaseOrderItem);
+            }
+
+            _context.Set<PurchaseOrderItem>().Update(parent);
+            await _context.SaveChangesAsync();
+        }
 
         public override async Task DeleteByIdAsync(int? id)
         {

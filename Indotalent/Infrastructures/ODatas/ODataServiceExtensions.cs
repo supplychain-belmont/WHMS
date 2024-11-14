@@ -1,4 +1,5 @@
-﻿using Indotalent.DTOs;
+﻿using Indotalent.ApiOData;
+using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Query.Validator;
@@ -64,13 +65,15 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<StockCountItemChildDto>("StockCountItemChild");
             builder.EntitySet<FileImageDto>("FileImage");
             builder.EntitySet<AssemblyProductDto>("AssemblyProductChild");
+            builder.EntitySet<LotDto>("Lot");
+            builder.EntitySet<LotItemDto>("LotItem");
 
             services.AddControllers()
                 .AddOData(options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null)
-                .AddRouteComponents("odata", builder.GetEdmModel(), odataServices =>
-                {
-                    odataServices.AddSingleton<IODataQueryValidator, SFODataQueryValidator>();
-                }));
+                    .AddRouteComponents("odata", builder.GetEdmModel(), odataServices =>
+                    {
+                        odataServices.AddSingleton<IODataQueryValidator, SFODataQueryValidator>();
+                    }));
         }
     }
 }

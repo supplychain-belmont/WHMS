@@ -66,7 +66,10 @@ public class ApplicationProfile : Profile
                     opt.MapFrom(src => src.Tax!.Name))
             .ForMember(dest => dest.Status,
                 opt =>
-                    opt.MapFrom(src => src.OrderStatus));
+                    opt.MapFrom(src => src.OrderStatus))
+            .ForMember(dest => dest.Lot,
+                opt =>
+                    opt.MapFrom(src => src.Lot!.Name));
         CreateMap<PurchaseOrderDto, PurchaseOrder>()
             .ForMember(dest => dest.Vendor,
                 opt => opt.Ignore())
@@ -104,11 +107,16 @@ public class ApplicationProfile : Profile
         CreateMap<PurchaseOrderItem, PurchaseOrderItemChildDto>()
             .ForMember(dest => dest.M3,
                 opt
-                    => opt.MapFrom(src => src.Product!.M3));
+                    => opt.MapFrom(src => src.Product!.M3))
+            .ForMember(dest => dest.Product,
+                opt =>
+                    opt.MapFrom(src => src.Product!.Name));
         CreateMap<PurchaseOrderItemChildDto, PurchaseOrderItem>()
             .ForMember(dest => dest.Id,
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.Product,
                 opt => opt.Ignore());
 
         #endregion
@@ -466,6 +474,21 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
         CreateMap<InventoryTransaction, DeliveryOrderItemChildDto>();
         CreateMap<DeliveryOrderItemChildDto, InventoryTransaction>();
+
+        #endregion
+
+        #region Lot
+
+        CreateMap<Lot, LotDto>();
+        CreateMap<LotDto, Lot>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
+        CreateMap<LotItem, LotItemDto>();
+        CreateMap<LotItemDto, LotItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RowGuid, opt => opt.Ignore())
+            .ForMember(dest => dest.Lot, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
 
         #endregion
     }
