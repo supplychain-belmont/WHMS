@@ -76,7 +76,7 @@ namespace Indotalent.Applications.PurchaseOrders
                 UnitCostBrazil = lotItem.UnitCostBrazil,
                 UnitCostDiscounted = lotItem.UnitCostDiscounted,
                 PurchaseOrderId = purchaseOrder.Id,
-                Quantity = 1,
+                Quantity = lotItem.Quantity,
                 UnitCostBolivia = 0m,
                 Summary = lotItem.Product!.Number,
                 ShowOrderItem = true,

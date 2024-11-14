@@ -483,7 +483,8 @@ public class ApplicationProfile : Profile
         CreateMap<LotDto, Lot>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
-        CreateMap<LotItem, LotItemDto>();
+        CreateMap<LotItem, LotItemDto>()
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name));
         CreateMap<LotItemDto, LotItem>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore())

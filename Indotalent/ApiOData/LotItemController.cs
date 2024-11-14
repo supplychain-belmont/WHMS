@@ -15,6 +15,7 @@ namespace Indotalent.ApiOData;
 
 public class LotItemController : ODataController
 {
+    private const string HeaderKeyName = "ParentId";
     private readonly LotItemService _lotItemService;
     private readonly IMapper _mapper;
 
@@ -27,8 +28,11 @@ public class LotItemController : ODataController
     [EnableQuery]
     public IQueryable<LotItemDto> Get()
     {
+        Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
+        var parentId = int.Parse(headerValue.ToString());
         return _lotItemService
             .GetAll()
+            .Where(x => x.LotId == parentId)
             .ProjectTo<LotItemDto>(_mapper.ConfigurationProvider);
     }
 
@@ -51,6 +55,11 @@ public class LotItemController : ODataController
         {
             return BadRequest(ModelState);
         }
+
+        Request.Headers.TryGetValue(HeaderKeyName, out var headerValue);
+        var parentId = int.Parse(headerValue.ToString());
+
+        lotItemDto.LotId = parentId;
 
         var lot = _mapper.Map<LotItem>(lotItemDto);
         await _lotItemService.AddAsync(lot);
