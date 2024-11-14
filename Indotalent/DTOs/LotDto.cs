@@ -10,4 +10,5 @@ public class LotDto
     public decimal TotalAgencyCost { get; set; }
     public DateTime LotDate { get; set; }
     public Guid RowGuid { get; set; }
+    public DateTime? CreatedAtUtc { get; set; }
 }
