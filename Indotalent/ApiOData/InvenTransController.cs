@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
+using Indotalent.Models.Enums;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -37,28 +39,14 @@ namespace Indotalent.ApiOData
                 .Include(x => x.Product)
                 .Include(x => x.WarehouseFrom)
                 .Include(x => x.WarehouseTo)
-                .Where(x => x.Product!.Physical == true)
-                .Select(rec => new InvenTransDto
-                {
-                    Id = rec.Id,
-                    RowGuid = rec.RowGuid,
-                    CreatedAtUtc = rec.CreatedAtUtc,
-                    ModuleId = rec.ModuleId,
-                    ModuleName = rec.ModuleName,
-                    ModuleCode = rec.ModuleCode,
-                    ModuleNumber = rec.ModuleNumber,
-                    MovementDate = rec.MovementDate,
-                    Status = rec.Status,
-                    Number = rec.Number,
-                    Warehouse = rec.Warehouse!.Name,
-                    Product = rec.Product!.Name,
-                    Movement = rec.Movement,
-                    TransType = rec.TransType,
-                    Stock = rec.Stock,
-                    WarehouseFrom = rec.WarehouseFrom!.Name,
-                    WarehouseTo = rec.WarehouseTo!.Name,
-                });
+                .Where(x => x.Product!.Physical)
+                .Where(x => x.ModuleName == nameof(GoodsReceive) || x.ModuleName == nameof(TransferIn)
+                                                                 || x.ModuleName == nameof(TransferOut)
+                                                                 || x.ModuleName == nameof(DeliveryOrder))
+                .Where(x => !x.Warehouse!.SystemWarehouse)
+                .ProjectTo<InvenTransDto>(_mapper.ConfigurationProvider);
         }
+
         [HttpDelete]
         public async Task<IActionResult> Delete([FromODataUri] int key)
         {
@@ -71,6 +59,7 @@ namespace Indotalent.ApiOData
             await _inventoryTransactionService.DeleteByIdAsync(entity.Id);
             return NoContent();
         }
+
         [EnableQuery]
         public async Task<IActionResult> Get([FromODataUri] int key)
         {
@@ -98,6 +87,7 @@ namespace Indotalent.ApiOData
             var createdDto = _mapper.Map<InvenTransDto>(entity);
             return Created(createdDto);
         }
+
         public async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] Delta<InventoryTransaction> patch)
         {
             var existingEntity = await _inventoryTransactionService.GetByIdAsync(key);
@@ -112,6 +102,5 @@ namespace Indotalent.ApiOData
 
             return Updated(existingEntity);
         }
-
     }
 }
