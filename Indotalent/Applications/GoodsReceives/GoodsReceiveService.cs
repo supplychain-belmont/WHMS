@@ -1,9 +1,9 @@
 ﻿using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
+using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
 using Indotalent.Models.Entities;
 using Indotalent.Models.Enums;
 
@@ -16,6 +16,7 @@ namespace Indotalent.Applications.GoodsReceives
         private readonly NumberSequenceService _numberSequenceService;
         private readonly PurchaseOrderItemService _purchaseOrderItemService;
         private readonly InventoryTransactionService _inventoryTransactionService;
+        private readonly ProductService _productService;
 
         public GoodsReceiveService(
             ApplicationDbContext context,
@@ -23,7 +24,8 @@ namespace Indotalent.Applications.GoodsReceives
             IAuditColumnTransformer auditColumnTransformer,
             NumberSequenceService numberSequenceService,
             PurchaseOrderItemService purchaseOrderItemService,
-            InventoryTransactionService inventoryTransactionService) :
+            InventoryTransactionService inventoryTransactionService,
+            ProductService productService) :
             base(
                 context,
                 httpContextAccessor,
@@ -32,34 +34,54 @@ namespace Indotalent.Applications.GoodsReceives
             _numberSequenceService = numberSequenceService;
             _purchaseOrderItemService = purchaseOrderItemService;
             _inventoryTransactionService = inventoryTransactionService;
+            _productService = productService;
         }
 
         public override async Task AddAsync(GoodsReceive? entity)
         {
-            var moduleName = nameof(GoodsReceive) ?? string.Empty;
+            var moduleName = nameof(GoodsReceive);
             await base.AddAsync(entity);
             var purchaseItems = await _purchaseOrderItemService.GetAll()
+                .Include(item => item.Product)
+                .Include(item => item.LotItem)
+                .ThenInclude(lotItem => lotItem!.Lot)
                 .Where(item => item.PurchaseOrderId == entity!.PurchaseOrderId)
                 .ToListAsync();
 
-            var transactions = purchaseItems
-                .Select(item => new InventoryTransaction()
+            foreach (PurchaseOrderItem purchaseOrderItem in purchaseItems)
+            {
+                if (purchaseOrderItem.LotItemId.HasValue)
+                {
+                    var product = purchaseOrderItem.Product;
+                    var lot = purchaseOrderItem.LotItem!.Lot;
+                    var productLotItem = product!.Clone();
+                    productLotItem.RowGuid = Guid.NewGuid();
+                    productLotItem.Id = 0;
+                    productLotItem.Name = $"{product.Name}/{lot!.Name}";
+                    productLotItem.UnitCost = purchaseOrderItem.UnitCostBolivia;
+                    productLotItem.CalculateUnitPrice();
+
+                    await _productService.AddAsync(productLotItem);
+
+                    purchaseOrderItem.ProductId = productLotItem.Id;
+                    purchaseOrderItem.Summary = productLotItem.Number;
+                }
+
+                var inventoryTransaction = new InventoryTransaction()
                 {
                     WarehouseId = 2,
-                    ProductId = item.ProductId,
+                    ProductId = purchaseOrderItem.ProductId,
                     ModuleId = entity!.Id,
                     ModuleName = moduleName,
                     ModuleCode = "GR",
                     ModuleNumber = entity.Number ?? string.Empty,
                     MovementDate = entity.ReceiveDate!.Value,
                     Status = (InventoryTransactionStatus)entity.Status!,
-                    RequestedMovement = item.Quantity,
-                    Movement = item.Quantity,
+                    RequestedMovement = purchaseOrderItem.Quantity,
+                    Movement = purchaseOrderItem.Quantity,
                     Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT")
-                }).ToList();
+                };
 
-            foreach (InventoryTransaction inventoryTransaction in transactions)
-            {
                 await _inventoryTransactionService.AddAsync(inventoryTransaction);
             }
         }

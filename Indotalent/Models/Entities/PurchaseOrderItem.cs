@@ -41,9 +41,9 @@ namespace Indotalent.Models.Entities
         public void RecalculateTotal()
         {
             TotalShippingCost = TransportCost + AgencyCost;
+            UnitCostBolivia = UnitCostDiscounted + TotalShippingCost;
             Total = Quantity * (UnitCostDiscounted + TotalShippingCost);
-            UnitCostBolivia = (decimal)Total;
-            UnitCostBoliviaBs = UnitCostBolivia * 6.92m;
+            UnitCostBoliviaBs = Total.Value * 6.92m;
         }
 
         public void RecalculateWeightedM3(decimal m3, decimal containerM3)
