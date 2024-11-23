@@ -72,10 +72,10 @@ namespace Indotalent.Data
                 await DemoPurchaseReturn.GenerateAsync(services);
                 await DemoTransferOut.GenerateAsync(services);
                 await DemoTransferIn.GenerateAsync(services);
-                await DemoAdjustmentMinus.GenerateAsync(services);
-                await DemoAdjustmentPlus.GenerateAsync(services);
-                await DemoScrapping.GenerateAsync(services);
-                await DemoStockCount.GenerateAsync(services);
+                // await DemoAdjustmentMinus.GenerateAsync(services);
+                // await DemoAdjustmentPlus.GenerateAsync(services);
+                // await DemoScrapping.GenerateAsync(services);
+                // await DemoStockCount.GenerateAsync(services);
                 await DemoAssemblyProduct.GenerateAsync(services);
             }
         }
