@@ -6,10 +6,15 @@
         public string? Name { get; set; }
         public string? Number { get; set; }
 
-        public decimal? UnitPrice { get; set; }
-        public decimal? UnitPrice1 { get; set; }
-        public decimal? UnitPrice2 { get; set; }
-        public decimal? UnitPrice3 { get; set; }
+        #region Pricing
+
+        public decimal UnitPrice { get; set; }
+        public decimal? UnitCost { get; set; }
+        public decimal? UnitPrice40 { get; set; }
+        public decimal? UnitPrice50 { get; set; }
+        public decimal? UnitPrice60 { get; set; }
+
+        #endregion
 
         public bool? Physical { get; set; }
         public bool IsAssembly { get; set; }

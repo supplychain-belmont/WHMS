@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using Indotalent.Applications.Products;
 using Indotalent.Applications.SalesOrders;
 using Indotalent.Data;
 using Indotalent.DTOs;
@@ -15,15 +16,18 @@ namespace Indotalent.Applications.SalesOrderItems
     public class SalesOrderItemService : Repository<SalesOrderItem>
     {
         private readonly SalesOrderService _salesOrderService;
+        private readonly ProductService _productService;
 
         public SalesOrderItemService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
-            SalesOrderService salesOrderService) :
+            SalesOrderService salesOrderService,
+            ProductService productService) :
             base(context, httpContextAccessor, auditColumnTransformer)
         {
             _salesOrderService = salesOrderService;
+            _productService = productService;
         }
 
         public override async Task AddAsync(SalesOrderItem? entity)
@@ -35,6 +39,18 @@ namespace Indotalent.Applications.SalesOrderItems
                     auditEntity.CreatedAtUtc = DateTime.Now;
                     auditEntity.CreatedByUserId = _userId;
                 }
+
+                var product = await _productService.GetByIdAsync(entity.ProductId);
+
+                if (product!.UnitPrice60 != null)
+                {
+                    entity.UnitPrice = product.UnitPrice60.Value;
+                }
+
+                entity.UnitPrice40 = product.UnitPrice40;
+                entity.UnitPrice50 = product.UnitPrice50;
+                entity.UnitPrice60 = product.UnitPrice60;
+                entity.UnitCost = product.UnitCost ?? 0;
 
                 entity.RecalculateTotal();
                 _context.Set<SalesOrderItem>().Add(entity);

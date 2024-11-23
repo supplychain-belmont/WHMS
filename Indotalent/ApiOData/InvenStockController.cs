@@ -3,6 +3,7 @@
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.DTOs;
 using Indotalent.Models.Entities;
+using Indotalent.Models.Enums;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -31,10 +32,10 @@ namespace Indotalent.ApiOData
                 .Include(x => x.Warehouse)
                 .Include(x => x.Product)
                 .Where(x =>
-                    x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed &&
-                    x.Warehouse!.SystemWarehouse == false &&
-                    x.Product!.Physical == true
-                )
+                    (x.Status >= InventoryTransactionStatus.Confirmed ||
+                     x.Status == InventoryTransactionStatus.Draft) &&
+                    !x.Warehouse!.SystemWarehouse &&
+                    x.Product!.Physical)
                 .GroupBy(x => new { x.WarehouseId, x.ProductId })
                 .Select(group => new InvenStockDto
                 {
@@ -42,7 +43,17 @@ namespace Indotalent.ApiOData
                     ProductId = group.Key.ProductId,
                     Warehouse = group.Max(x => x.Warehouse!.Name),
                     Product = group.Max(x => x.Product!.Name),
-                    Stock = group.Sum(x => x.Stock),
+                    Stock = group
+                        .Where(x => x.Status >= InventoryTransactionStatus.Confirmed)
+                        .Sum(x => x.Stock),
+                    Reserved = group
+                        .Where(x => x.Status == InventoryTransactionStatus.Draft &&
+                                    x.TransType == InventoryTransType.Out)
+                        .Sum(x => x.Movement),
+                    Incoming = group
+                        .Where(x => x.Status == InventoryTransactionStatus.Draft &&
+                                    x.TransType == InventoryTransType.In)
+                        .Sum(x => x.Movement),
                     Id = group.Max(x => x.Id),
                     RowGuid = group.Max(x => x.RowGuid),
                     CreatedAtUtc = group.Max(x => x.CreatedAtUtc)

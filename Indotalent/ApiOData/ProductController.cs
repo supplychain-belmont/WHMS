@@ -113,7 +113,7 @@ namespace Indotalent.ApiOData
             var entity = _mapper.Map(dto, current);
 
             await _productService.UpdateAsync(entity);
-            return Updated(_mapper.Map<PurchaseOrderDto>(entity));
+            return Updated(_mapper.Map<ProductDto>(entity));
         }
 
         public async Task<ActionResult> Delete([FromRoute] int key)

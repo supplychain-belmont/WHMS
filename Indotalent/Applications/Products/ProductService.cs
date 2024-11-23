@@ -22,10 +22,17 @@ namespace Indotalent.Applications.Products
             _numberSequenceService = numberSequenceService;
         }
 
-        public override Task AddAsync(Product? entity)
+        public override async Task AddAsync(Product? entity)
         {
             entity!.Number = _numberSequenceService.GenerateNumber(nameof(Product), "", "ART");
-            return base.AddAsync(entity);
+            entity.CalculateUnitPrice();
+            await base.AddAsync(entity);
+        }
+
+        public override async Task UpdateAsync(Product? entity)
+        {
+            entity!.CalculateUnitPrice();
+            await base.UpdateAsync(entity);
         }
     }
 }

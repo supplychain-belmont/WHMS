@@ -10,5 +10,7 @@
         public int? ProductId { get; set; }
         public string? Product { get; set; }
         public decimal Stock { get; set; }
+        public decimal Reserved { get; set; }
+        public decimal Incoming { get; set; }
     }
 }
