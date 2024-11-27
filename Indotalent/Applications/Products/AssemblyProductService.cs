@@ -32,6 +32,7 @@ public class AssemblyProductService : Repository<AssemblyProduct>
         await _productService.UpdateAsync(product);
         var totalUnitCost = await GetAll()
             .Include(ap => ap.Product)
+            .Where(ap => ap.AssemblyId == entity!.AssemblyId)
             .SumAsync(ap => ap.Product!.UnitCost * ap.Quantity);
 
         var assembly = await _productService.GetByIdAsync(entity?.AssemblyId);
