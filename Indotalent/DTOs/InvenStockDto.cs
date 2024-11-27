@@ -11,6 +11,7 @@
         public string? Product { get; set; }
         public decimal Stock { get; set; }
         public decimal Reserved { get; set; }
+        public decimal ReservedPercentage { get; set; }
         public decimal Incoming { get; set; }
     }
 }
