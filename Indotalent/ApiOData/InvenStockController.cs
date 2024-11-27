@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 
+using static System.Math;
+
 namespace Indotalent.ApiOData
 {
     public class InvenStockController : ODataController
@@ -57,8 +59,22 @@ namespace Indotalent.ApiOData
                     Id = group.Max(x => x.Id),
                     RowGuid = group.Max(x => x.RowGuid),
                     CreatedAtUtc = group.Max(x => x.CreatedAtUtc)
+                })
+                .Where(data => data.Stock > 0)
+                .Select(data => new InvenStockDto
+                {
+                    Id = data.Id,
+                    RowGuid = data.RowGuid,
+                    CreatedAtUtc = data.CreatedAtUtc,
+                    WarehouseId = data.WarehouseId,
+                    Warehouse = data.Warehouse,
+                    ProductId = data.ProductId,
+                    Product = data.Product,
+                    Stock = data.Stock,
+                    Reserved = data.Reserved,
+                    ReservedPercentage = Round(Min(data.Reserved / data.Stock * 100, 100), 2),
+                    Incoming = data.Incoming
                 });
-
             return transGrouped;
         }
 
