@@ -95,6 +95,7 @@ namespace Indotalent
             services.AddScoped<ScrappingService>();
             services.AddScoped<LotService>();
             services.AddScoped<LotItemService>();
+            services.AddScoped<InventoryStockService>();
 
             return services;
         }

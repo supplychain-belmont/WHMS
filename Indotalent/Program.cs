@@ -31,17 +31,14 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Version = "v1",
-        Title = "API de Indotalent",
-        Description = "Una API para gestionar la aplicación de Indotalent",
-        Contact = new OpenApiContact
+    c.SwaggerDoc("v1",
+        new OpenApiInfo
         {
-            Name = "Tu Nombre",
-            Email = "tu.email@example.com"
-        }
-    });
+            Version = "v1",
+            Title = "API de Indotalent",
+            Description = "Una API para gestionar la aplicación de Indotalent",
+            Contact = new OpenApiContact { Name = "Tu Nombre", Email = "tu.email@example.com" }
+        });
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
@@ -58,7 +55,8 @@ builder.Services
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
-        var identitySettings = builder.Configuration.GetSection(IdentitySettings.IdentitySettingsName).Get<IdentitySettings>();
+        var identitySettings = builder.Configuration.GetSection(IdentitySettings.IdentitySettingsName)
+            .Get<IdentitySettings>();
         if (identitySettings != null)
         {
             options.SignIn.RequireConfirmedAccount = identitySettings.RequireConfirmedAccount;
@@ -93,8 +91,7 @@ builder.Services
 builder.Services
     .Configure<RegistrationConfiguration>(builder.Configuration.GetSection("RegistrationConfiguration"));
 
-builder.Services.
-    Configure<ApplicationConfiguration>(builder.Configuration.GetSection("ApplicationConfiguration"));
+builder.Services.Configure<ApplicationConfiguration>(builder.Configuration.GetSection("ApplicationConfiguration"));
 
 builder.Services.AddRazorPages();
 
@@ -116,6 +113,10 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson();
 
 var app = builder.Build();
+
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
+    "Mgo+DSMBMAY9C3t2UlhhQlVMfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX9SdEJjXn9XcHZUQ2RZ"
+);
 
 if (app.Environment.IsDevelopment())
 {
@@ -139,9 +140,11 @@ using (var scope = app.Services.CreateScope())
     var appConfig = services.GetRequiredService<IOptions<ApplicationConfiguration>>();
     if (appConfig.Value.IsDevelopment)
     {
-        context.Database.EnsureCreated();//<===*** Development Only !!! ***
+        await context.Database.EnsureCreatedAsync(); //<===*** Development Only !!! ***
     }
+
     await DbInitializer.InitializeAsync(services);
+    await context.CreateInventoryStockView();
 }
 
 app.UseStaticFiles();
