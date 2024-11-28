@@ -17,6 +17,7 @@ namespace Indotalent.Applications.DeliveryOrders
         private readonly SalesOrderItemService _salesOrderItemService;
         private readonly InventoryTransactionService _inventoryTransactionService;
         private readonly AssemblyProductService _assemblyProductService;
+        private readonly InventoryStockService _inventoryStockService;
 
         public DeliveryOrderService(
             ApplicationDbContext context,
@@ -25,7 +26,8 @@ namespace Indotalent.Applications.DeliveryOrders
             NumberSequenceService numberSequenceService,
             SalesOrderItemService salesOrderItemService,
             InventoryTransactionService inventoryTransactionService,
-            AssemblyProductService assemblyProductService) :
+            AssemblyProductService assemblyProductService,
+            InventoryStockService inventoryStockService) :
             base(
                 context,
                 httpContextAccessor,
@@ -35,6 +37,7 @@ namespace Indotalent.Applications.DeliveryOrders
             _salesOrderItemService = salesOrderItemService;
             _inventoryTransactionService = inventoryTransactionService;
             _assemblyProductService = assemblyProductService;
+            _inventoryStockService = inventoryStockService;
         }
 
         public override async Task AddAsync(DeliveryOrder? entity)
@@ -104,31 +107,53 @@ namespace Indotalent.Applications.DeliveryOrders
 
         public override async Task UpdateAsync(DeliveryOrder? entity)
         {
-            await base.UpdateAsync(entity);
-            await RecalculateChildAsync(entity?.Id);
-        }
-
-        private async Task RecalculateChildAsync(int? masterId)
-        {
-            var master = await _context.Set<DeliveryOrder>()
-                .Include(x => x.SalesOrder)
-                .ThenInclude(x => x!.Customer)
-                .Where(x => x.Id == masterId && x.IsNotDeleted)
-                .FirstOrDefaultAsync();
-
             var children = await _inventoryTransactionService
                 .GetAll()
-                .Where(x => x.ModuleId == masterId && x.ModuleName == nameof(DeliveryOrder))
+                .Where(x => x.ModuleId == entity!.Id && x.ModuleName == nameof(DeliveryOrder))
                 .ToListAsync();
 
-            if (master != null)
+            if (entity!.Status == DeliveryOrderStatus.Confirmed)
             {
-                foreach (var item in children)
+                var stockInfo = await _inventoryStockService
+                    .GetAll()
+                    .Where(it =>
+                        children.Select(x => x.ProductId).Contains(it.ProductId!.Value) &&
+                        children.Select(x => x.WarehouseId).Contains(it.WarehouseId!.Value))
+                    .Select(it =>
+                        new { it.ProductId, it.Product, it.WarehouseId, InventoryStock.Parse(it).Stock })
+                    .ToListAsync();
+
+                var products = new List<string>();
+                foreach (InventoryTransaction item in children)
                 {
-                    item.Status = (InventoryTransactionStatus)master.Status!;
-                    await _inventoryTransactionService.UpdateAsync(item);
+                    var inventoryStock = stockInfo
+                        .Find(it =>
+                            it.ProductId == item.ProductId && it.WarehouseId == item.WarehouseId
+                        );
+
+                    if (inventoryStock is null) continue;
+                    if (item.Movement <= inventoryStock.Stock)
+                    {
+                        continue;
+                    }
+
+                    entity.Status = DeliveryOrderStatus.Draft;
+                    products.Add(inventoryStock.Product!);
+                }
+
+                if (entity.Status == DeliveryOrderStatus.Draft)
+                {
+                    throw new ArgumentException($"Stock is not enough for product(s): {string.Join(", ", products)}");
                 }
             }
+
+            foreach (var item in children)
+            {
+                item.Status = (InventoryTransactionStatus)entity.Status!;
+                await _inventoryTransactionService.UpdateAsync(item);
+            }
+
+            await base.UpdateAsync(entity);
         }
     }
 }

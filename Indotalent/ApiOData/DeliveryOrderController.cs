@@ -83,30 +83,37 @@ namespace Indotalent.ApiOData
         public async Task<IActionResult> Patch([FromODataUri] int key,
             [FromBody] Delta<DeliveryOrderDto> deliveryOrderDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var current = await _deliveryOrderService.GetByIdAsync(key);
-            if (current == null)
+                var current = await _deliveryOrderService.GetByIdAsync(key);
+                if (current == null)
+                {
+                    return NotFound();
+                }
+
+                deliveryOrderDto.TryGetPropertyValue("Number", out var numberProperty);
+                if (numberProperty is string number && current.Number != number)
+                {
+                    return BadRequest("Unable to update delivery order");
+                }
+
+                var dto = _mapper.Map<DeliveryOrderDto>(current);
+                deliveryOrderDto.Patch(dto);
+
+                var entity = _mapper.Map(dto, current);
+
+                await _deliveryOrderService.UpdateAsync(entity);
+                return Updated(_mapper.Map<DeliveryOrderDto>(entity));
+            }
+            catch (Exception e)
             {
-                return NotFound();
+                return UnprocessableEntity(e.Message);
             }
-
-            deliveryOrderDto.TryGetPropertyValue("Number", out var numberProperty);
-            if (numberProperty is string number && current.Number != number)
-            {
-                return BadRequest("Unable to update delivery order");
-            }
-
-            var dto = _mapper.Map<DeliveryOrderDto>(current);
-            deliveryOrderDto.Patch(dto);
-
-            var entity = _mapper.Map(dto, current);
-
-            await _deliveryOrderService.UpdateAsync(entity);
-            return Updated(_mapper.Map<DeliveryOrderDto>(entity));
         }
 
         public async Task<IActionResult> Delete([FromODataUri] int key)

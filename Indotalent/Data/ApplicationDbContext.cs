@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 using Indotalent.Infrastructures.Docs;
 using Indotalent.Infrastructures.Images;
 using Indotalent.Models.Configurations;
@@ -56,6 +58,7 @@ namespace Indotalent.Data
         public virtual DbSet<AssemblyProduct> AssemblyProduct { get; set; } = default!;
         public virtual DbSet<Lot> Lots { get; set; } = default!;
         public virtual DbSet<LotItem> LotItems { get; set; } = default!;
+        public virtual DbSet<InventoryStock> InventoryStocks { get; set; } = default!;
 
         public virtual void SetModifiedState(object entity) =>
             Entry(entity).State = EntityState.Modified;
@@ -108,6 +111,37 @@ namespace Indotalent.Data
             modelBuilder.ApplyConfiguration(new AssemblyProductConfiguration());
             modelBuilder.ApplyConfiguration(new LotConfiguration());
             modelBuilder.ApplyConfiguration(new LotItemConfiguration());
+
+            modelBuilder.Entity<InventoryStock>()
+                .ToView("InventoryStock")
+                .HasKey(v => v.Id);
+        }
+
+        public Task CreateInventoryStockView()
+        {
+            var query = @"
+                CREATE OR ALTER VIEW InventoryStock AS
+                SELECT
+                    t.WarehouseId,
+                    t.ProductId,
+                    w.Name AS Warehouse,
+                    p.Name AS Product,
+                    SUM(CASE WHEN t.Status >= 2 THEN t.Stock ELSE 0 END) AS Stock,
+                    SUM(CASE WHEN t.Status = 0 AND t.TransType = -1 THEN t.Movement ELSE 0 END) AS Reserved,
+                    SUM(CASE WHEN t.Status = 0 AND t.TransType = 1 THEN t.Movement ELSE 0 END) AS Incoming,
+                    MAX(t.Id) AS Id,
+                    MAX(t.RowGuid) AS RowGuid,
+                    MAX(t.CreatedAtUtc) AS CreatedAtUtc,
+                    MAX(t.CreatedByUserId) AS CreatedByUserId,
+                    MAX(t.UpdatedAtUtc) AS UpdatedAtUtc,
+                    MAX(t.UpdatedByUserId) AS UpdatedByUserId,
+                    CAST(1 AS BIT) AS IsNotDeleted
+                FROM InventoryTransaction t
+                JOIN Warehouse w ON t.WarehouseId = w.Id
+                JOIN Product p ON t.ProductId = p.Id
+                WHERE (t.Status >= 2 OR t.Status = 0) AND w.SystemWarehouse = 0 AND p.Physical = 1 AND t.IsNotDeleted = 1
+                GROUP BY t.WarehouseId, t.ProductId, w.Name, p.Name";
+            return Database.ExecuteSqlRawAsync(query);
         }
     }
 }
