@@ -1,6 +1,7 @@
 ﻿using Indotalent.ApiOData;
 using Indotalent.DTOs;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Query.Validator;
 using Microsoft.OData.ModelBuilder;
@@ -67,6 +68,19 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<AssemblyProductDto>("AssemblyProductChild");
             builder.EntitySet<LotDto>("Lot");
             builder.EntitySet<LotItemDto>("LotItem");
+            builder.EntitySet<PdfResource>("PdfGenerator");
+            var pdfAction = builder.EntityType<PdfResource>().Collection.Action("GeneratePdf");
+            pdfAction.Returns<Stream>();
+            pdfAction.Parameter<int>("Id");
+            pdfAction.Parameter<int>("productId");
+            pdfAction.Parameter<int>("purchaseOrderId");
+            pdfAction.Parameter<int>("salesOrderId");
+            pdfAction.Parameter<int>("quantity");
+            var pdfFunction = builder.EntityType<PdfResource>().Collection.Function("PurchaseOrderReport");
+            pdfFunction.Returns<Stream>();
+            pdfFunction.Parameter<int>("purchaseOrderId");
+            pdfFunction.Parameter<int>("salesOrderId");
+
 
             services.AddControllers()
                 .AddOData(options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null)
