@@ -98,24 +98,31 @@ namespace Indotalent.ApiOData
         public async Task<ActionResult<TransferOutDto>> Patch([FromRoute] int key,
             [FromBody] Delta<TransferOutDto> transferOutDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var order = await _transferOutService.GetByIdAsync(key);
-            if (order == null)
+                var order = await _transferOutService.GetByIdAsync(key);
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                var dto = _mapper.Map<TransferOutDto>(order);
+                transferOutDto.Patch(dto);
+
+                var entity = _mapper.Map(dto, order);
+
+                await _transferOutService.UpdateAsync(entity);
+                return Updated(_mapper.Map<TransferOutDto>(entity));
+            }
+            catch (Exception e)
             {
-                return NotFound();
+                return UnprocessableEntity(e.Message);
             }
-
-            var dto = _mapper.Map<TransferOutDto>(order);
-            transferOutDto.Patch(dto);
-
-            var entity = _mapper.Map(dto, order);
-
-            await _transferOutService.UpdateAsync(entity);
-            return Updated(_mapper.Map<TransferOutDto>(entity));
         }
 
         public async Task<ActionResult> Delete([FromRoute] int key)

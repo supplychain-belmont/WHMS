@@ -132,11 +132,14 @@ namespace Indotalent.Data
                     MAX(t.Id) AS Id,
                     MAX(t.RowGuid) AS RowGuid,
                     MAX(t.CreatedAtUtc) AS CreatedAtUtc,
-                    MAX(CAST(t.IsNotDeleted AS INT)) AS IsNotDeleted
+                    MAX(t.CreatedByUserId) AS CreatedByUserId,
+                    MAX(t.UpdatedAtUtc) AS UpdatedAtUtc,
+                    MAX(t.UpdatedByUserId) AS UpdatedByUserId,
+                    CAST(1 AS BIT) AS IsNotDeleted
                 FROM InventoryTransaction t
                 JOIN Warehouse w ON t.WarehouseId = w.Id
                 JOIN Product p ON t.ProductId = p.Id
-                WHERE (t.Status >= 2 OR t.Status = 0) AND w.SystemWarehouse = 0 AND p.Physical = 1
+                WHERE (t.Status >= 2 OR t.Status = 0) AND w.SystemWarehouse = 0 AND p.Physical = 1 AND t.IsNotDeleted = 1
                 GROUP BY t.WarehouseId, t.ProductId, w.Name, p.Name";
             return Database.ExecuteSqlRawAsync(query);
         }

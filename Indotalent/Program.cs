@@ -114,10 +114,6 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
-    "Mgo+DSMBMAY9C3t2UlhhQlVMfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX9SdEJjXn9XcHZUQ2RZ"
-);
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
