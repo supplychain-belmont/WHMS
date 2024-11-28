@@ -18,6 +18,7 @@ namespace Indotalent.ApiOData
     {
         private readonly AssemblyProductService _assemblyProductService;
         private readonly IMapper _mapper;
+        private const string ParentId = "ParentId";
 
         public AssemblyProductChildController(AssemblyProductService assemblyProductService, IMapper mapper)
         {
@@ -56,11 +57,14 @@ namespace Indotalent.ApiOData
 
         public async Task<ActionResult<AssemblyProductDto>> Post([FromBody] AssemblyProductDto productDto)
         {
+            Request.Headers.TryGetValue(ParentId, out var parentId);
+            var assemblyId = int.Parse(parentId.ToString());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            productDto.AssemblyId = assemblyId;
             var product = _mapper.Map<AssemblyProduct>(productDto);
 
             await _assemblyProductService.AddAsync(product);

@@ -2,6 +2,8 @@ using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
 using Indotalent.Models.Entities;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Indotalent.Applications.Products;
 
 public class AssemblyProductService : Repository<AssemblyProduct>
@@ -26,6 +28,16 @@ public class AssemblyProductService : Repository<AssemblyProduct>
         {
             product.AssemblyId = entity!.AssemblyId;
         }
+
         await _productService.UpdateAsync(product);
+        var totalUnitCost = await GetAll()
+            .Include(ap => ap.Product)
+            .Where(ap => ap.AssemblyId == entity!.AssemblyId)
+            .SumAsync(ap => ap.Product!.UnitCost * ap.Quantity);
+
+        var assembly = await _productService.GetByIdAsync(entity?.AssemblyId);
+        assembly!.UnitCost = totalUnitCost;
+        assembly.CalculateUnitPrice();
+        await _productService.UpdateAsync(assembly);
     }
 }
