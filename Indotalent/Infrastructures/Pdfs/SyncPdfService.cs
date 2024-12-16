@@ -1,11 +1,10 @@
-using Syncfusion.Pdf;
-using Syncfusion.Pdf.Graphics;
-using Syncfusion.Drawing;
-
 using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 
+using Syncfusion.Drawing;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Grid;
 
 namespace Indotalent.Infrastructures.Pdfs;

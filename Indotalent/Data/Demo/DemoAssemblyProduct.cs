@@ -67,7 +67,9 @@ public static class DemoAssemblyProduct
 
                 await assemblyProductService.AddAsync(new AssemblyProduct
                 {
-                    ProductId = product.Id, Quantity = quantity, AssemblyId = p.Id,
+                    ProductId = product.Id,
+                    Quantity = quantity,
+                    AssemblyId = p.Id,
                 });
             }
         }
