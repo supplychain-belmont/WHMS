@@ -23,210 +23,6 @@ namespace Indotalent.Data.Demo
 
             await productService.AddAsync(new Product
             {
-                Name = "Dell Servers",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 5000.0m,
-                M3 = 1.2m,
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Dell Desktop Computers",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 2000.0m,
-                M3 = 0.8m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Dell Laptops",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 3000.0m,
-                M3 = 0.5m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Hitachi Storage",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1500.0m,
-                M3 = 0.7m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Epson Printers",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1000.0m,
-                M3 = 0.3m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Network Cables",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId =
-                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "m").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 100.0m,
-                M3 = 0.1m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Routers and Switches",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId =
-                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1000.0m,
-                M3 = 0.2m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Antennas and Signal Boosters",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId =
-                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 2000.0m,
-                M3 = 2.0m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Wifii",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId =
-                    productGroupService.GetAll().Where(x => x.Name == "Networking").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1000.0m,
-                M3 = 0.1m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "HDD 500",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 500.0m,
-                M3 = 0.1m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "HDD 1T",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 800.0m,
-                M3 = 0.2m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "SSD 500",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1000.0m,
-                M3 = 0.1m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "SSD 1T",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Storage").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1500.0m,
-                M3 = 0.2m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Dell Keyboard",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 700.0m,
-                M3 = 0.1m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Dell Mouse",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 500.0m,
-                M3 = 0.1m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Dell Monitor 27inch",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1000.0m,
-                M3 = 2.4m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Dell Monitor 32inch",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 1500.0m,
-                M3 = 1.8m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "Dell Webcams",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Device").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = true,
-                UnitPrice = 500.0m,
-                M3 = 3.0m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "D365 License",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Software").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
-                Physical = false,
-                UnitPrice = 800.0m,
-                M3 = 0.4m
-            });
-            await productService.AddAsync(new Product
-            {
-                Name = "IT Security",
-                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
-                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Service").FirstOrDefault()!.Id,
-                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "h").FirstOrDefault()!.Id,
-                Physical = false,
-                UnitPrice = 500.0m,
-                M3 = 0.0m
-            });
-            await productService.AddAsync(new Product
-            {
                 Name = "Asiento con 1BR",
                 Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
@@ -254,6 +50,126 @@ namespace Indotalent.Data.Demo
                 Physical = true,
                 UnitPrice = 150.0m,
                 M3 = 0.26m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Casablanca",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Salón").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 860m,
+                M3 = 2.2m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Tensas",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 1120m,
+                M3 = 1.5m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Taracra",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 629m,
+                M3 = 1.1m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Vittoria",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 340m,
+                M3 = 1.2m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Delluca",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Salón").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 110,
+                M3 = 1.8m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Marsalla",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Salón").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 2500m,
+                M3 = 2.32m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Zerfield",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 496m,
+                M3 = 0.8m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Jhoston mesa",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 1520m,
+                M3 = 2.5m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Jhoston silla",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 610m,
+                M3 = 0.5m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Kimone mesa",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 910m,
+                M3 = 1.5m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Kimone silla",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 250m,
+                M3 = 0.65m
+            });
+            await productService.AddAsync(new Product
+            {
+                Name = "Watson",
+                Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
+                ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
+                UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
+                Physical = true,
+                UnitPrice = 238m,
+                M3 = 0.5m
             });
         }
     }

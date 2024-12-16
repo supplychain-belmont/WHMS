@@ -105,6 +105,9 @@ builder.Services
     .AddSingleton<IPdfService, PdfService>();
 
 builder.Services
+    .AddSingleton<SyncPdfService>();
+
+builder.Services
     .AddCustomOData();
 
 builder.Services
@@ -113,6 +116,10 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson();
 
 var app = builder.Build();
+
+var license = app.Configuration.GetSection("SyncfusionLicense").Get<string>();
+Console.WriteLine($"License: {license}");
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(license);
 
 if (app.Environment.IsDevelopment())
 {

@@ -7,6 +7,7 @@
         public DateTime? CreatedAtUtc { get; set; }
         public int? SalesOrderId { get; set; }
         public int ProductId { get; set; }
+        public string? Product { get; set; }
         public string? Summary { get; set; }
 
 
