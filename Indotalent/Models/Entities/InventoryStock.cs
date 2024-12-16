@@ -29,7 +29,7 @@ public class InventoryStock : _Base
             Product = data.Product,
             Stock = data.Stock,
             Reserved = data.Reserved,
-            ReservedPercentage = Round(Min(data.Reserved / data.Stock * 100, 100), 2),
+            // ReservedPercentage = Round(Min(data.Reserved / data.Stock * 100, 100), 2),
             Incoming = data.Incoming
         };
     }

@@ -238,7 +238,8 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.Product, opt => opt.Ignore())
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
-        CreateMap<SalesOrderItem, SalesOrderItemChildDto>();
+        CreateMap<SalesOrderItem, SalesOrderItemChildDto>()
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name));
         CreateMap<SalesOrderItemChildDto, SalesOrderItem>()
             .ForMember(dest => dest.Id,
                 opt => opt.Ignore())

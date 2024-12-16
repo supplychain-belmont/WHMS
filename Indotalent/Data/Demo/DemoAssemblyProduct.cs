@@ -18,52 +18,56 @@ public static class DemoAssemblyProduct
         var productGroupService = services.GetRequiredService<ProductGroupService>();
         var unitMeasureService = services.GetRequiredService<UnitMeasureService>();
 
-        var productGroupId = await productGroupService.GetAll().Where(x => x.Name == "Hardware").FirstOrDefaultAsync();
+        var productGroupId = await productGroupService.GetAll().Where(x => x.Name == "Exterior").FirstOrDefaultAsync();
         var unitMeasureId = await unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefaultAsync();
 
         await productService.AddAsync(new Product
         {
-            Name = "Assembly Product 1",
+            Name = "Jhoston",
             Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
             ProductGroupId = productGroupId!.Id,
             UnitMeasureId = unitMeasureId!.Id,
             Physical = true,
             IsAssembly = true,
-            UnitPrice = 5000.0m,
-            M3 = 1.2m,
+            UnitPrice = 2132m,
+            M3 = 3m,
         });
         await productService.AddAsync(new Product
         {
-            Name = "Assembly Product 2",
+            Name = "Kimone",
             Number = numberSequenceService.GenerateNumber(nameof(Product), "", "ART"),
             ProductGroupId = productGroupId.Id,
             UnitMeasureId = unitMeasureId.Id,
             Physical = true,
             IsAssembly = true,
-            UnitPrice = 2000.0m,
-            M3 = 1.7m,
+            UnitPrice = 1150.0m,
+            M3 = 2.1m,
         });
 
         var assemblyProducts = await productService.GetAll()
             .Where(p => p.IsAssembly)
             .ToListAsync();
 
-        var products = await productService.GetAll()
-            .Where(p => !p.IsAssembly)
-            .ToListAsync();
-
         Random random = new();
 
         foreach (Product p in assemblyProducts)
         {
-            for (int i = 0; i < random.Next(2, 3); i++)
+            var child = await productService.GetAll()
+                .Where(pr => pr.Name.StartsWith(p.Name))
+                .Where(pr => !pr.IsAssembly)
+                .ToListAsync();
+
+            foreach (Product product in child)
             {
-                var randomProduct = products[random.Next(products.Count)];
+                var quantity = random.Next(1, 5);
+                if (product.Name.Contains("mesa"))
+                {
+                    quantity = 1;
+                }
+
                 await assemblyProductService.AddAsync(new AssemblyProduct
                 {
-                    ProductId = randomProduct.Id,
-                    Quantity = random.Next(1, 10),
-                    AssemblyId = p.Id,
+                    ProductId = product.Id, Quantity = quantity, AssemblyId = p.Id,
                 });
             }
         }

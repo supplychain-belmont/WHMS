@@ -68,7 +68,7 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<AssemblyProductDto>("AssemblyProductChild");
             builder.EntitySet<LotDto>("Lot");
             builder.EntitySet<LotItemDto>("LotItem");
-            builder.EntitySet<PdfResource>("PdfGenerator");
+            // builder.EntitySet<PdfResource>("PdfGenerator");
             var pdfAction = builder.EntityType<PdfResource>().Collection.Action("GeneratePdf");
             pdfAction.Returns<Stream>();
             pdfAction.Parameter<int>("Id");
@@ -76,10 +76,14 @@ namespace Indotalent.Infrastructures.ODatas
             pdfAction.Parameter<int>("purchaseOrderId");
             pdfAction.Parameter<int>("salesOrderId");
             pdfAction.Parameter<int>("quantity");
+            builder.EntitySet<PdfResource>("PdfGenerator");
             var pdfFunction = builder.EntityType<PdfResource>().Collection.Function("PurchaseOrderReport");
             pdfFunction.Returns<Stream>();
             pdfFunction.Parameter<int>("purchaseOrderId");
             pdfFunction.Parameter<int>("salesOrderId");
+            var pdfSalesFunction = builder.EntityType<PdfResource>().Collection.Function("SalesOrderReport");
+            pdfSalesFunction.Returns<Stream>();
+            pdfSalesFunction.Parameter<int>("salesOrderId");
 
 
             services.AddControllers()
