@@ -1,4 +1,4 @@
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +18,7 @@ namespace Indotalent.Applications.Payment
             return _context.Set<CreditDues>();
         }
 
-        public async Task<Models.Entities.CreditDues?> GetByIdAsync(int id)
+        public async Task<CreditDues?> GetByIdAsync(int id)
         {
             return await _context.Set<CreditDues>().FindAsync(id);
         }

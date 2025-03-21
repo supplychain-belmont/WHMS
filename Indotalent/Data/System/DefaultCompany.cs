@@ -2,7 +2,7 @@
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
 using Indotalent.Infrastructures.TimeZones;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 namespace Indotalent.Data.System
 {

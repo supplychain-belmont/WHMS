@@ -1,7 +1,7 @@
 using Indotalent.Applications.Companies;
 using Indotalent.Applications.SalesOrderItems;
 using Indotalent.Applications.SalesOrders;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

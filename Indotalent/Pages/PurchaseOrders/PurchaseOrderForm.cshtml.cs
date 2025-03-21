@@ -8,8 +8,8 @@ using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Applications.Taxes;
 using Indotalent.Applications.Vendors;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

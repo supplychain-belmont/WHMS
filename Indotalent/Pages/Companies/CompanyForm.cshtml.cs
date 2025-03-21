@@ -7,7 +7,7 @@ using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Infrastructures.TimeZones;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

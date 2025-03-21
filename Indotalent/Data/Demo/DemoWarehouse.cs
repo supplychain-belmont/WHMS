@@ -1,5 +1,5 @@
 ﻿using Indotalent.Applications.Warehouses;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 namespace Indotalent.Data.Demo
 {

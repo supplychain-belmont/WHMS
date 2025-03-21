@@ -4,8 +4,8 @@ using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.PurchaseReturns;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;

@@ -2,7 +2,7 @@
 using Indotalent.Applications.VendorCategories;
 using Indotalent.Applications.VendorGroups;
 using Indotalent.Applications.Vendors;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 namespace Indotalent.Data.Demo
 {

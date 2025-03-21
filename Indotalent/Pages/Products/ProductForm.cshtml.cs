@@ -7,7 +7,7 @@ using Indotalent.Applications.ProductGroups;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.UnitMeasures;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

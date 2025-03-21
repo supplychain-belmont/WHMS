@@ -1,9 +1,9 @@
 ﻿using Indotalent.Applications.Warehouses;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Contracts;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -4,8 +4,8 @@ using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.EntityFrameworkCore;
 

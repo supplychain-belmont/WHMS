@@ -1,4 +1,4 @@
-﻿using Indotalent.Models.Contracts;
+﻿using Indotalent.Domain.Contracts;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

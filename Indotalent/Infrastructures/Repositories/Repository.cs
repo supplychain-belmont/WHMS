@@ -4,7 +4,7 @@ using System.Security.Claims;
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Data;
-using Indotalent.Models.Contracts;
+using Indotalent.Domain.Contracts;
 
 using Microsoft.EntityFrameworkCore;
 

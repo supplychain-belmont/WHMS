@@ -3,7 +3,7 @@ using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.CustomerCategories;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;

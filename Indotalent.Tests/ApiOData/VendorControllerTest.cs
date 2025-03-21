@@ -9,8 +9,8 @@ using Indotalent.Data;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Mapper;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Contracts;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

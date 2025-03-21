@@ -3,7 +3,7 @@ using AutoMapper;
 using Indotalent.Applications.ApplicationUsers;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Infrastructures.Images;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

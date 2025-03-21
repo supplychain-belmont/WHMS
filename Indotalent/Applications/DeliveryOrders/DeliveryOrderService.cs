@@ -4,8 +4,8 @@ using Indotalent.Applications.Products;
 using Indotalent.Applications.SalesOrderItems;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -120,7 +120,7 @@ namespace Indotalent.Applications.DeliveryOrders
                         children.Select(x => x.ProductId).Contains(it.ProductId!.Value) &&
                         children.Select(x => x.WarehouseId).Contains(it.WarehouseId!.Value))
                     .Select(it =>
-                        new { it.ProductId, it.Product, it.WarehouseId, InventoryStock.Parse(it).Stock })
+                        new { it.ProductId, it.Product, it.WarehouseId, it.Stock })
                     .ToListAsync();
 
                 var products = new List<string>();

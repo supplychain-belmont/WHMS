@@ -2,7 +2,7 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.ProductGroups;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.UnitMeasures;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 

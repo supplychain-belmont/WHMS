@@ -1,6 +1,6 @@
 using Indotalent.Applications.Payment;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;

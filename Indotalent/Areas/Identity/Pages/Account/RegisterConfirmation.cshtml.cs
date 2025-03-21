@@ -5,7 +5,7 @@
 using System.Text;
 
 using Indotalent.AppSettings;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

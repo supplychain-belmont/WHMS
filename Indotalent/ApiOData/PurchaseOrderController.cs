@@ -3,8 +3,8 @@ using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;

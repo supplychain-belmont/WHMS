@@ -4,8 +4,8 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Applications.Warehouses;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.EntityFrameworkCore;
 

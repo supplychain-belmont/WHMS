@@ -4,8 +4,8 @@ using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Applications.Taxes;
 using Indotalent.Applications.Vendors;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 namespace Indotalent.Data.Demo
 {

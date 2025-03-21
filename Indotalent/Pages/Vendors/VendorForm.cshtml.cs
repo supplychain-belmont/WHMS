@@ -8,7 +8,7 @@ using Indotalent.Applications.VendorGroups;
 using Indotalent.Applications.Vendors;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

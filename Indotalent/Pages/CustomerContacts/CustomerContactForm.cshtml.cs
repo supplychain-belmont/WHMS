@@ -6,7 +6,7 @@ using Indotalent.Applications.CustomerContacts;
 using Indotalent.Applications.Customers;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

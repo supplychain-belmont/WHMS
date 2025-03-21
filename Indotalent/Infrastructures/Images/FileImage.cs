@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-using Indotalent.Models.Contracts;
+using Indotalent.Domain.Contracts;
 
 namespace Indotalent.Infrastructures.Images
 {

@@ -1,7 +1,7 @@
 ﻿using Indotalent.Applications.CustomerContacts;
 using Indotalent.Applications.Customers;
 using Indotalent.Applications.NumberSequences;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 namespace Indotalent.Data.Demo
 {

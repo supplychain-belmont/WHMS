@@ -7,7 +7,7 @@ using Indotalent.Applications.ApplicationUsers;
 using Indotalent.Applications.LogErrors;
 using Indotalent.AppSettings;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

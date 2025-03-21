@@ -1,6 +1,6 @@
 using Indotalent.Data;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
+using Indotalent.Domain.Contracts;
 using Indotalent.Tests.Utils;
 
 using Microsoft.AspNetCore.Http;

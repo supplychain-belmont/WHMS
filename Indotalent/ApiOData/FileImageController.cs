@@ -6,7 +6,7 @@ using AutoMapper.QueryableExtensions;
 
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Images;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

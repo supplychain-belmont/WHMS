@@ -7,7 +7,7 @@ using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

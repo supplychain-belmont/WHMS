@@ -2,7 +2,7 @@
 
 using Indotalent.Applications.ProductGroups;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
