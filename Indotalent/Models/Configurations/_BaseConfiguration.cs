@@ -16,11 +16,10 @@ namespace Indotalent.Models.Configurations
         protected virtual void ConfigureBaseProperties(EntityTypeBuilder<TEntity> builder)
         {
             builder.Property(c => c.Id).ValueGeneratedOnAdd();
-            builder.Property(c => c.RowGuid).HasDefaultValueSql("NEWID()");
+            builder.Property(c => c.RowGuid).HasDefaultValue(Guid.NewGuid());
             builder.Property(e => e.CreatedByUserId).HasMaxLength(50);
 
             builder.Property(e => e.CreatedAtUtc)
-                .HasColumnType("datetime")
                 .HasConversion(
                     v => v.HasValue ? v.Value.ToUniversalTime() : (DateTime?)null,
                     v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : DateTime.MinValue
@@ -29,7 +28,6 @@ namespace Indotalent.Models.Configurations
             builder.Property(e => e.UpdatedByUserId).HasMaxLength(50);
 
             builder.Property(e => e.UpdatedAtUtc)
-                .HasColumnType("datetime")
                 .HasConversion(
                     v => v.HasValue ? v.Value.ToUniversalTime() : (DateTime?)null,
                     v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : DateTime.MinValue

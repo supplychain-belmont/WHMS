@@ -1,12 +1,20 @@
 services:
-  sql-server:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+  #  sql-server:
+  #    image: mcr.microsoft.com/mssql/server:2019-latest
+  #    env_file:
+  #      - ./.env-sqlserver
+  #    ports:
+  #      - "1433:1433"
+  #    volumes:
+  #      - data:/var/opt/mssql
+  postgres:
+    image: postgres
     env_file:
-      - ./.env-sqlserver
+      - ./.env-postgres
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - data:/var/opt/mssql
+      - data:/var/lib/postgresql/data
 
 volumes:
   data:
