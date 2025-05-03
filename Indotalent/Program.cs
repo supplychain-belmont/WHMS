@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
+using Swashbuckle.AspNetCore.SwaggerUI;
+
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
 
@@ -39,6 +41,7 @@ builder.Services.AddSwaggerGen(c =>
             Description = "Una API para gestionar la aplicación de Indotalent",
             Contact = new OpenApiContact { Name = "Tu Nombre", Email = "tu.email@example.com" }
         });
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
@@ -128,6 +131,7 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Indotalent v1");
         c.RoutePrefix = string.Empty;
+        c.DocExpansion(DocExpansion.None);
     });
 }
 
@@ -156,7 +160,7 @@ app.UseSession();
 
 app.UseMiddleware<LogAnalyticMiddleware>();
 
-app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+// app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 app.UseRouting();
 

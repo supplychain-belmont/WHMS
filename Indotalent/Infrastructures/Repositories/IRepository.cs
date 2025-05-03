@@ -1,11 +1,17 @@
-﻿namespace Indotalent.Infrastructures.Repositories
+﻿using System.Linq.Expressions;
+
+using Indotalent.Domain.Contracts;
+
+namespace Indotalent.Infrastructures.Repositories
 {
     public interface IRepository<T> where T : class
     {
         IQueryable<T> GetAllArchive();
         IQueryable<T> GetAll();
         Task<T?> GetByIdAsync(int? id);
-        Task<T?> GetByRowGuidAsync(Guid? rowGuid);
+        IQueryable<T> GetByIdAsync(int? id, params Expression<Func<T, _Base?>>[] includes);
+        Task<T> GetByRowGuidAsync(Guid? rowGuid);
+        IQueryable<T> GetByRowGuidAsync(Guid? id, params Expression<Func<T, _Base?>>[] includes);
         Task AddAsync(T? entity);
         Task UpdateAsync(T? entity);
         Task DeleteByIdAsync(int? id);
