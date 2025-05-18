@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using Indotalent.Application.SalesOrders;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Data;
 using Indotalent.DTOs;
@@ -15,12 +16,14 @@ namespace Indotalent.Applications.SalesOrders
     public class SalesOrderService : Repository<SalesOrder>
     {
         private readonly NumberSequenceService _numberSequenceService;
+        private readonly SalesOrderProcessor _salesOrderProcessor;
 
         public SalesOrderService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
-            NumberSequenceService numberSequenceService
+            NumberSequenceService numberSequenceService,
+            SalesOrderProcessor salesOrderProcessor
         ) :
             base(
                 context,
@@ -28,6 +31,7 @@ namespace Indotalent.Applications.SalesOrders
                 auditColumnTransformer)
         {
             _numberSequenceService = numberSequenceService;
+            _salesOrderProcessor = salesOrderProcessor;
         }
 
         public override Task AddAsync(SalesOrder? entity)
@@ -52,18 +56,7 @@ namespace Indotalent.Applications.SalesOrders
 
             if (master != null)
             {
-                master.BeforeTaxAmount = 0;
-                foreach (var item in childs)
-                {
-                    master.BeforeTaxAmount += item.Total;
-                }
-
-                if (master.Tax != null)
-                {
-                    master.TaxAmount = (master.Tax.Percentage / 100.0m) * master.BeforeTaxAmount;
-                }
-
-                master.AfterTaxAmount = master.BeforeTaxAmount + master.TaxAmount;
+                _salesOrderProcessor.RecalculateParent(master, childs);
                 _context.Set<SalesOrder>().Update(master);
                 await _context.SaveChangesAsync();
             }
