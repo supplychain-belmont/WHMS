@@ -6,9 +6,9 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.VendorCategories;
 using Indotalent.Applications.VendorGroups;
 using Indotalent.Applications.Vendors;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

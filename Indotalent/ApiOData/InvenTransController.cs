@@ -4,9 +4,9 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.InventoryTransactions;
-using Indotalent.DTOs;
 using Indotalent.Domain.Entities;
 using Indotalent.Domain.Enums;
+using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

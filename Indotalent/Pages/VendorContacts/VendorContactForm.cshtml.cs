@@ -5,8 +5,8 @@ using AutoMapper;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.VendorContacts;
 using Indotalent.Applications.Vendors;
-using Indotalent.Infrastructures.Extensions;
 using Indotalent.Domain.Entities;
+using Indotalent.Infrastructures.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

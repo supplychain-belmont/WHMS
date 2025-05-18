@@ -3,11 +3,11 @@ using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
 using Indotalent.Data.Demo;
 using Indotalent.Data.System;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
 using Indotalent.Infrastructures.Images;
 using Indotalent.Infrastructures.TimeZones;
-using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -5,9 +5,9 @@ using AutoMapper;
 using Indotalent.Applications.ApplicationUsers;
 using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

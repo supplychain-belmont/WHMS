@@ -1,9 +1,9 @@
 using System.Runtime.CompilerServices;
 
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Docs;
 using Indotalent.Infrastructures.Images;
 using Indotalent.Models.Configurations;
-using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

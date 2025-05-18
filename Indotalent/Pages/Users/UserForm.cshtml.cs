@@ -7,10 +7,10 @@ using AutoMapper;
 using Indotalent.Applications.ApplicationUsers;
 using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
-using Indotalent.Infrastructures.Countries;
-using Indotalent.Infrastructures.Extensions;
 using Indotalent.Domain.Entities;
 using Indotalent.Domain.Enums;
+using Indotalent.Infrastructures.Countries;
+using Indotalent.Infrastructures.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

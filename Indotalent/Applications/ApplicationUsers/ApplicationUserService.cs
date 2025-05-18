@@ -2,9 +2,9 @@
 using System.Security.Claims;
 
 using Indotalent.Data;
-using Indotalent.Infrastructures.Repositories;
 using Indotalent.Domain.Contracts;
 using Indotalent.Domain.Entities;
+using Indotalent.Infrastructures.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 

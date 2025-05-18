@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Images;
-using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

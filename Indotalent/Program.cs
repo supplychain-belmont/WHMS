@@ -2,10 +2,10 @@ using Indotalent;
 using Indotalent.Application;
 using Indotalent.AppSettings;
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Middlewares;
 using Indotalent.Infrastructures.ODatas;
 using Indotalent.Infrastructures.Pdfs;
-using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

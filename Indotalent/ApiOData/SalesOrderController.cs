@@ -2,8 +2,8 @@
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.SalesOrders;
-using Indotalent.DTOs;
 using Indotalent.Domain.Entities;
+using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 
 using Microsoft.AspNetCore.Mvc;

@@ -3,10 +3,10 @@
 using Indotalent.Application.SalesOrders;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Data;
-using Indotalent.DTOs;
-using Indotalent.Infrastructures.Repositories;
 using Indotalent.Domain.Contracts;
 using Indotalent.Domain.Entities;
+using Indotalent.DTOs;
+using Indotalent.Infrastructures.Repositories;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;

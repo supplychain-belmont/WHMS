@@ -1,9 +1,9 @@
 using AutoMapper;
 
 using Indotalent.Applications.ApplicationUsers;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Infrastructures.Images;
-using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

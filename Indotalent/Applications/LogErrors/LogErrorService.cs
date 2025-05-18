@@ -3,9 +3,9 @@
 using AutoMapper;
 
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 

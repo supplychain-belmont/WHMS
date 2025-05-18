@@ -3,9 +3,9 @@
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Scrappings;
-using Indotalent.DTOs;
 using Indotalent.Domain.Entities;
 using Indotalent.Domain.Enums;
+using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;

@@ -3,8 +3,8 @@ using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.Products;
 using Indotalent.Applications.SalesOrderItems;
-using Indotalent.DTOs;
 using Indotalent.Domain.Entities;
+using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 

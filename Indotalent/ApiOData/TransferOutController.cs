@@ -2,8 +2,8 @@
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.TransferOuts;
-using Indotalent.DTOs;
 using Indotalent.Domain.Entities;
+using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

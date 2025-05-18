@@ -14,9 +14,9 @@ using Indotalent.Applications.StockCounts;
 using Indotalent.Applications.TransferIns;
 using Indotalent.Applications.TransferOuts;
 using Indotalent.Applications.Warehouses;
-using Indotalent.Infrastructures.Extensions;
 using Indotalent.Domain.Entities;
 using Indotalent.Domain.Enums;
+using Indotalent.Infrastructures.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

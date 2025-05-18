@@ -1,8 +1,8 @@
 using AutoMapper;
 
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Images;
-using Indotalent.Domain.Entities;
 
 namespace Indotalent.Infrastructures.Mapper;
 

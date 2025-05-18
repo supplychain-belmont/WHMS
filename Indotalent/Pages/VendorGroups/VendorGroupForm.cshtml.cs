@@ -3,8 +3,8 @@ using System.ComponentModel;
 using AutoMapper;
 
 using Indotalent.Applications.VendorGroups;
-using Indotalent.Infrastructures.Extensions;
 using Indotalent.Domain.Entities;
+using Indotalent.Infrastructures.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
