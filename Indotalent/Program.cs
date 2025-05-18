@@ -1,4 +1,5 @@
 using Indotalent;
+using Indotalent.Application;
 using Indotalent.AppSettings;
 using Indotalent.Data;
 using Indotalent.Infrastructures.Middlewares;
@@ -100,6 +101,9 @@ builder.Services.AddRazorPages();
 
 builder.Services
     .AddAllCustomServices();
+
+builder.Services
+    .AddApplicationServices();
 
 builder.Services
     .AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
