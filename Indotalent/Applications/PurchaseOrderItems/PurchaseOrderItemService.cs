@@ -46,6 +46,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     auditEntity.CreatedByUserId = _userId;
                 }
 
+                entity.ShowOrderItem = entity.AssemblyId == null;
                 entity.RecalculateTotal();
                 _context.Set<PurchaseOrderItem>().Add(entity);
                 await _context.SaveChangesAsync();

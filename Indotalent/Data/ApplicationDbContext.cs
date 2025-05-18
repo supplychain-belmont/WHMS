@@ -125,8 +125,8 @@ namespace Indotalent.Data
             if (IsPostgresSql)
             {
                 query = @"
-                    DROP VIEW IF EXISTS InventoryStock;
-                    CREATE VIEW InventoryStock AS
+                    DROP VIEW IF EXISTS ""InventoryStock"";
+                    CREATE VIEW ""InventoryStock"" AS
                     SELECT
                         t.""WarehouseId"",
                         t.""ProductId"",
