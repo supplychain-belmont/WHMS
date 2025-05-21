@@ -8,6 +8,7 @@ using Indotalent.Infrastructures.ODatas;
 using Indotalent.Infrastructures.Pdfs;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -165,6 +166,8 @@ app.UseSession();
 app.UseMiddleware<LogAnalyticMiddleware>();
 
 // app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+
+app.UseODataBatching();
 
 app.UseRouting();
 

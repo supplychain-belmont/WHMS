@@ -3,6 +3,7 @@ using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Batch;
 using Microsoft.AspNetCore.OData.Query.Validator;
 using Microsoft.OData.ModelBuilder;
 
@@ -91,6 +92,7 @@ namespace Indotalent.Infrastructures.ODatas
                     .AddRouteComponents("odata", builder.GetEdmModel(), odataServices =>
                     {
                         odataServices.AddSingleton<IODataQueryValidator, SFODataQueryValidator>();
+                        odataServices.AddSingleton<ODataBatchHandler, DefaultODataBatchHandler>();
                     }));
         }
     }
