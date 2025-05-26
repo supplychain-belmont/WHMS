@@ -339,12 +339,11 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
         CreateMap<ProductGroup, ProductGroupDto>().ReverseMap();
-        CreateMap<AssemblyProduct, AssemblyProductDto>()
-            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
-            .ForMember(dest => dest.Assembly, opt => opt.MapFrom(src => src.Assembly));
-        CreateMap<AssemblyProductDto, AssemblyProduct>()
+        CreateMap<Assembly, AssemblyDto>()
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+        CreateMap<AssemblyDto, Assembly>()
             .ForMember(dest => dest.Product, opt => opt.Ignore())
-            .ForMember(dest => dest.Assembly, opt => opt.Ignore());
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
 
         #endregion
 

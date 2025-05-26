@@ -13,7 +13,7 @@ public static class DemoAssemblyProduct
     public static async Task GenerateAsync(IServiceProvider services)
     {
         var productService = services.GetRequiredService<ProductService>();
-        var assemblyProductService = services.GetRequiredService<AssemblyProductService>();
+        var assemblyProductService = services.GetRequiredService<AssemblyService>();
         var numberSequenceService = services.GetRequiredService<NumberSequenceService>();
         var productGroupService = services.GetRequiredService<ProductGroupService>();
         var unitMeasureService = services.GetRequiredService<UnitMeasureService>();
@@ -65,11 +65,9 @@ public static class DemoAssemblyProduct
                     quantity = 1;
                 }
 
-                await assemblyProductService.AddAsync(new AssemblyProduct
+                await assemblyProductService.AddAsync(new Assembly
                 {
-                    ProductId = product.Id,
-                    Quantity = quantity,
-                    AssemblyId = p.Id,
+                    ProductId = p.Id,
                 });
             }
         }

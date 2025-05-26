@@ -74,7 +74,8 @@ namespace Indotalent
             services.AddScoped<UnitMeasureService>();
             services.AddScoped<ProductGroupService>();
             services.AddScoped<ProductService>();
-            services.AddScoped<AssemblyProductService>();
+            services.AddScoped<AssemblyService>();
+            services.AddScoped<AssemblyChildService>();
             services.AddScoped<CustomerContactService>();
             services.AddScoped<VendorContactService>();
             services.AddScoped<TaxService>();

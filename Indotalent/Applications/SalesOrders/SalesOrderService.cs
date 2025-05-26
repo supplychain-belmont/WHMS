@@ -1,14 +1,12 @@
-﻿using AutoMapper;
-
+﻿using Indotalent.Application.Products;
 using Indotalent.Application.SalesOrders;
 using Indotalent.Applications.NumberSequences;
+using Indotalent.Applications.Products;
 using Indotalent.Data;
 using Indotalent.Domain.Contracts;
 using Indotalent.Domain.Entities;
-using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
 
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.Applications.SalesOrders
@@ -17,14 +15,19 @@ namespace Indotalent.Applications.SalesOrders
     {
         private readonly NumberSequenceService _numberSequenceService;
         private readonly SalesOrderProcessor _salesOrderProcessor;
+        private readonly AssemblyService _assemblyService;
+        private readonly AssemblyChildService _assemblyChildService;
+        private readonly AssemblyProcessor _assemblyProcessor;
 
         public SalesOrderService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
             NumberSequenceService numberSequenceService,
-            SalesOrderProcessor salesOrderProcessor
-        ) :
+            SalesOrderProcessor salesOrderProcessor,
+            AssemblyService assemblyService,
+            AssemblyChildService assemblyChildService,
+            AssemblyProcessor assemblyProcessor) :
             base(
                 context,
                 httpContextAccessor,
@@ -32,6 +35,9 @@ namespace Indotalent.Applications.SalesOrders
         {
             _numberSequenceService = numberSequenceService;
             _salesOrderProcessor = salesOrderProcessor;
+            _assemblyService = assemblyService;
+            _assemblyChildService = assemblyChildService;
+            _assemblyProcessor = assemblyProcessor;
         }
 
         public override Task AddAsync(SalesOrder? entity)
@@ -41,6 +47,37 @@ namespace Indotalent.Applications.SalesOrders
             entity.AfterTaxAmount = 0.0m;
             entity.BeforeTaxAmount = 0.0m;
             return base.AddAsync(entity);
+        }
+
+        public async Task<SalesOrder> CreateOrderFromAssemblyAsync(int assemblyId)
+        {
+            var assembly = await _assemblyService.GetByIdAsync(assemblyId);
+
+            var children = await _assemblyChildService
+                .GetAll()
+                .Where(x => x.AssemblyId == assemblyId)
+                .ToListAsync();
+
+            var codeNumber = _numberSequenceService.GenerateNumber(nameof(SalesOrder), "", "SO");
+
+            var salesOrder = _assemblyProcessor.CreateSalesOrder(assembly, codeNumber);
+
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                await base.AddAsync(salesOrder);
+                var salesOrderItems = _assemblyProcessor.CreateSalesOrderItem(salesOrder.Id, children);
+                await _context.Set<SalesOrderItem>().AddRangeAsync(salesOrderItems);
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            } catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+
+            return salesOrder;
         }
 
         public async Task RecalculateParentAsync(int? masterId)

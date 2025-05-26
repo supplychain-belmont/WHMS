@@ -37,7 +37,7 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<VendorContactDto>("VendorContact");
             builder.EntitySet<VendorContactChildDto>("VendorContactChild");
             builder.EntitySet<TaxDto>("Tax");
-            builder.EntitySet<SalesOrderDto>("SalesOrder");
+            // builder.EntitySet<SalesOrderDto>("SalesOrder");
             builder.EntitySet<SalesOrderItemChildDto>("SalesOrderItemChild");
             builder.EntitySet<SalesOrderItemDto>("SalesOrderItem");
             builder.EntitySet<PurchaseOrderDto>("PurchaseOrder");
@@ -66,7 +66,8 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<ScrappingItemChildDto>("ScrappingItemChild");
             builder.EntitySet<StockCountItemChildDto>("StockCountItemChild");
             builder.EntitySet<FileImageDto>("FileImage");
-            builder.EntitySet<AssemblyProductDto>("AssemblyProductChild");
+            builder.EntitySet<AssemblyDto>("Assembly");
+            builder.EntitySet<AssemblyChildDto>("AssemblyChild");
             builder.EntitySet<LotDto>("Lot");
             builder.EntitySet<LotItemDto>("LotItem");
             // builder.EntitySet<PdfResource>("PdfGenerator");
@@ -86,6 +87,9 @@ namespace Indotalent.Infrastructures.ODatas
             pdfSalesFunction.Returns<Stream>();
             pdfSalesFunction.Parameter<int>("salesOrderId");
 
+            var assemblyAction = builder.EntityType<SalesOrderDto>().Collection.Action("OrderFromAssembly");
+            assemblyAction.Parameter<int>("assemblyId");
+            assemblyAction.ReturnsFromEntitySet<SalesOrderDto>("SalesOrder");
 
             services.AddControllers()
                 .AddOData(options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null)

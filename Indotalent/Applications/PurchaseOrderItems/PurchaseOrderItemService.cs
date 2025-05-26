@@ -14,7 +14,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
     {
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly ProductService _productService;
-        private readonly AssemblyProductService _assemblyProductService;
+        private readonly AssemblyService _assemblyService;
         private readonly LotService _lotService;
 
         public PurchaseOrderItemService(
@@ -23,7 +23,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
             IAuditColumnTransformer auditColumnTransformer,
             PurchaseOrderService purchaseOrderService,
             ProductService productService,
-            AssemblyProductService assemblyProductService,
+            AssemblyService assemblyService,
             LotService lotService) :
             base(
                 context,
@@ -32,7 +32,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
         {
             _purchaseOrderService = purchaseOrderService;
             _productService = productService;
-            _assemblyProductService = assemblyProductService;
+            _assemblyService = assemblyService;
             _lotService = lotService;
         }
 

@@ -16,7 +16,7 @@ namespace Indotalent.Applications.DeliveryOrders
         private readonly NumberSequenceService _numberSequenceService;
         private readonly SalesOrderItemService _salesOrderItemService;
         private readonly InventoryTransactionService _inventoryTransactionService;
-        private readonly AssemblyProductService _assemblyProductService;
+        private readonly AssemblyService _assemblyService;
         private readonly InventoryStockService _inventoryStockService;
 
         public DeliveryOrderService(
@@ -26,7 +26,7 @@ namespace Indotalent.Applications.DeliveryOrders
             NumberSequenceService numberSequenceService,
             SalesOrderItemService salesOrderItemService,
             InventoryTransactionService inventoryTransactionService,
-            AssemblyProductService assemblyProductService,
+            AssemblyService assemblyService,
             InventoryStockService inventoryStockService) :
             base(
                 context,
@@ -36,7 +36,7 @@ namespace Indotalent.Applications.DeliveryOrders
             _numberSequenceService = numberSequenceService;
             _salesOrderItemService = salesOrderItemService;
             _inventoryTransactionService = inventoryTransactionService;
-            _assemblyProductService = assemblyProductService;
+            _assemblyService = assemblyService;
             _inventoryStockService = inventoryStockService;
         }
 
@@ -44,46 +44,6 @@ namespace Indotalent.Applications.DeliveryOrders
         {
             entity!.Number = _numberSequenceService.GenerateNumber(nameof(DeliveryOrder), "", "DO");
             await base.AddAsync(entity);
-
-            var salesItems = await _salesOrderItemService.GetAll()
-                .Include(item => item.Product)
-                .Where(item => item.SalesOrderId == entity!.SalesOrderId)
-                .ToListAsync();
-
-            var assemblyProductIds = salesItems
-                .Where(item => item.Product!.IsAssembly)
-                .Select(item => item.ProductId)
-                .ToList();
-
-            var assemblyProducts = await _assemblyProductService
-                .GetAll()
-                .Include(ap => ap.Product)
-                .Where(ap => assemblyProductIds.Contains(ap.AssemblyId))
-                .ToListAsync();
-
-            foreach (SalesOrderItem salesOrderItem in salesItems)
-            {
-                if (salesOrderItem.Product!.IsAssembly)
-                {
-                    var productsFromAssembly = assemblyProducts
-                        .Where(ap => ap.AssemblyId == salesOrderItem.ProductId)
-                        .ToList();
-
-                    if (productsFromAssembly.Count == 0) continue;
-
-                    foreach (AssemblyProduct assemblyProduct in productsFromAssembly)
-                    {
-                        var assemblyTransaction = await CreateTransaction(assemblyProduct.ProductId,
-                            assemblyProduct.Quantity * salesOrderItem.Quantity, entity);
-                        await _inventoryTransactionService.AddAsync(assemblyTransaction);
-                    }
-
-                    continue;
-                }
-
-                var transaction = await CreateTransaction(salesOrderItem.ProductId, salesOrderItem.Quantity, entity);
-                await _inventoryTransactionService.AddAsync(transaction);
-            }
         }
 
         private Task<InventoryTransaction> CreateTransaction(int productId, decimal quantity,

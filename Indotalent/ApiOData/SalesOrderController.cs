@@ -4,21 +4,20 @@ using AutoMapper.QueryableExtensions;
 using Indotalent.Applications.SalesOrders;
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Infrastructures.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
     public class SalesOrderController : BaseODataController<SalesOrder, SalesOrderDto>
     {
+        private readonly SalesOrderService _salesOrderService;
+
         public SalesOrderController(SalesOrderService service, IMapper mapper) : base(service, mapper)
         {
+            _salesOrderService = service;
         }
 
         public override IQueryable<SalesOrderDto> Get()
@@ -34,6 +33,24 @@ namespace Indotalent.ApiOData
         {
             return await GetEntityWithIncludesAsync(key,
                 x => x.Customer, x => x.Customer, x => x.Tax);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OrderFromAssembly(ODataActionParameters actionParameters)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (actionParameters["AssemblyId"] is not int assemblyId)
+            {
+                return BadRequest("AssemblyId is required.");
+            }
+
+            var order = await _salesOrderService.CreateOrderFromAssemblyAsync(assemblyId);
+
+            return Ok(_mapper.Map<SalesOrderDto>(order));
         }
     }
 }

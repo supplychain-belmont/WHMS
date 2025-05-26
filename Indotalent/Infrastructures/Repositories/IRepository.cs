@@ -13,6 +13,7 @@ namespace Indotalent.Infrastructures.Repositories
         Task<T> GetByRowGuidAsync(Guid? rowGuid);
         IQueryable<T> GetByRowGuidAsync(Guid? id, params Expression<Func<T, _Base?>>[] includes);
         Task AddAsync(T? entity);
+        Task AddRangeAsync(ICollection<T> entities);
         Task UpdateAsync(T? entity);
         Task DeleteByIdAsync(int? id);
         Task DeleteByRowGuidAsync(Guid? rowGuid);

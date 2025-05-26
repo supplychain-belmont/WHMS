@@ -44,6 +44,7 @@ builder.Services.AddSwaggerGen(c =>
             Contact = new OpenApiContact { Name = "Tu Nombre", Email = "tu.email@example.com" }
         });
     c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+    c.SupportNonNullableReferenceTypes();
 });
 
 builder.Services.AddAutoMapper(typeof(Program));

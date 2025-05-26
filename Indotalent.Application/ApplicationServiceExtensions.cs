@@ -1,3 +1,4 @@
+using Indotalent.Application.Products;
 using Indotalent.Application.PurchaseOrders;
 using Indotalent.Application.SalesOrders;
 
@@ -11,6 +12,7 @@ public static class ApplicationServiceExtensions
     {
         services.AddScoped<SalesOrderProcessor>();
         services.AddScoped<PurchaseOrderProcessor>();
+        services.AddScoped<AssemblyProcessor>();
         return services;
     }
 }

@@ -56,7 +56,7 @@ namespace Indotalent.Data
         public virtual DbSet<NationalProductOrder> NationalProductOrders { get; set; } = default!;
         public virtual DbSet<NationalProductOrderItem> NationalProductOrderItems { get; set; } = default!;
         public virtual DbSet<ProductDetails> ProductDetails { get; set; } = default!;
-        public virtual DbSet<AssemblyProduct> AssemblyProduct { get; set; } = default!;
+        public virtual DbSet<Assembly> AssemblyProduct { get; set; } = default!;
         public virtual DbSet<Lot> Lots { get; set; } = default!;
         public virtual DbSet<LotItem> LotItems { get; set; } = default!;
         public virtual DbSet<InventoryStock> InventoryStocks { get; set; } = default!;
