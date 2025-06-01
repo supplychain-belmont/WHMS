@@ -57,6 +57,7 @@ namespace Indotalent.Data
         public virtual DbSet<NationalProductOrderItem> NationalProductOrderItems { get; set; } = default!;
         public virtual DbSet<ProductDetails> ProductDetails { get; set; } = default!;
         public virtual DbSet<Assembly> AssemblyProduct { get; set; } = default!;
+        public virtual DbSet<AssemblyChild> AssemblyChild { get; set; } = default!;
         public virtual DbSet<Lot> Lots { get; set; } = default!;
         public virtual DbSet<LotItem> LotItems { get; set; } = default!;
         public virtual DbSet<InventoryStock> InventoryStocks { get; set; } = default!;
@@ -110,6 +111,7 @@ namespace Indotalent.Data
             modelBuilder.ApplyConfiguration(new NationalProductOrderConfiguration());
             modelBuilder.ApplyConfiguration(new NationalProductOrderItemConfiguration());
             modelBuilder.ApplyConfiguration(new AssemblyProductConfiguration());
+            modelBuilder.ApplyConfiguration(new AssemblyChildProductConfiguration());
             modelBuilder.ApplyConfiguration(new LotConfiguration());
             modelBuilder.ApplyConfiguration(new LotItemConfiguration());
 

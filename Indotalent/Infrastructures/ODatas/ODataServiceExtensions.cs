@@ -66,7 +66,7 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<ScrappingItemChildDto>("ScrappingItemChild");
             builder.EntitySet<StockCountItemChildDto>("StockCountItemChild");
             builder.EntitySet<FileImageDto>("FileImage");
-            builder.EntitySet<AssemblyDto>("Assembly");
+            // builder.EntitySet<AssemblyDto>("Assembly");
             builder.EntitySet<AssemblyChildDto>("AssemblyChild");
             builder.EntitySet<LotDto>("Lot");
             builder.EntitySet<LotItemDto>("LotItem");
@@ -89,7 +89,15 @@ namespace Indotalent.Infrastructures.ODatas
 
             var assemblyAction = builder.EntityType<SalesOrderDto>().Collection.Action("OrderFromAssembly");
             assemblyAction.Parameter<int>("assemblyId");
+            assemblyAction.Parameter<int>("quantity");
             assemblyAction.ReturnsFromEntitySet<SalesOrderDto>("SalesOrder");
+
+            var assemblyAction2 = builder.EntityType<AssemblyDto>().Collection.Action("BuildAssembly");
+            assemblyAction2.Parameter<int>("assemblyId");
+            assemblyAction2.Parameter<int>("warehouseId");
+            assemblyAction2.Parameter<int>("quantity");
+            assemblyAction2.ReturnsFromEntitySet<AssemblyDto>("Assembly");
+
 
             services.AddControllers()
                 .AddOData(options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null)

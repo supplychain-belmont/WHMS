@@ -49,7 +49,7 @@ namespace Indotalent.Applications.SalesOrders
             return base.AddAsync(entity);
         }
 
-        public async Task<SalesOrder> CreateOrderFromAssemblyAsync(int assemblyId)
+        public async Task<SalesOrder> CreateOrderFromAssemblyAsync(int assemblyId, int quantity = 1)
         {
             var assembly = await _assemblyService.GetByIdAsync(assemblyId);
 
@@ -66,12 +66,17 @@ namespace Indotalent.Applications.SalesOrders
             try
             {
                 await base.AddAsync(salesOrder);
-                var salesOrderItems = _assemblyProcessor.CreateSalesOrderItem(salesOrder.Id, children);
+                var assemblyOrderItem = _assemblyProcessor.CreateSalesOrderItem(salesOrder.Id, assembly, quantity);
+                await _context.Set<SalesOrderItem>().AddAsync(assemblyOrderItem);
+                await _context.SaveChangesAsync();
+
+                var salesOrderItems = _assemblyProcessor.CreateSalesOrderItem(salesOrder.Id, children, quantity);
                 await _context.Set<SalesOrderItem>().AddRangeAsync(salesOrderItems);
 
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 await transaction.RollbackAsync();
                 throw;
@@ -87,13 +92,13 @@ namespace Indotalent.Applications.SalesOrders
                 .Where(x => x.Id == masterId && x.IsNotDeleted == true)
                 .FirstOrDefaultAsync();
 
-            var childs = await _context.Set<SalesOrderItem>()
+            var children = await _context.Set<SalesOrderItem>()
                 .Where(x => x.SalesOrderId == masterId && x.IsNotDeleted == true)
                 .ToListAsync();
 
             if (master != null)
             {
-                _salesOrderProcessor.RecalculateParent(master, childs);
+                _salesOrderProcessor.RecalculateParent(master, children);
                 _context.Set<SalesOrder>().Update(master);
                 await _context.SaveChangesAsync();
             }

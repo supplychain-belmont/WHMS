@@ -82,6 +82,16 @@ namespace Indotalent.Applications.InventoryTransactions
             }
         }
 
+        public override Task AddRangeAsync(ICollection<InventoryTransaction> entities)
+        {
+            foreach (InventoryTransaction inventoryTransaction in entities)
+            {
+                inventoryTransaction.CalculateStock();
+            }
+
+            return base.AddRangeAsync(entities);
+        }
+
         public decimal GetStock(int warehouseId, int productId)
         {
             var result = 0.0m;
@@ -138,6 +148,7 @@ namespace Indotalent.Applications.InventoryTransactions
                     ScrappingProcessing(transaction);
                     break;
                 default:
+                    transaction.CalculateStock();
                     break;
             }
 

@@ -14,6 +14,7 @@ public static class DemoAssemblyProduct
     {
         var productService = services.GetRequiredService<ProductService>();
         var assemblyProductService = services.GetRequiredService<AssemblyService>();
+        var assemblyChildProductService = services.GetRequiredService<AssemblyChildService>();
         var numberSequenceService = services.GetRequiredService<NumberSequenceService>();
         var productGroupService = services.GetRequiredService<ProductGroupService>();
         var unitMeasureService = services.GetRequiredService<UnitMeasureService>();
@@ -48,6 +49,15 @@ public static class DemoAssemblyProduct
             .Where(p => p.IsAssembly)
             .ToListAsync();
 
+        foreach (var assembly in assemblyProducts.Select(assemblyProduct => new Assembly
+                 {
+                     Description = $"Assembly for {assemblyProduct.Name}", ProductId = assemblyProduct.Id,
+                 }))
+        {
+            await assemblyProductService.AddAsync(assembly);
+        }
+
+
         Random random = new();
 
         foreach (Product p in assemblyProducts)
@@ -65,9 +75,11 @@ public static class DemoAssemblyProduct
                     quantity = 1;
                 }
 
-                await assemblyProductService.AddAsync(new Assembly
+                await assemblyChildProductService.AddAsync(new AssemblyChild
                 {
-                    ProductId = p.Id,
+                    AssemblyId = random.Next(1, assemblyProducts.Count + 1),
+                    ProductId = product.Id,
+                    Quantity = quantity
                 });
             }
         }

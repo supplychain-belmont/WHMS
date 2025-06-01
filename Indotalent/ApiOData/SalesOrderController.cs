@@ -43,14 +43,19 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            if (actionParameters["AssemblyId"] is not int assemblyId)
+            if (actionParameters["assemblyId"] is not int assemblyId)
             {
                 return BadRequest("AssemblyId is required.");
             }
 
-            var order = await _salesOrderService.CreateOrderFromAssemblyAsync(assemblyId);
+            if (actionParameters["quantity"] is not int quantity)
+            {
+                quantity = 1;
+            }
 
-            return Ok(_mapper.Map<SalesOrderDto>(order));
+            var order = await _salesOrderService.CreateOrderFromAssemblyAsync(assemblyId, quantity);
+
+            return CreatedAtAction(nameof(Get), new { key = order.Id }, _mapper.Map<SalesOrderDto>(order));
         }
     }
 }

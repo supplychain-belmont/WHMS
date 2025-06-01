@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Indotalent.Models.Configurations;
 
-public class AssemblyProductConfiguration : _BaseConfiguration<Assembly>
+public class AssemblyChildProductConfiguration : _BaseConfiguration<AssemblyChild>
 {
-    public override void Configure(EntityTypeBuilder<Assembly> builder)
+    public override void Configure(EntityTypeBuilder<AssemblyChild> builder)
     {
         base.Configure(builder);
 
@@ -15,9 +15,5 @@ public class AssemblyProductConfiguration : _BaseConfiguration<Assembly>
             .WithMany()
             .HasForeignKey(ac => ac.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        builder.Property(c => c.Description)
-            .HasMaxLength(1000)
-            .IsRequired(false);
     }
 }

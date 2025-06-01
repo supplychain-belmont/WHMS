@@ -344,6 +344,10 @@ public class ApplicationProfile : Profile
         CreateMap<AssemblyDto, Assembly>()
             .ForMember(dest => dest.Product, opt => opt.Ignore())
             .ForMember(dest => dest.Product, opt => opt.Ignore());
+        CreateMap<AssemblyChild, AssemblyChildDto>();
+        CreateMap<AssemblyChildDto, AssemblyChild>()
+            .ForMember(dest => dest.Assembly, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
 
         #endregion
 
