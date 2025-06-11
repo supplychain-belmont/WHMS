@@ -34,11 +34,12 @@ public class AssemblyService : Repository<Assembly>
         _inventoryTransactionService = inventoryTransactionService;
     }
 
-    public async Task CreateAssemblyAsync(int assemblyId, int warehouseId, int quantity = 1)
+    public async Task CreateAssemblyAsync(int productId, int warehouseId, int quantity = 1)
     {
         var assembly = await GetAll()
-            .Where(x => x.Id == assemblyId)
+            .Where(x => x.ProductId == productId)
             .Include(x => x.Product)
+            .Where(x => x.Product!.IsAssembly)
             .FirstOrDefaultAsync();
         if (assembly == null)
         {
@@ -47,7 +48,7 @@ public class AssemblyService : Repository<Assembly>
 
         var children = await _assemblyChildService
             .GetAll()
-            .Where(x => x.AssemblyId == assemblyId)
+            .Where(x => x.AssemblyId == assembly.Id)
             .OrderBy(x => x.Quantity)
             .Include(x => x.Product)
             .ToListAsync();
@@ -57,7 +58,14 @@ public class AssemblyService : Repository<Assembly>
             .Where(x => x.WarehouseId == warehouseId &&
                         children.Select(ac => ac.ProductId).Contains(x.ProductId!.Value))
             .Select(it =>
-                new { it.ProductId, it.Product, it.WarehouseId, it.Stock })
+                new
+                {
+                    it.ProductId,
+                    it.Product,
+                    it.WarehouseId,
+                    it.Stock,
+                    it.Warehouse
+                })
             .ToListAsync();
 
         foreach (AssemblyChild assemblyChild in children)
@@ -68,7 +76,7 @@ public class AssemblyService : Repository<Assembly>
             if (stock.Stock < assemblyChild.Quantity * quantity)
             {
                 throw new InvalidOperationException(
-                    $"Insufficient stock for product {assemblyChild.ProductId} in warehouse {warehouseId}.");
+                    $"Insufficient stock for product '{assemblyChild.Product!.Name}' in warehouse '{stock.Warehouse}'.");
             }
         }
 

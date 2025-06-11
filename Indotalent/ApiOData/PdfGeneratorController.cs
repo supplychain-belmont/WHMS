@@ -39,7 +39,7 @@ public class PdfGeneratorController : ODataController
         _mapper = mapper;
     }
 
-    [HttpGet("PdfGenerator/PurchaseOrderReport(PurchaseOrderId={purchaseOrderId})")]
+    [HttpGet("odata/PdfGenerator/PurchaseOrderReport(PurchaseOrderId={purchaseOrderId})")]
     public async Task<IActionResult> PurchaseOrderReport([FromODataUri] int purchaseOrderId)
     {
         if (!ModelState.IsValid)

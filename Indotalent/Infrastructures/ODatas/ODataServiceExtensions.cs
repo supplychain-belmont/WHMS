@@ -93,7 +93,7 @@ namespace Indotalent.Infrastructures.ODatas
             assemblyAction.ReturnsFromEntitySet<SalesOrderDto>("SalesOrder");
 
             var assemblyAction2 = builder.EntityType<AssemblyDto>().Collection.Action("BuildAssembly");
-            assemblyAction2.Parameter<int>("assemblyId");
+            assemblyAction2.Parameter<int>("productId");
             assemblyAction2.Parameter<int>("warehouseId");
             assemblyAction2.Parameter<int>("quantity");
             assemblyAction2.ReturnsFromEntitySet<AssemblyDto>("Assembly");

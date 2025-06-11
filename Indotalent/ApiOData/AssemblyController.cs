@@ -28,9 +28,9 @@ namespace Indotalent.ApiOData
                     return BadRequest(ModelState);
                 }
 
-                if (actionParameters["assemblyId"] is not int assemblyId)
+                if (actionParameters["productId"] is not int productId)
                 {
-                    return BadRequest("AssemblyId is required.");
+                    return BadRequest("ProductId is required.");
                 }
 
                 if (actionParameters["warehouseId"] is not int warehouseId)
@@ -43,7 +43,7 @@ namespace Indotalent.ApiOData
                     quantity = 1;
                 }
 
-                await _assemblyService.CreateAssemblyAsync(assemblyId, warehouseId, quantity);
+                await _assemblyService.CreateAssemblyAsync(productId, warehouseId, quantity);
 
                 return Ok();
             }

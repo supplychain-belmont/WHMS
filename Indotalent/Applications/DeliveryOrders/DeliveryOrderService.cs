@@ -16,7 +16,6 @@ namespace Indotalent.Applications.DeliveryOrders
         private readonly NumberSequenceService _numberSequenceService;
         private readonly SalesOrderItemService _salesOrderItemService;
         private readonly InventoryTransactionService _inventoryTransactionService;
-        private readonly AssemblyService _assemblyService;
         private readonly InventoryStockService _inventoryStockService;
 
         public DeliveryOrderService(
@@ -26,7 +25,6 @@ namespace Indotalent.Applications.DeliveryOrders
             NumberSequenceService numberSequenceService,
             SalesOrderItemService salesOrderItemService,
             InventoryTransactionService inventoryTransactionService,
-            AssemblyService assemblyService,
             InventoryStockService inventoryStockService) :
             base(
                 context,
@@ -36,7 +34,6 @@ namespace Indotalent.Applications.DeliveryOrders
             _numberSequenceService = numberSequenceService;
             _salesOrderItemService = salesOrderItemService;
             _inventoryTransactionService = inventoryTransactionService;
-            _assemblyService = assemblyService;
             _inventoryStockService = inventoryStockService;
         }
 
@@ -44,6 +41,17 @@ namespace Indotalent.Applications.DeliveryOrders
         {
             entity!.Number = _numberSequenceService.GenerateNumber(nameof(DeliveryOrder), "", "DO");
             await base.AddAsync(entity);
+
+            var salesItems = await _salesOrderItemService.GetAll()
+                .Include(item => item.Product)
+                .Where(item => item.SalesOrderId == entity!.SalesOrderId)
+                .ToListAsync();
+
+            foreach (SalesOrderItem salesOrderItem in salesItems)
+            {
+                var transaction = await CreateTransaction(salesOrderItem.ProductId, salesOrderItem.Quantity, entity);
+                await _inventoryTransactionService.AddAsync(transaction);
+            }
         }
 
         private Task<InventoryTransaction> CreateTransaction(int productId, decimal quantity,
