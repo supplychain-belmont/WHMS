@@ -86,6 +86,7 @@ namespace Indotalent.Applications.InventoryTransactions
         {
             foreach (InventoryTransaction inventoryTransaction in entities)
             {
+                CalculateInvenTrans(inventoryTransaction);
                 inventoryTransaction.CalculateStock();
             }
 

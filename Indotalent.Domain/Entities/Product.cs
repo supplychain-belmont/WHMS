@@ -39,39 +39,5 @@ namespace Indotalent.Domain.Entities
         public string? ProductCategory { get; set; }
 
         #endregion
-
-        public void CalculateUnitPrice()
-        {
-            this.UnitPrice40 = this.UnitCost * 1.4m;
-            this.UnitPrice50 = this.UnitCost * 1.5m;
-            this.UnitPrice60 = this.UnitCost * 1.6m;
-        }
-
-        public Product Clone()
-        {
-            return new Product
-            {
-                Name = this.Name,
-                Number = this.Number,
-                Description = this.Description,
-                UnitPrice = this.UnitPrice,
-                UnitCost = this.UnitCost,
-                UnitPrice40 = this.UnitPrice40,
-                UnitPrice50 = this.UnitPrice50,
-                UnitPrice60 = this.UnitPrice60,
-                Physical = this.Physical,
-                IsAssembly = this.IsAssembly,
-                AssemblyId = this.AssemblyId,
-                UnitMeasureId = this.UnitMeasureId,
-                ProductGroupId = this.ProductGroupId,
-                M3 = this.M3,
-                Color = this.Color,
-                ColorCode = this.ColorCode,
-                Material = this.Material,
-                TapestryCode = this.TapestryCode,
-                IsNationalProduct = this.IsNationalProduct,
-                ProductCategory = this.ProductCategory
-            };
-        }
     }
 }
