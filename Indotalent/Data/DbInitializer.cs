@@ -77,6 +77,7 @@ namespace Indotalent.Data
                 // await DemoScrapping.GenerateAsync(services);
                 // await DemoStockCount.GenerateAsync(services);
                 await DemoAssemblyProduct.GenerateAsync(services);
+                await DemoLot.GenerateAsync(services);
             }
         }
 

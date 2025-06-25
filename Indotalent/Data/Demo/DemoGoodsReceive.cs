@@ -26,7 +26,7 @@ namespace Indotalent.Data.Demo
 
             var purchaseOrders = await purchaseOrderService
                 .GetAll()
-                .Where(x => x.OrderStatus >= PurchaseOrderStatus.Confirmed)
+                .Where(x => x.OrderStatus == PurchaseOrderStatus.Confirmed)
                 .ToListAsync();
 
             var warehouses = await warehouseService

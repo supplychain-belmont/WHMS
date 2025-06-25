@@ -20,7 +20,7 @@ namespace Indotalent.Data.Demo
 
             var transferOuts = transferOutService
                 .GetAll()
-                .Where(x => x.Status >= TransferStatus.Confirmed)
+                .Where(x => x.Status == TransferStatus.Confirmed)
                 .ToList();
 
             foreach (var transferOut in transferOuts)
