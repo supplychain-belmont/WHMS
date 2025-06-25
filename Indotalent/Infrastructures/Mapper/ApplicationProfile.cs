@@ -194,6 +194,8 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+        CreateMap<CustomerContact, CustomerContactChildDto>();
+        CreateMap<CustomerContactChildDto, CustomerContact>();
         CreateMap<CustomerGroup, CustomerGroupDto>();
         CreateMap<CustomerGroupDto, CustomerGroup>()
             .ForMember(dest => dest.Id,
@@ -386,8 +388,7 @@ public class ApplicationProfile : Profile
 
         CreateMap<InventoryStock, InvenStockDto>()
             .ForMember(dest => dest.ReservedPercentage,
-                opt => opt.MapFrom(
-                    src => Math.Round(Math.Min(src.Reserved / src.Stock * 100, 100), 2)
+                opt => opt.MapFrom(src => Math.Round(Math.Min(src.Reserved / src.Stock * 100, 100), 2)
                 )
             )
             .ForMember(dest => dest.RowGuid,

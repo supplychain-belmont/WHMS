@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.CustomerContacts;
 using Indotalent.Applications.NumberSequences;
@@ -17,17 +18,6 @@ namespace Indotalent.ApiOData
 
     public class CustomerContactChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<CustomerContact, CustomerContactChildDto>();
-                CreateMap<CustomerContactChildDto, CustomerContact>();
-            }
-        }
-
-
         private readonly CustomerContactService _customerContactService;
         private readonly NumberSequenceService _numberSequenceService;
         private readonly IMapper _mapper;
@@ -52,7 +42,7 @@ namespace Indotalent.ApiOData
             return _customerContactService
                 .GetAll()
                 .Where(x => x.CustomerId == parentId)
-                .Select(x => _mapper.Map<CustomerContactChildDto>(x));
+                .ProjectTo<CustomerContactChildDto>(_mapper.ConfigurationProvider);
         }
 
 
