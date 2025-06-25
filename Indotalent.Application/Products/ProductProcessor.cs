@@ -9,6 +9,7 @@ public class ProductProcessor
         entity.UnitPrice40 = entity.UnitCost * 1.4m;
         entity.UnitPrice50 = entity.UnitCost * 1.5m;
         entity.UnitPrice60 = entity.UnitCost * 1.6m;
+        entity.UnitPrice = entity.UnitPrice60!.Value;
     }
 
     public Product Clone(Product entity)

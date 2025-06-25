@@ -82,7 +82,6 @@ namespace Indotalent.Infrastructures.ODatas
             var pdfFunction = builder.EntityType<PdfResource>().Collection.Function("PurchaseOrderReport");
             pdfFunction.Returns<Stream>();
             pdfFunction.Parameter<int>("purchaseOrderId");
-            pdfFunction.Parameter<int>("salesOrderId");
             var pdfSalesFunction = builder.EntityType<PdfResource>().Collection.Function("SalesOrderReport");
             pdfSalesFunction.Returns<Stream>();
             pdfSalesFunction.Parameter<int>("salesOrderId");

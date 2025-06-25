@@ -30,7 +30,8 @@ public static class DemoAssemblyProduct
             UnitMeasureId = unitMeasureId!.Id,
             Physical = true,
             IsAssembly = true,
-            UnitPrice = 2132m,
+            UnitCost = 2132m,
+            UnitPrice = 0m,
             M3 = 3m,
         });
         await productService.AddAsync(new Product
@@ -41,7 +42,8 @@ public static class DemoAssemblyProduct
             UnitMeasureId = unitMeasureId.Id,
             Physical = true,
             IsAssembly = true,
-            UnitPrice = 1150.0m,
+            UnitCost = 1150.0m,
+            UnitPrice = 0m,
             M3 = 2.1m,
         });
 

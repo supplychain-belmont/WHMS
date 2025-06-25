@@ -38,22 +38,5 @@ namespace Indotalent.Domain.Entities
         public int? LotItemId { get; set; }
         public LotItem? LotItem { get; set; }
 
-        public void RecalculateTotal()
-        {
-            TotalShippingCost = TransportCost + AgencyCost;
-            UnitCostBolivia = UnitCostDiscounted + TotalShippingCost;
-            Total = Quantity * (UnitCostDiscounted + TotalShippingCost);
-            UnitCostBoliviaBs = Total.Value * 6.92m;
-        }
-
-        public void RecalculateWeightedM3(decimal m3, decimal containerM3)
-        {
-            WeightedPercentageM3 = (m3 / containerM3) * 100;
-        }
-
-        public void RecalculateTransportCost(decimal totalTransportCost, decimal TotalAgencyCost)
-        {
-            TransportCost = (WeightedPercentageM3 * totalTransportCost) / 100;
-        }
     }
 }

@@ -25,13 +25,12 @@ var connectionString = builder.Configuration.GetConnectionString("ConnectionPost
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 });
 builder.Services.AddSwaggerGen(c =>
 {
@@ -127,7 +126,7 @@ builder.Services.AddControllers()
 var app = builder.Build();
 
 var license = app.Configuration.GetSection("SyncfusionLicense").Get<string>();
-Console.WriteLine($"License: {license}");
+Console.WriteLine($"License: {license?.Replace(license, new string('*', license.Length))}");
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(license);
 
 if (app.Environment.IsDevelopment())

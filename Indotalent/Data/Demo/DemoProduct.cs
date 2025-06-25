@@ -28,7 +28,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 250.0m,
+                UnitCost = 250.0m,
+                UnitPrice = 0m,
                 M3 = 0.65m
             });
             await productService.AddAsync(new Product
@@ -38,7 +39,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 500.0m,
+                UnitCost = 500.0m,
+                UnitPrice = 0m,
                 M3 = 1.2m
             });
             await productService.AddAsync(new Product
@@ -48,7 +50,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 150.0m,
+                UnitCost = 150.0m,
+                UnitPrice = 0m,
                 M3 = 0.26m
             });
             await productService.AddAsync(new Product
@@ -58,7 +61,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Salón").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 860m,
+                UnitCost = 860m,
+                UnitPrice = 0m,
                 M3 = 2.2m
             });
             await productService.AddAsync(new Product
@@ -68,7 +72,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1120m,
+                UnitCost = 1120m,
+                UnitPrice = 0m,
                 M3 = 1.5m
             });
             await productService.AddAsync(new Product
@@ -78,7 +83,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 629m,
+                UnitCost = 629m,
+                UnitPrice = 0m,
                 M3 = 1.1m
             });
             await productService.AddAsync(new Product
@@ -88,7 +94,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 340m,
+                UnitCost = 340m,
+                UnitPrice = 0m,
                 M3 = 1.2m
             });
             await productService.AddAsync(new Product
@@ -98,7 +105,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Salón").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 110,
+                UnitCost = 110,
+                UnitPrice = 0m,
                 M3 = 1.8m
             });
             await productService.AddAsync(new Product
@@ -108,7 +116,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Salón").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 2500m,
+                UnitCost = 2500m,
+                UnitPrice = 0m,
                 M3 = 2.32m
             });
             await productService.AddAsync(new Product
@@ -118,7 +127,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 496m,
+                UnitCost = 496m,
+                UnitPrice = 0m,
                 M3 = 0.8m
             });
             await productService.AddAsync(new Product
@@ -128,7 +138,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 1520m,
+                UnitCost = 1520m,
+                UnitPrice = 0m,
                 M3 = 2.5m
             });
             await productService.AddAsync(new Product
@@ -138,7 +149,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 610m,
+                UnitCost = 610m,
+                UnitPrice = 0m,
                 M3 = 0.5m
             });
             await productService.AddAsync(new Product
@@ -148,7 +160,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 910m,
+                UnitCost = 910m,
+                UnitPrice = 0m,
                 M3 = 1.5m
             });
             await productService.AddAsync(new Product
@@ -158,7 +171,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Comedor").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 250m,
+                UnitCost = 250m,
+                UnitPrice = 0m,
                 M3 = 0.65m
             });
             await productService.AddAsync(new Product
@@ -168,7 +182,8 @@ namespace Indotalent.Data.Demo
                 ProductGroupId = productGroupService.GetAll().Where(x => x.Name == "Oficina").FirstOrDefault()!.Id,
                 UnitMeasureId = unitMeasureService.GetAll().Where(x => x.Name == "u").FirstOrDefault()!.Id,
                 Physical = true,
-                UnitPrice = 238m,
+                UnitCost = 238m,
+                UnitPrice = 0m,
                 M3 = 0.5m
             });
         }

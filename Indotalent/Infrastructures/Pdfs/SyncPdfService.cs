@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,13 @@ namespace Indotalent.Infrastructures.Pdfs;
 
 public class SyncPdfService
 {
+    private CultureInfo _cultureInfo;
+
+    public SyncPdfService()
+    {
+        _cultureInfo = new CultureInfo("es-BO");
+    }
+
     public FileStreamResult GenerateOrderReport(PurchaseOrderDto orderDto, IEnumerable<object> items)
     {
         PdfDocument document = new();
@@ -53,7 +62,8 @@ public class SyncPdfService
         graphics.DrawString(orderDto.Number ?? "Non-Code", fontText, PdfBrushes.Black, new PointF(100, 125), format);
         graphics.DrawString($"{orderDto.Status}", fontText, PdfBrushes.Black, new PointF(275, 125), format);
         graphics.DrawString($"{orderDto.OrderDate}", fontText, PdfBrushes.Black, new PointF(460, 125), format);
-        graphics.DrawString($"{orderDto.ContainerM3} m3", fontText, PdfBrushes.Black, new PointF(200, 200), format);
+        graphics.DrawString($"{orderDto.ContainerM3.ToString("N2", _cultureInfo)} m3", fontText, PdfBrushes.Black,
+            new PointF(200, 200), format);
         graphics.DrawString($"$ {orderDto.TotalTransportContainerCost}", fontText, PdfBrushes.Black,
             new PointF(475, 200),
             format);
@@ -75,19 +85,23 @@ public class SyncPdfService
         RectangleF rectangleF = pdfGridLayoutResult.Bounds;
         var totalHeight = rectangleF.Y + rectangleF.Height + 20;
         var totalWidth = rectangleF.X + rectangleF.Width + 20;
+        const int taxX = 325;
 
-        graphics.DrawString("Total sin Impuestos", fontBoldText, PdfBrushes.Black, new PointF(350, totalHeight),
+        graphics.DrawString("Total sin Impuestos", fontBoldText, PdfBrushes.Black, new PointF(taxX, totalHeight),
             format);
-        graphics.DrawString("Impuestos", fontBoldText, PdfBrushes.Black, new PointF(350, totalHeight + 25), format);
-        graphics.DrawString("Total con Impuestos", fontBoldText, PdfBrushes.Black, new PointF(350, totalHeight + 50),
+        graphics.DrawString("Impuestos", fontBoldText, PdfBrushes.Black, new PointF(taxX, totalHeight + 25), format);
+        graphics.DrawString("Total con Impuestos", fontBoldText, PdfBrushes.Black, new PointF(taxX, totalHeight + 50),
             format);
 
-        graphics.DrawString($"${orderDto.BeforeTaxAmount}", fontText, PdfBrushes.Black, new PointF(475, totalHeight),
+        graphics.DrawString($"${orderDto.BeforeTaxAmount!.Value.ToString("N2", _cultureInfo)}", fontText,
+            PdfBrushes.Black, new PointF(taxX + 125, totalHeight),
             format);
-        graphics.DrawString($"${orderDto.TaxAmount}", fontText, PdfBrushes.Black, new PointF(475, totalHeight + 25),
+        graphics.DrawString($"${orderDto.TaxAmount!.Value.ToString("N2", _cultureInfo)}", fontText, PdfBrushes.Black,
+            new PointF(taxX + 125, totalHeight + 25),
             format);
-        graphics.DrawString($"${orderDto.AfterTaxAmount}", fontText, PdfBrushes.Black,
-            new PointF(475, totalHeight + 50),
+        graphics.DrawString($"${orderDto.AfterTaxAmount!.Value.ToString("N2", _cultureInfo)}", fontText,
+            PdfBrushes.Black,
+            new PointF(taxX + 125, totalHeight + 50),
             format);
 
         #endregion
@@ -120,7 +134,6 @@ public class SyncPdfService
         PdfFont fontTitle = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
         PdfFont fontText = new PdfStandardFont(PdfFontFamily.Helvetica, 12);
         PdfFont fontBoldText = new PdfStandardFont(PdfFontFamily.Helvetica, 12, PdfFontStyle.Bold);
-        // headers
 
         #region headers
 
@@ -157,19 +170,23 @@ public class SyncPdfService
         RectangleF rectangleF = pdfGridLayoutResult.Bounds;
         var totalHeight = rectangleF.Y + rectangleF.Height + 20;
         var totalWidth = rectangleF.X + rectangleF.Width + 20;
+        const int taxX = 325;
 
-        graphics.DrawString("Total sin Impuestos", fontBoldText, PdfBrushes.Black, new PointF(350, totalHeight),
+        graphics.DrawString("Total sin Impuestos", fontBoldText, PdfBrushes.Black, new PointF(taxX, totalHeight),
             format);
-        graphics.DrawString("Impuestos", fontBoldText, PdfBrushes.Black, new PointF(350, totalHeight + 25), format);
-        graphics.DrawString("Total con Impuestos", fontBoldText, PdfBrushes.Black, new PointF(350, totalHeight + 50),
+        graphics.DrawString("Impuestos", fontBoldText, PdfBrushes.Black, new PointF(taxX, totalHeight + 25), format);
+        graphics.DrawString("Total con Impuestos", fontBoldText, PdfBrushes.Black, new PointF(taxX, totalHeight + 50),
             format);
 
-        graphics.DrawString($"${orderDto.BeforeTaxAmount}", fontText, PdfBrushes.Black, new PointF(475, totalHeight),
+        graphics.DrawString($"${orderDto.BeforeTaxAmount!.Value.ToString("N2", _cultureInfo)}", fontText,
+            PdfBrushes.Black, new PointF(taxX + 125, totalHeight),
             format);
-        graphics.DrawString($"${orderDto.TaxAmount}", fontText, PdfBrushes.Black, new PointF(475, totalHeight + 25),
+        graphics.DrawString($"${orderDto.TaxAmount!.Value.ToString("N2", _cultureInfo)}", fontText, PdfBrushes.Black,
+            new PointF(taxX + 125, totalHeight + 25),
             format);
-        graphics.DrawString($"${orderDto.AfterTaxAmount}", fontText, PdfBrushes.Black,
-            new PointF(475, totalHeight + 50),
+        graphics.DrawString($"${orderDto.AfterTaxAmount!.Value.ToString("N2", _cultureInfo)}", fontText,
+            PdfBrushes.Black,
+            new PointF(taxX + 125, totalHeight + 50),
             format);
 
         #endregion

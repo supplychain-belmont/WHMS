@@ -16,6 +16,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<AssemblyProcessor>();
         services.AddScoped<ProductProcessor>();
         services.AddScoped<GoodReceiveProcessor>();
+        services.AddScoped<PurchaseOrderItemProcessor>();
         return services;
     }
 }

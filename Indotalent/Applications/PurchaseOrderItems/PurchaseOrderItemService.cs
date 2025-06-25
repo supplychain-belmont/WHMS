@@ -1,4 +1,4 @@
-﻿using Indotalent.Applications.Lots;
+﻿using Indotalent.Application.PurchaseOrders;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Data;
@@ -14,8 +14,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
     {
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly ProductService _productService;
-        private readonly AssemblyService _assemblyService;
-        private readonly LotService _lotService;
+        private readonly PurchaseOrderItemProcessor _purchaseOrderItemProcessor;
 
         public PurchaseOrderItemService(
             ApplicationDbContext context,
@@ -23,8 +22,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
             IAuditColumnTransformer auditColumnTransformer,
             PurchaseOrderService purchaseOrderService,
             ProductService productService,
-            AssemblyService assemblyService,
-            LotService lotService) :
+            PurchaseOrderItemProcessor purchaseOrderItemProcessor) :
             base(
                 context,
                 httpContextAccessor,
@@ -32,8 +30,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
         {
             _purchaseOrderService = purchaseOrderService;
             _productService = productService;
-            _assemblyService = assemblyService;
-            _lotService = lotService;
+            _purchaseOrderItemProcessor = purchaseOrderItemProcessor;
         }
 
         public override async Task AddAsync(PurchaseOrderItem? entity)
@@ -46,8 +43,17 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     auditEntity.CreatedByUserId = _userId;
                 }
 
+                var order = await _purchaseOrderService.GetAll()
+                    .Where(x => x.Id == entity.PurchaseOrderId)
+                    .Select(x => new { x.ContainerM3, x.TotalAgencyCost, x.TotalTransportContainerCost })
+                    .FirstOrDefaultAsync();
+                var product = await _productService.GetAll()
+                    .Where(x => x.Id == entity.ProductId)
+                    .FirstOrDefaultAsync();
+
                 entity.ShowOrderItem = entity.AssemblyId == null;
-                entity.RecalculateTotal();
+                _purchaseOrderItemProcessor.CalculateCosts(entity, product!.M3, order!.ContainerM3,
+                    order.TotalTransportContainerCost, order.TotalAgencyCost);
                 _context.Set<PurchaseOrderItem>().Add(entity);
                 await _context.SaveChangesAsync();
 
@@ -73,7 +79,16 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
                 }
 
-                entity.RecalculateTotal();
+                var order = await _purchaseOrderService.GetAll()
+                    .Where(x => x.Id == entity.PurchaseOrderId)
+                    .Select(x => new { x.ContainerM3, x.TotalAgencyCost, x.TotalTransportContainerCost })
+                    .FirstOrDefaultAsync();
+                var product = await _productService.GetAll()
+                    .Where(x => x.Id == entity.ProductId)
+                    .FirstOrDefaultAsync();
+
+                _purchaseOrderItemProcessor.CalculateCosts(entity, product!.M3, order!.ContainerM3,
+                    order.TotalTransportContainerCost, order.TotalAgencyCost);
                 _context.Set<PurchaseOrderItem>().Update(entity);
                 await _context.SaveChangesAsync();
 
