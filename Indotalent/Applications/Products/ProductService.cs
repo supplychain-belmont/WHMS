@@ -29,8 +29,16 @@ namespace Indotalent.Applications.Products
         public override async Task AddAsync(Product? entity)
         {
             entity!.Number = _numberSequenceService.GenerateNumber(nameof(Product), "", "ART");
+            entity.UnitCost ??= 0m;
             _productProcessor.CalculateUnitPrice(entity);
             await base.AddAsync(entity);
+
+            if (entity.IsAssembly)
+            {
+                var assembly = new Assembly { ProductId = entity.Id, Description = $"Assembly for {entity.Name}" };
+                await _context.Set<Assembly>().AddAsync(assembly);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public override async Task UpdateAsync(Product? entity)

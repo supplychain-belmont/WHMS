@@ -43,18 +43,8 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     auditEntity.CreatedByUserId = _userId;
                 }
 
-                var order = await _purchaseOrderService.GetAll()
-                    .Where(x => x.Id == entity.PurchaseOrderId)
-                    .Select(x => new { x.ContainerM3, x.TotalAgencyCost, x.TotalTransportContainerCost })
-                    .FirstOrDefaultAsync();
-                var product = await _productService.GetAll()
-                    .Where(x => x.Id == entity.ProductId)
-                    .FirstOrDefaultAsync();
-
-                entity.ShowOrderItem = entity.AssemblyId == null;
-                _purchaseOrderItemProcessor.CalculateCosts(entity, product!.M3, order!.ContainerM3,
-                    order.TotalTransportContainerCost, order.TotalAgencyCost);
-                _context.Set<PurchaseOrderItem>().Add(entity);
+                await ProcessPurchaseOrderItem(entity);
+                await _context.Set<PurchaseOrderItem>().AddAsync(entity);
                 await _context.SaveChangesAsync();
 
                 await _purchaseOrderService.RecalculateParentAsync(entity.PurchaseOrderId);
@@ -63,6 +53,19 @@ namespace Indotalent.Applications.PurchaseOrderItems
             {
                 throw new Exception("Unable to process, entity is null");
             }
+        }
+
+        public override async Task AddRangeAsync(ICollection<PurchaseOrderItem> entities)
+        {
+            foreach (PurchaseOrderItem entity in entities)
+            {
+                await ProcessPurchaseOrderItem(entity);
+            }
+
+            await base.AddRangeAsync(entities);
+
+            if (entities.Count > 0)
+                await _purchaseOrderService.RecalculateParentAsync(entities.First().PurchaseOrderId);
         }
 
         public override async Task UpdateAsync(PurchaseOrderItem? entity)
@@ -79,16 +82,7 @@ namespace Indotalent.Applications.PurchaseOrderItems
                     auditedEntity.UpdatedAtUtc = DateTime.Now;
                 }
 
-                var order = await _purchaseOrderService.GetAll()
-                    .Where(x => x.Id == entity.PurchaseOrderId)
-                    .Select(x => new { x.ContainerM3, x.TotalAgencyCost, x.TotalTransportContainerCost })
-                    .FirstOrDefaultAsync();
-                var product = await _productService.GetAll()
-                    .Where(x => x.Id == entity.ProductId)
-                    .FirstOrDefaultAsync();
-
-                _purchaseOrderItemProcessor.CalculateCosts(entity, product!.M3, order!.ContainerM3,
-                    order.TotalTransportContainerCost, order.TotalAgencyCost);
+                await ProcessPurchaseOrderItem(entity);
                 _context.Set<PurchaseOrderItem>().Update(entity);
                 await _context.SaveChangesAsync();
 
@@ -98,6 +92,27 @@ namespace Indotalent.Applications.PurchaseOrderItems
             {
                 throw new Exception("Unable to process, entity is null");
             }
+        }
+
+        private async Task ProcessPurchaseOrderItem(PurchaseOrderItem entity)
+        {
+            var order = await _purchaseOrderService.GetAll()
+                .Where(x => x.Id == entity.PurchaseOrderId)
+                .Select(x => new { x.ContainerM3, x.TotalAgencyCost, x.TotalTransportContainerCost })
+                .FirstOrDefaultAsync();
+            var product = await _productService.GetAll()
+                .Where(x => x.Id == entity.ProductId)
+                .FirstOrDefaultAsync();
+
+            if (product is { UnitCost: not null })
+            {
+                entity.UnitCost = product.UnitCost.Value;
+                entity.UnitCostDiscounted = product.UnitCost.Value;
+            }
+
+            entity.ShowOrderItem = entity.AssemblyId == null;
+            _purchaseOrderItemProcessor.CalculateCosts(entity, product!.M3, order!.ContainerM3,
+                order.TotalTransportContainerCost, order.TotalAgencyCost);
         }
 
         public override async Task DeleteByIdAsync(int? id)
