@@ -13,7 +13,7 @@ namespace Indotalent.Infrastructures.Pdfs;
 
 public class SyncPdfService
 {
-    private CultureInfo _cultureInfo;
+    private readonly CultureInfo _cultureInfo;
 
     public SyncPdfService()
     {

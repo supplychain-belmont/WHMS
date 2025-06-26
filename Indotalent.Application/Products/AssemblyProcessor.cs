@@ -34,7 +34,9 @@ public class AssemblyProcessor
         {
             var orderItem = new SalesOrderItem
             {
-                SalesOrderId = salesOrderId, ProductId = child.ProductId, Quantity = child.Quantity * quantity,
+                SalesOrderId = salesOrderId,
+                ProductId = child.ProductId,
+                Quantity = child.Quantity * quantity,
             };
             orderItems.Add(orderItem);
         }
@@ -46,7 +48,9 @@ public class AssemblyProcessor
     {
         return new SalesOrderItem
         {
-            SalesOrderId = salesOrderId, ProductId = assembly!.ProductId, Quantity = 1 * quantity,
+            SalesOrderId = salesOrderId,
+            ProductId = assembly!.ProductId,
+            Quantity = 1 * quantity,
         };
     }
 
@@ -57,22 +61,22 @@ public class AssemblyProcessor
         var transactions = new List<InventoryTransaction>();
 
         foreach (var transaction in children.Select(child => new InventoryTransaction
-                 {
-                     WarehouseId = warehouseId,
-                     WarehouseFromId = warehouseId,
-                     WarehouseToId = warehouseId,
-                     ProductId = child.ProductId,
-                     ModuleId = assembly.Id,
-                     ModuleName = nameof(Assembly),
-                     ModuleCode = "AO",
-                     ModuleNumber = child.Product?.Number!,
-                     MovementDate = DateTime.UtcNow,
-                     Movement = child.Quantity * quantity,
-                     RequestedMovement = child.Quantity * quantity,
-                     Number = $"{counter}{index}{DateTime.Now:yyyyMMdd}AO",
-                     Status = InventoryTransactionStatus.Confirmed,
-                     TransType = InventoryTransType.Out
-                 }))
+        {
+            WarehouseId = warehouseId,
+            WarehouseFromId = warehouseId,
+            WarehouseToId = warehouseId,
+            ProductId = child.ProductId,
+            ModuleId = assembly.Id,
+            ModuleName = nameof(Assembly),
+            ModuleCode = "AO",
+            ModuleNumber = child.Product?.Number!,
+            MovementDate = DateTime.UtcNow,
+            Movement = child.Quantity * quantity,
+            RequestedMovement = child.Quantity * quantity,
+            Number = $"{counter}{index}{DateTime.Now:yyyyMMdd}AO",
+            Status = InventoryTransactionStatus.Confirmed,
+            TransType = InventoryTransType.Out
+        }))
         {
             transactions.Add(transaction);
             index++;

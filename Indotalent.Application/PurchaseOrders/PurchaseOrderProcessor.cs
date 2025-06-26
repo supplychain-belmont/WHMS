@@ -30,20 +30,20 @@ public class PurchaseOrderProcessor
     public List<PurchaseOrderItem> CreatePurchaseOrderItems(List<LotItem> lotItems, PurchaseOrder purchaseOrder)
     {
         return lotItems.Select(lotItem => new PurchaseOrderItem
-            {
-                CreatedAtUtc = DateTime.Now,
-                ProductId = lotItem.Product!.Id,
-                UnitCost = lotItem.UnitCost,
-                UnitCostBrazil = lotItem.UnitCostBrazil,
-                UnitCostDiscounted = lotItem.UnitCostDiscounted,
-                PurchaseOrderId = purchaseOrder.Id,
-                Quantity = lotItem.Quantity,
-                UnitCostBolivia = 0m,
-                Summary = lotItem.Product!.Number,
-                ShowOrderItem = true,
-                IsAssembly = lotItem.Product!.IsAssembly,
-                LotItemId = lotItem.Id
-            })
+        {
+            CreatedAtUtc = DateTime.Now,
+            ProductId = lotItem.Product!.Id,
+            UnitCost = lotItem.UnitCost,
+            UnitCostBrazil = lotItem.UnitCostBrazil,
+            UnitCostDiscounted = lotItem.UnitCostDiscounted,
+            PurchaseOrderId = purchaseOrder.Id,
+            Quantity = lotItem.Quantity,
+            UnitCostBolivia = 0m,
+            Summary = lotItem.Product!.Number,
+            ShowOrderItem = true,
+            IsAssembly = lotItem.Product!.IsAssembly,
+            LotItemId = lotItem.Id
+        })
             .ToList();
     }
 }

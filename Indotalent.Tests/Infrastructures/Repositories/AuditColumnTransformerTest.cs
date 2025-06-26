@@ -1,6 +1,6 @@
 using Indotalent.Data;
-using Indotalent.Infrastructures.Repositories;
 using Indotalent.Domain.Contracts;
+using Indotalent.Infrastructures.Repositories;
 using Indotalent.Tests.Utils;
 
 using Microsoft.EntityFrameworkCore;

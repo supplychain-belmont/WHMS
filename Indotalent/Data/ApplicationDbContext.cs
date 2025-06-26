@@ -172,7 +172,7 @@ namespace Indotalent.Data
                     MAX(t.CreatedByUserId) AS CreatedByUserId,
                     MAX(t.UpdatedAtUtc) AS UpdatedAtUtc,
                     MAX(t.UpdatedByUserId) AS UpdatedByUserId,
-                    CAST(1 AS BIT) AS IsNotDelete
+                    CAST(1 AS BIT) AS IsNotDeleted
                 FROM InventoryTransaction t
                 JOIN Warehouse w ON t.WarehouseId = w.Id
                 JOIN Product p ON t.ProductId = p.Id

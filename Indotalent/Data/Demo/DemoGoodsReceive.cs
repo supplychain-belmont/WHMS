@@ -46,6 +46,22 @@ namespace Indotalent.Data.Demo
                 };
                 await goodsReceiveService.AddAsync(goodsReceive);
 
+                var transactions = await inventoryTransactionService.GetAll()
+                    .AsNoTracking()
+                    .Where(x => x.ModuleId == goodsReceive.Id)
+                    .ToListAsync();
+
+                if (transactions.Count != 0)
+                {
+                    foreach (InventoryTransaction inventoryTransaction in transactions)
+                    {
+                        inventoryTransaction.WarehouseId = DbInitializer.GetRandomValue(warehouses, random);
+                        await inventoryTransactionService.UpdateAsync(inventoryTransaction);
+                    }
+
+                    continue; // Skip if transactions already exist for this GoodsReceive
+                }
+
                 var items = await purchaseOrderItemService
                     .GetAll()
                     .Include(x => x.Product)

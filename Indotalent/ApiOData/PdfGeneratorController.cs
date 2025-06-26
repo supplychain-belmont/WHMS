@@ -25,7 +25,7 @@ public class PdfGeneratorController : ODataController
     private readonly PurchaseOrderItemService _purchaseOrderItemService;
     private readonly SalesOrderItemService _salesOrderItemService;
     private readonly IMapper _mapper;
-    private CultureInfo _cultureInfo;
+    private readonly CultureInfo _cultureInfo;
 
     public PdfGeneratorController(SyncPdfService syncPdfService,
         PurchaseOrderService purchaseOrderService,

@@ -93,11 +93,18 @@ public abstract class BaseODataController<T, TDto> : ODataController
             return NotFound();
         }
 
-        var dto = _mapper.Map<TDto>(order);
-        purchaseOrderDto.Patch(dto);
-        _mapper.Map(dto, order);
-        await _service.UpdateAsync(order);
-        return Updated(_mapper.Map<TDto>(order));
+        try
+        {
+            var dto = _mapper.Map<TDto>(order);
+            purchaseOrderDto.Patch(dto);
+            _mapper.Map(dto, order);
+            await _service.UpdateAsync(order);
+            return Updated(_mapper.Map<TDto>(order));
+        }
+        catch (Exception e)
+        {
+            return UnprocessableEntity(e.Message);
+        }
     }
 
 

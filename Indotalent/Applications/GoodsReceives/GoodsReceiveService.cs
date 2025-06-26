@@ -70,6 +70,10 @@ namespace Indotalent.Applications.GoodsReceives
                     {
                         await _productService.AddAsync(productLotItem);
                     }
+                    else
+                    {
+                        productLotItem = exist;
+                    }
 
                     purchaseOrderItem.ProductId = productLotItem.Id;
                     purchaseOrderItem.Summary = productLotItem.Number;

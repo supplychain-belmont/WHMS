@@ -52,9 +52,10 @@ public static class DemoAssemblyProduct
             .ToListAsync();
 
         foreach (var assembly in assemblyProducts.Select(assemblyProduct => new Assembly
-                 {
-                     Description = $"Assembly for {assemblyProduct.Name}", ProductId = assemblyProduct.Id,
-                 }))
+        {
+            Description = $"Assembly for {assemblyProduct.Name}",
+            ProductId = assemblyProduct.Id,
+        }))
         {
             await assemblyProductService.AddAsync(assembly);
         }

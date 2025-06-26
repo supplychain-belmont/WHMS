@@ -20,7 +20,7 @@ using WkHtmlToPdfDotNet.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("ConnectionPostgres") ??
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddCors(options =>
@@ -49,7 +49,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services
-    .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+    .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services
     .AddDatabaseDeveloperPageExceptionFilter();

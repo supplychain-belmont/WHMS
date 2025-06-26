@@ -73,7 +73,7 @@ namespace Indotalent.Applications.TransferOuts
                     }
 
                     entity.Status = TransferStatus.Draft;
-                    products.Add(inventoryStock.Product!);
+                    products.Add(inventoryStock.Product! + " stock is: " + inventoryStock.Stock);
                 }
 
                 if (entity.Status == TransferStatus.Draft)
