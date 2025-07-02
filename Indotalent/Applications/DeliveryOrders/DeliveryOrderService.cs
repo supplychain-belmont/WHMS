@@ -3,9 +3,9 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.SalesOrderItems;
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,6 @@ namespace Indotalent.Applications.DeliveryOrders
         private readonly NumberSequenceService _numberSequenceService;
         private readonly SalesOrderItemService _salesOrderItemService;
         private readonly InventoryTransactionService _inventoryTransactionService;
-        private readonly AssemblyProductService _assemblyProductService;
         private readonly InventoryStockService _inventoryStockService;
 
         public DeliveryOrderService(
@@ -26,7 +25,6 @@ namespace Indotalent.Applications.DeliveryOrders
             NumberSequenceService numberSequenceService,
             SalesOrderItemService salesOrderItemService,
             InventoryTransactionService inventoryTransactionService,
-            AssemblyProductService assemblyProductService,
             InventoryStockService inventoryStockService) :
             base(
                 context,
@@ -36,7 +34,6 @@ namespace Indotalent.Applications.DeliveryOrders
             _numberSequenceService = numberSequenceService;
             _salesOrderItemService = salesOrderItemService;
             _inventoryTransactionService = inventoryTransactionService;
-            _assemblyProductService = assemblyProductService;
             _inventoryStockService = inventoryStockService;
         }
 
@@ -50,37 +47,8 @@ namespace Indotalent.Applications.DeliveryOrders
                 .Where(item => item.SalesOrderId == entity!.SalesOrderId)
                 .ToListAsync();
 
-            var assemblyProductIds = salesItems
-                .Where(item => item.Product!.IsAssembly)
-                .Select(item => item.ProductId)
-                .ToList();
-
-            var assemblyProducts = await _assemblyProductService
-                .GetAll()
-                .Include(ap => ap.Product)
-                .Where(ap => assemblyProductIds.Contains(ap.AssemblyId))
-                .ToListAsync();
-
             foreach (SalesOrderItem salesOrderItem in salesItems)
             {
-                if (salesOrderItem.Product!.IsAssembly)
-                {
-                    var productsFromAssembly = assemblyProducts
-                        .Where(ap => ap.AssemblyId == salesOrderItem.ProductId)
-                        .ToList();
-
-                    if (productsFromAssembly.Count == 0) continue;
-
-                    foreach (AssemblyProduct assemblyProduct in productsFromAssembly)
-                    {
-                        var assemblyTransaction = await CreateTransaction(assemblyProduct.ProductId,
-                            assemblyProduct.Quantity * salesOrderItem.Quantity, entity);
-                        await _inventoryTransactionService.AddAsync(assemblyTransaction);
-                    }
-
-                    continue;
-                }
-
                 var transaction = await CreateTransaction(salesOrderItem.ProductId, salesOrderItem.Quantity, entity);
                 await _inventoryTransactionService.AddAsync(transaction);
             }
@@ -120,7 +88,7 @@ namespace Indotalent.Applications.DeliveryOrders
                         children.Select(x => x.ProductId).Contains(it.ProductId!.Value) &&
                         children.Select(x => x.WarehouseId).Contains(it.WarehouseId!.Value))
                     .Select(it =>
-                        new { it.ProductId, it.Product, it.WarehouseId, InventoryStock.Parse(it).Stock })
+                        new { it.ProductId, it.Product, it.WarehouseId, it.Stock })
                     .ToListAsync();
 
                 var products = new List<string>();

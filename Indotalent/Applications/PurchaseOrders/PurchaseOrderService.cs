@@ -1,10 +1,11 @@
-﻿using Indotalent.Applications.Lots;
+﻿using Indotalent.Application.PurchaseOrders;
+using Indotalent.Applications.Lots;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Data;
+using Indotalent.Domain.Contracts;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
-using Indotalent.Models.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +14,9 @@ namespace Indotalent.Applications.PurchaseOrders
     public class PurchaseOrderService : Repository<PurchaseOrder>
     {
         private readonly NumberSequenceService _numberSequenceService;
-        private readonly LotItemService _lotItemService;
+        private readonly PurchaseOrderProcessor _purchaseOrderProcessor;
         private readonly LotService _lotService;
+        private readonly LotItemService _lotItemService;
         private readonly IServiceProvider _serviceProvider;
 
         public PurchaseOrderService(
@@ -22,8 +24,9 @@ namespace Indotalent.Applications.PurchaseOrders
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
             NumberSequenceService numberSequenceService,
-            LotItemService lotItemService,
+            PurchaseOrderProcessor purchaseOrderProcessor,
             LotService lotService,
+            LotItemService lotItemService,
             IServiceProvider serviceProvider) :
             base(
                 context,
@@ -31,8 +34,9 @@ namespace Indotalent.Applications.PurchaseOrders
                 auditColumnTransformer)
         {
             _numberSequenceService = numberSequenceService;
-            _lotItemService = lotItemService;
+            _purchaseOrderProcessor = purchaseOrderProcessor;
             _lotService = lotService;
+            _lotItemService = lotItemService;
             _serviceProvider = serviceProvider;
         }
 
@@ -43,17 +47,12 @@ namespace Indotalent.Applications.PurchaseOrders
             entity.AfterTaxAmount = 0.0m;
             entity.BeforeTaxAmount = 0.0m;
 
+            await base.AddAsync(entity);
+
             if (entity.LotId.HasValue)
             {
                 var lot = await _lotService.GetByIdAsync(entity.LotId.Value);
-                entity.ContainerM3 = lot!.ContainerM3;
-                entity.TotalTransportContainerCost = lot!.TotalTransportContainerCost;
-                entity.TotalAgencyCost = lot!.TotalAgencyCost;
-            }
-
-            await base.AddAsync(entity);
-            if (entity.LotId.HasValue)
-            {
+                _purchaseOrderProcessor.CalculatePurchaseOrder(lot!, entity);
                 await CreatePurchaseOrderItemAsync(entity);
             }
         }
@@ -68,24 +67,8 @@ namespace Indotalent.Applications.PurchaseOrders
                 .Where(li => li.LotId == purchaseOrder.LotId)
                 .ToListAsync();
 
-            foreach (var purchaseOrderItem in lotItems.Select(lotItem => new PurchaseOrderItem
-            {
-                CreatedAtUtc = DateTime.Now,
-                ProductId = lotItem.Product!.Id,
-                UnitCost = lotItem.UnitCost,
-                UnitCostBrazil = lotItem.UnitCostBrazil,
-                UnitCostDiscounted = lotItem.UnitCostDiscounted,
-                PurchaseOrderId = purchaseOrder.Id,
-                Quantity = lotItem.Quantity,
-                UnitCostBolivia = 0m,
-                Summary = lotItem.Product!.Number,
-                ShowOrderItem = true,
-                IsAssembly = lotItem.Product!.IsAssembly,
-                LotItemId = lotItem.Id
-            }))
-            {
-                await purchaseOrderItemService.AddAsync(purchaseOrderItem);
-            }
+            var orderItems = _purchaseOrderProcessor.CreatePurchaseOrderItems(lotItems, purchaseOrder);
+            await purchaseOrderItemService.AddRangeAsync(orderItems);
         }
 
         public async Task RecalculateParentAsync(int? masterId)
@@ -102,18 +85,7 @@ namespace Indotalent.Applications.PurchaseOrders
 
             if (master != null)
             {
-                master.BeforeTaxAmount = 0;
-                foreach (var item in children)
-                {
-                    master.BeforeTaxAmount += item.Total;
-                }
-
-                if (master.Tax != null)
-                {
-                    master.TaxAmount = (master.Tax.Percentage / 100.0m) * master.BeforeTaxAmount;
-                }
-
-                master.AfterTaxAmount = master.BeforeTaxAmount + master.TaxAmount;
+                _purchaseOrderProcessor.RecalculateParent(master, children);
                 _context.Set<PurchaseOrder>().Update(master);
                 await _context.SaveChangesAsync();
             }

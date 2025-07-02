@@ -3,8 +3,8 @@ using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.GoodsReceives;
 using Indotalent.Applications.NumberSequences;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using static System.Guid;
 

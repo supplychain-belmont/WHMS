@@ -1,9 +1,9 @@
 ﻿using Indotalent.Applications.Warehouses;
 using Indotalent.Data;
+using Indotalent.Domain.Contracts;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -82,6 +82,17 @@ namespace Indotalent.Applications.InventoryTransactions
             }
         }
 
+        public override Task AddRangeAsync(ICollection<InventoryTransaction> entities)
+        {
+            foreach (InventoryTransaction inventoryTransaction in entities)
+            {
+                CalculateInvenTrans(inventoryTransaction);
+                inventoryTransaction.CalculateStock();
+            }
+
+            return base.AddRangeAsync(entities);
+        }
+
         public decimal GetStock(int warehouseId, int productId)
         {
             var result = 0.0m;
@@ -138,6 +149,7 @@ namespace Indotalent.Applications.InventoryTransactions
                     ScrappingProcessing(transaction);
                     break;
                 default:
+                    transaction.CalculateStock();
                     break;
             }
 

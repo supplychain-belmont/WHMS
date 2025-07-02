@@ -4,7 +4,7 @@
 
 using System.Text;
 
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

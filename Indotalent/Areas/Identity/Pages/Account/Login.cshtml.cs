@@ -5,7 +5,7 @@
 using System.ComponentModel.DataAnnotations;
 
 using Indotalent.Applications.LogSessions;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

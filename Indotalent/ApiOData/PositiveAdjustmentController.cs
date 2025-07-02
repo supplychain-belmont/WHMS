@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using Indotalent.Applications.AdjustmentPluss;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;

@@ -14,9 +14,9 @@ using Indotalent.Applications.StockCounts;
 using Indotalent.Applications.TransferIns;
 using Indotalent.Applications.TransferOuts;
 using Indotalent.Applications.Warehouses;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -120,14 +120,14 @@ namespace Indotalent.Pages.Dashboards
                 .GetAll()
                 .Include(x => x.SalesOrder)
                 .Include(x => x.Product)
-                .Where(x => x.Product!.Physical == true && x.SalesOrder!.OrderStatus >= Models.Enums.SalesOrderStatus.Confirmed)
+                .Where(x => x.Product!.Physical == true && x.SalesOrder!.OrderStatus >= Domain.Enums.SalesOrderStatus.Confirmed)
                 .Sum(x => x.Quantity)
                 .ToString("N2") + " Qty.";
 
             CardSalesReturnQty = _inventoryTransactionService
                 .GetAll()
                 .Include(x => x.Warehouse)
-                .Where(x => x.ModuleName == nameof(SalesReturn) && x.Warehouse!.SystemWarehouse == false && x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed)
+                .Where(x => x.ModuleName == nameof(SalesReturn) && x.Warehouse!.SystemWarehouse == false && x.Status >= Domain.Enums.InventoryTransactionStatus.Confirmed)
                 .Sum(x => x.Movement)
                 .ToString("N2") + " Qty.";
 
@@ -135,42 +135,42 @@ namespace Indotalent.Pages.Dashboards
                 .GetAll()
                 .Include(x => x.PurchaseOrder)
                 .Include(x => x.Product)
-                .Where(x => x.Product!.Physical == true && x.PurchaseOrder!.OrderStatus >= Models.Enums.PurchaseOrderStatus.Confirmed)
+                .Where(x => x.Product!.Physical == true && x.PurchaseOrder!.OrderStatus >= Domain.Enums.PurchaseOrderStatus.Confirmed)
                 .Sum(x => x.Quantity)
                 .ToString("N2") + " Qty.";
 
             CardPurchaseReturnQty = _inventoryTransactionService
                 .GetAll()
                 .Include(x => x.Warehouse)
-                .Where(x => x.ModuleName == nameof(PurchaseReturn) && x.Warehouse!.SystemWarehouse == false && x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed)
+                .Where(x => x.ModuleName == nameof(PurchaseReturn) && x.Warehouse!.SystemWarehouse == false && x.Status >= Domain.Enums.InventoryTransactionStatus.Confirmed)
                 .Sum(x => x.Movement)
                 .ToString("N2") + " Qty.";
 
             CardDeliveryOrderQty = _inventoryTransactionService
                 .GetAll()
                 .Include(x => x.Warehouse)
-                .Where(x => x.ModuleName == nameof(DeliveryOrder) && x.Warehouse!.SystemWarehouse == false && x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed)
+                .Where(x => x.ModuleName == nameof(DeliveryOrder) && x.Warehouse!.SystemWarehouse == false && x.Status >= Domain.Enums.InventoryTransactionStatus.Confirmed)
                 .Sum(x => x.Movement)
                 .ToString("N2") + " Qty.";
 
             CardGoodsReceiveQty = _inventoryTransactionService
                 .GetAll()
                 .Include(x => x.Warehouse)
-                .Where(x => x.ModuleName == nameof(GoodsReceive) && x.Warehouse!.SystemWarehouse == false && x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed)
+                .Where(x => x.ModuleName == nameof(GoodsReceive) && x.Warehouse!.SystemWarehouse == false && x.Status >= Domain.Enums.InventoryTransactionStatus.Confirmed)
                 .Sum(x => x.Movement)
                 .ToString("N2") + " Qty.";
 
             CardTransferOutQty = _inventoryTransactionService
                 .GetAll()
                 .Include(x => x.Warehouse)
-                .Where(x => x.ModuleName == nameof(TransferOut) && x.Warehouse!.SystemWarehouse == false && x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed)
+                .Where(x => x.ModuleName == nameof(TransferOut) && x.Warehouse!.SystemWarehouse == false && x.Status >= Domain.Enums.InventoryTransactionStatus.Confirmed)
                 .Sum(x => x.Movement)
                 .ToString("N2") + " Qty.";
 
             CardTransferInQty = _inventoryTransactionService
                 .GetAll()
                 .Include(x => x.Warehouse)
-                .Where(x => x.ModuleName == nameof(TransferIn) && x.Warehouse!.SystemWarehouse == false && x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed)
+                .Where(x => x.ModuleName == nameof(TransferIn) && x.Warehouse!.SystemWarehouse == false && x.Status >= Domain.Enums.InventoryTransactionStatus.Confirmed)
                 .Sum(x => x.Movement)
                 .ToString("N2") + " Qty.";
 
@@ -231,7 +231,7 @@ namespace Indotalent.Pages.Dashboards
                 .Include(x => x.Warehouse)
                 .Include(x => x.Product)
                 .Where(x =>
-                    x.Status >= Models.Enums.InventoryTransactionStatus.Confirmed &&
+                    x.Status >= Domain.Enums.InventoryTransactionStatus.Confirmed &&
                     x.Warehouse!.SystemWarehouse == false &&
                     x.Product!.Physical == true
                 )

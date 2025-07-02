@@ -2,8 +2,8 @@
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.TransferIns;
 using Indotalent.Applications.TransferOuts;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 namespace Indotalent.Data.Demo
 {
@@ -20,7 +20,7 @@ namespace Indotalent.Data.Demo
 
             var transferOuts = transferOutService
                 .GetAll()
-                .Where(x => x.Status >= TransferStatus.Confirmed)
+                .Where(x => x.Status == TransferStatus.Confirmed)
                 .ToList();
 
             foreach (var transferOut in transferOuts)

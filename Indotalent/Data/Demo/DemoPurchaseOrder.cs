@@ -1,11 +1,12 @@
-﻿using Indotalent.Applications.NumberSequences;
+﻿using Indotalent.Application.PurchaseOrders;
+using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Applications.Taxes;
 using Indotalent.Applications.Vendors;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 namespace Indotalent.Data.Demo
 {
@@ -19,6 +20,7 @@ namespace Indotalent.Data.Demo
             var taxSerice = services.GetRequiredService<TaxService>();
             var productService = services.GetRequiredService<ProductService>();
             var numberSequenceService = services.GetRequiredService<NumberSequenceService>();
+            var purchaseOrderItemProcessor = services.GetRequiredService<PurchaseOrderItemProcessor>();
 
             Random random = new Random();
             int orderStatusLength = Enum.GetNames(typeof(PurchaseOrderStatus)).Length;
@@ -68,7 +70,9 @@ namespace Indotalent.Data.Demo
                             UnitCostDiscounted = cost,
                             Quantity = random.Next(20, 50),
                         };
-                        purchaseOrderItem.RecalculateTotal();
+                        purchaseOrderItemProcessor.CalculateCosts(purchaseOrderItem, product.M3,
+                            purchaseOrder.ContainerM3,
+                            purchaseOrder.TotalTransportContainerCost, purchaseOrder.TotalAgencyCost);
                         await purchaseOrderItemService.AddAsync(purchaseOrderItem);
                     }
                 }

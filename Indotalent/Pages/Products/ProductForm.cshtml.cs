@@ -6,8 +6,8 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.ProductGroups;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.UnitMeasures;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

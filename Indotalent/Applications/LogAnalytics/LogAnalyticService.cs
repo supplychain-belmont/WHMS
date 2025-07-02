@@ -7,9 +7,9 @@ using AutoMapper;
 using DeviceDetectorNET;
 
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
 
 using Microsoft.EntityFrameworkCore;
 

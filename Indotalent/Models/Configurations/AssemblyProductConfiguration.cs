@@ -1,26 +1,23 @@
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Indotalent.Models.Configurations;
 
-public class AssemblyProductConfiguration : _BaseConfiguration<AssemblyProduct>
+public class AssemblyProductConfiguration : _BaseConfiguration<Assembly>
 {
-    public override void Configure(EntityTypeBuilder<AssemblyProduct> builder)
+    public override void Configure(EntityTypeBuilder<Assembly> builder)
     {
         base.Configure(builder);
 
-        builder
-            .HasOne(ap => ap.Assembly)
+        builder.HasOne(ac => ac.Product)
             .WithMany()
-            .HasForeignKey(ap => ap.AssemblyId)
+            .HasForeignKey(ac => ac.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder
-            .HasOne(ap => ap.Product)
-            .WithMany()
-            .HasForeignKey(ap => ap.ProductId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.Property(c => c.Description)
+            .HasMaxLength(1000)
+            .IsRequired(false);
     }
 }

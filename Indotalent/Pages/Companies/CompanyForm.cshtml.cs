@@ -3,11 +3,11 @@ using System.ComponentModel;
 using AutoMapper;
 
 using Indotalent.Applications.Companies;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
 using Indotalent.Infrastructures.Extensions;
 using Indotalent.Infrastructures.TimeZones;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 
 using Indotalent.Applications.Warehouses;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

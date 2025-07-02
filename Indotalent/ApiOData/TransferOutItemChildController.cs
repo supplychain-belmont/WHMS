@@ -4,9 +4,9 @@ using AutoMapper.QueryableExtensions;
 using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.TransferOuts;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;

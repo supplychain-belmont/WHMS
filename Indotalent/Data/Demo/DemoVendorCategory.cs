@@ -1,5 +1,5 @@
 ﻿using Indotalent.Applications.VendorCategories;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 namespace Indotalent.Data.Demo
 {

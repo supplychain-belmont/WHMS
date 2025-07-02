@@ -4,8 +4,8 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.SalesOrderItems;
 using Indotalent.Applications.SalesOrders;
 using Indotalent.Applications.Warehouses;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +26,7 @@ namespace Indotalent.Data.Demo
 
             var salesOrders = await salesOrderService
                 .GetAll()
-                .Where(x => x.OrderStatus >= SalesOrderStatus.Confirmed)
+                .Where(x => x.OrderStatus == SalesOrderStatus.Confirmed)
                 .ToListAsync();
 
             var warehouses = await warehouseService

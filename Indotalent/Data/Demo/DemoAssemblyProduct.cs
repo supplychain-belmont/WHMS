@@ -2,7 +2,7 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.ProductGroups;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.UnitMeasures;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +13,8 @@ public static class DemoAssemblyProduct
     public static async Task GenerateAsync(IServiceProvider services)
     {
         var productService = services.GetRequiredService<ProductService>();
-        var assemblyProductService = services.GetRequiredService<AssemblyProductService>();
+        var assemblyProductService = services.GetRequiredService<AssemblyService>();
+        var assemblyChildProductService = services.GetRequiredService<AssemblyChildService>();
         var numberSequenceService = services.GetRequiredService<NumberSequenceService>();
         var productGroupService = services.GetRequiredService<ProductGroupService>();
         var unitMeasureService = services.GetRequiredService<UnitMeasureService>();
@@ -29,7 +30,8 @@ public static class DemoAssemblyProduct
             UnitMeasureId = unitMeasureId!.Id,
             Physical = true,
             IsAssembly = true,
-            UnitPrice = 2132m,
+            UnitCost = 2132m,
+            UnitPrice = 0m,
             M3 = 3m,
         });
         await productService.AddAsync(new Product
@@ -40,13 +42,24 @@ public static class DemoAssemblyProduct
             UnitMeasureId = unitMeasureId.Id,
             Physical = true,
             IsAssembly = true,
-            UnitPrice = 1150.0m,
+            UnitCost = 1150.0m,
+            UnitPrice = 0m,
             M3 = 2.1m,
         });
 
         var assemblyProducts = await productService.GetAll()
             .Where(p => p.IsAssembly)
             .ToListAsync();
+
+        foreach (var assembly in assemblyProducts.Select(assemblyProduct => new Assembly
+        {
+            Description = $"Assembly for {assemblyProduct.Name}",
+            ProductId = assemblyProduct.Id,
+        }))
+        {
+            await assemblyProductService.AddAsync(assembly);
+        }
+
 
         Random random = new();
 
@@ -65,11 +78,11 @@ public static class DemoAssemblyProduct
                     quantity = 1;
                 }
 
-                await assemblyProductService.AddAsync(new AssemblyProduct
+                await assemblyChildProductService.AddAsync(new AssemblyChild
                 {
+                    AssemblyId = random.Next(1, assemblyProducts.Count + 1),
                     ProductId = product.Id,
-                    Quantity = quantity,
-                    AssemblyId = p.Id,
+                    Quantity = quantity
                 });
             }
         }

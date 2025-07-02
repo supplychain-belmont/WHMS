@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Indotalent.Data;
+using Indotalent.Domain.Contracts;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
 using Indotalent.Tests.Utils;
 
 using Microsoft.AspNetCore.Http;

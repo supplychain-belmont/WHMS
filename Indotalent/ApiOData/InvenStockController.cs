@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.InventoryTransactions;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-
-using static System.Math;
 
 namespace Indotalent.ApiOData
 {
@@ -32,20 +31,7 @@ namespace Indotalent.ApiOData
         {
             var transGrouped = _inventoryStockService.GetAll()
                 .Where(data => data.Stock > 0)
-                .Select(data => new InvenStockDto
-                {
-                    Id = data.Id,
-                    RowGuid = data.RowGuid,
-                    CreatedAtUtc = data.CreatedAtUtc,
-                    WarehouseId = data.WarehouseId,
-                    Warehouse = data.Warehouse,
-                    ProductId = data.ProductId,
-                    Product = data.Product,
-                    Stock = data.Stock,
-                    Reserved = data.Reserved,
-                    ReservedPercentage = Round(Min(data.Reserved / data.Stock * 100, 100), 2),
-                    Incoming = data.Incoming
-                });
+                .ProjectTo<InvenStockDto>(_mapper.ConfigurationProvider);
             return transGrouped;
         }
 

@@ -1,5 +1,5 @@
 ﻿using Indotalent.Data;
-using Indotalent.Models.Contracts;
+using Indotalent.Domain.Contracts;
 
 using Microsoft.EntityFrameworkCore;
 

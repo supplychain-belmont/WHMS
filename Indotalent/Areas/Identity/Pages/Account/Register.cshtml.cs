@@ -6,7 +6,7 @@ using System.Text.Encodings.Web;
 
 using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
-using Indotalent.Models.Entities;
+using Indotalent.Domain.Entities;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

@@ -4,8 +4,8 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Applications.Warehouses;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +26,7 @@ namespace Indotalent.Data.Demo
 
             var purchaseOrders = await purchaseOrderService
                 .GetAll()
-                .Where(x => x.OrderStatus >= PurchaseOrderStatus.Confirmed)
+                .Where(x => x.OrderStatus == PurchaseOrderStatus.Confirmed)
                 .ToListAsync();
 
             var warehouses = await warehouseService
@@ -45,6 +45,22 @@ namespace Indotalent.Data.Demo
                     PurchaseOrderId = purchaseOrder.Id,
                 };
                 await goodsReceiveService.AddAsync(goodsReceive);
+
+                var transactions = await inventoryTransactionService.GetAll()
+                    .AsNoTracking()
+                    .Where(x => x.ModuleId == goodsReceive.Id)
+                    .ToListAsync();
+
+                if (transactions.Count != 0)
+                {
+                    foreach (InventoryTransaction inventoryTransaction in transactions)
+                    {
+                        inventoryTransaction.WarehouseId = DbInitializer.GetRandomValue(warehouses, random);
+                        await inventoryTransactionService.UpdateAsync(inventoryTransaction);
+                    }
+
+                    continue; // Skip if transactions already exist for this GoodsReceive
+                }
 
                 var items = await purchaseOrderItemService
                     .GetAll()

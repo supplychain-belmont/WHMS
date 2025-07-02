@@ -1,6 +1,6 @@
 ﻿using Indotalent.Data;
+using Indotalent.Domain.Contracts;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Contracts;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -8,9 +8,9 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Applications.Warehouses;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 using Indotalent.Infrastructures.Extensions;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

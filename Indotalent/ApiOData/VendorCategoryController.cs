@@ -2,8 +2,8 @@
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.VendorCategories;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
@@ -23,6 +25,7 @@ public class PdfGeneratorController : ODataController
     private readonly PurchaseOrderItemService _purchaseOrderItemService;
     private readonly SalesOrderItemService _salesOrderItemService;
     private readonly IMapper _mapper;
+    private readonly CultureInfo _cultureInfo;
 
     public PdfGeneratorController(SyncPdfService syncPdfService,
         PurchaseOrderService purchaseOrderService,
@@ -37,9 +40,10 @@ public class PdfGeneratorController : ODataController
         _purchaseOrderItemService = purchaseOrderItemService;
         _salesOrderItemService = salesOrderItemService;
         _mapper = mapper;
+        _cultureInfo = new CultureInfo("es-BO");
     }
 
-    [HttpGet("/odata/PdfGenerator/PurchaseOrderReport(PurchaseOrderId={purchaseOrderId})")]
+    [HttpGet("PdfGenerator/PurchaseOrderReport(PurchaseOrderId={purchaseOrderId})")]
     public async Task<IActionResult> PurchaseOrderReport([FromODataUri] int purchaseOrderId)
     {
         if (!ModelState.IsValid)
@@ -51,7 +55,7 @@ public class PdfGeneratorController : ODataController
     }
 
 
-    [HttpGet("/odata/PdfGenerator/SalesOrderReport(SalesOrerId={salesOrderId})")]
+    [HttpGet("PdfGenerator/SalesOrderReport(SalesOrerId={salesOrderId})")]
     public async Task<IActionResult> SalesOrderReport([FromODataUri] int salesOrderId)
     {
         if (!ModelState.IsValid)
@@ -92,13 +96,13 @@ public class PdfGeneratorController : ODataController
             {
                 Producto = it.Product,
                 Codigo = it.Summary,
-                Costo_unitario = it.UnitCost,
-                Precio_unitario = it.UnitPrice,
-                Cantidad = it.Quantity,
-                Precio_unitario_descuento = it.UnitPriceDiscount,
-                Precio_unitario_descuento_percen = it.UnitPriceDiscountPercentage,
-                it.Total,
-                Comision = it.Commission
+                Costo_unitario = $" ${it.UnitCost!.Value.ToString("N2", _cultureInfo)}",
+                Precio_unitario = $" ${it.UnitPrice!.Value.ToString("N2", _cultureInfo)}",
+                Cantidad = $" {it.Quantity!.Value.ToString("N0", _cultureInfo)}",
+                Descuento = $" ${it.UnitPriceDiscount!.Value.ToString("N2", _cultureInfo)}",
+                Descuento_percent = $" {it.UnitPriceDiscountPercentage} %",
+                Total = $" ${it.Total!.Value.ToString("N2", _cultureInfo)}",
+                Comision = $" ${it.Commission!.Value.ToString("N2", _cultureInfo)}",
             })
             .AsEnumerable();
 
@@ -122,13 +126,13 @@ public class PdfGeneratorController : ODataController
             {
                 Producto = it.Product,
                 Codigo = it.Summary,
-                Costo_unitario_descuento = it.UnitCostDiscounted,
-                Cantidad = it.Quantity,
-                it.M3,
-                Porcentaje_peso_m3 = it.WeightedPercentageM3,
-                Costo_transporte = it.TotalShippingCost,
-                Costo_unitario = it.UnitCost,
-                it.Total
+                Costo_unitario = $" ${it.UnitCost!.Value.ToString("N2", _cultureInfo)}",
+                Cantidad = $" {it.Quantity!.Value.ToString("N0", _cultureInfo)}",
+                M3 = $" {it.M3!.Value.ToString("N2", _cultureInfo)} m³",
+                Porcentaje_peso_m3 = $" {it.WeightedPercentageM3!.Value.ToString("N2", _cultureInfo)} %",
+                Costo_transporte = $" ${it.TotalShippingCost!.Value.ToString("N2", _cultureInfo)}",
+                Costo_Bolivia = $" ${it.UnitCostBolivia!.Value.ToString("N2", _cultureInfo)}",
+                Total = $" ${it.Total!.Value.ToString("N2", _cultureInfo)}",
             })
             .AsEnumerable();
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Enums;
 
 namespace Indotalent.DTOs
 {

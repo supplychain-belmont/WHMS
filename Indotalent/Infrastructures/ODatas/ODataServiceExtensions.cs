@@ -3,6 +3,7 @@ using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Batch;
 using Microsoft.AspNetCore.OData.Query.Validator;
 using Microsoft.OData.ModelBuilder;
 
@@ -36,7 +37,7 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<VendorContactDto>("VendorContact");
             builder.EntitySet<VendorContactChildDto>("VendorContactChild");
             builder.EntitySet<TaxDto>("Tax");
-            builder.EntitySet<SalesOrderDto>("SalesOrder");
+            // builder.EntitySet<SalesOrderDto>("SalesOrder");
             builder.EntitySet<SalesOrderItemChildDto>("SalesOrderItemChild");
             builder.EntitySet<SalesOrderItemDto>("SalesOrderItem");
             builder.EntitySet<PurchaseOrderDto>("PurchaseOrder");
@@ -65,7 +66,8 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<ScrappingItemChildDto>("ScrappingItemChild");
             builder.EntitySet<StockCountItemChildDto>("StockCountItemChild");
             builder.EntitySet<FileImageDto>("FileImage");
-            builder.EntitySet<AssemblyProductDto>("AssemblyProductChild");
+            // builder.EntitySet<AssemblyDto>("Assembly");
+            builder.EntitySet<AssemblyChildDto>("AssemblyChild");
             builder.EntitySet<LotDto>("Lot");
             builder.EntitySet<LotItemDto>("LotItem");
             // builder.EntitySet<PdfResource>("PdfGenerator");
@@ -80,10 +82,20 @@ namespace Indotalent.Infrastructures.ODatas
             var pdfFunction = builder.EntityType<PdfResource>().Collection.Function("PurchaseOrderReport");
             pdfFunction.Returns<Stream>();
             pdfFunction.Parameter<int>("purchaseOrderId");
-            pdfFunction.Parameter<int>("salesOrderId");
             var pdfSalesFunction = builder.EntityType<PdfResource>().Collection.Function("SalesOrderReport");
             pdfSalesFunction.Returns<Stream>();
             pdfSalesFunction.Parameter<int>("salesOrderId");
+
+            var assemblyAction = builder.EntityType<SalesOrderDto>().Collection.Action("OrderFromAssembly");
+            assemblyAction.Parameter<int>("assemblyId");
+            assemblyAction.Parameter<int>("quantity");
+            assemblyAction.ReturnsFromEntitySet<SalesOrderDto>("SalesOrder");
+
+            var assemblyAction2 = builder.EntityType<AssemblyDto>().Collection.Action("BuildAssembly");
+            assemblyAction2.Parameter<int>("productId");
+            assemblyAction2.Parameter<int>("warehouseId");
+            assemblyAction2.Parameter<int>("quantity");
+            assemblyAction2.ReturnsFromEntitySet<AssemblyDto>("Assembly");
 
 
             services.AddControllers()
@@ -91,6 +103,7 @@ namespace Indotalent.Infrastructures.ODatas
                     .AddRouteComponents("odata", builder.GetEdmModel(), odataServices =>
                     {
                         odataServices.AddSingleton<IODataQueryValidator, SFODataQueryValidator>();
+                        odataServices.AddSingleton<ODataBatchHandler, DefaultODataBatchHandler>();
                     }));
         }
     }

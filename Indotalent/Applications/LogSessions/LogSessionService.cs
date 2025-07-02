@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
 
 using Microsoft.EntityFrameworkCore;
 

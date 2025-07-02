@@ -4,7 +4,7 @@ using System.Security.Claims;
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Data;
-using Indotalent.Models.Contracts;
+using Indotalent.Domain.Contracts;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -135,6 +135,30 @@ namespace Indotalent.Infrastructures.Repositories
             else
             {
                 throw new Exception("Unable to process, entity is null");
+            }
+        }
+
+        public virtual async Task AddRangeAsync(ICollection<T> entities)
+        {
+            if (entities.Count != 0)
+            {
+                foreach (var entity in entities)
+                {
+                    if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
+                    {
+                        auditEntity.CreatedAtUtc = DateTime.Now;
+                        auditEntity.CreatedByUserId = _userId;
+                    }
+
+                    entity.RowGuid = Guid.NewGuid();
+                }
+
+                await _context.Set<T>().AddRangeAsync(entities);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Unable to process, entities are null or empty");
             }
         }
 

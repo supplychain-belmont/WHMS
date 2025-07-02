@@ -1,15 +1,19 @@
 using Indotalent;
+using Indotalent.Application;
 using Indotalent.AppSettings;
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Middlewares;
 using Indotalent.Infrastructures.ODatas;
 using Indotalent.Infrastructures.Pdfs;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
@@ -21,13 +25,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 });
 builder.Services.AddSwaggerGen(c =>
 {
@@ -39,6 +42,8 @@ builder.Services.AddSwaggerGen(c =>
             Description = "Una API para gestionar la aplicación de Indotalent",
             Contact = new OpenApiContact { Name = "Tu Nombre", Email = "tu.email@example.com" }
         });
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+    c.SupportNonNullableReferenceTypes();
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
@@ -99,6 +104,9 @@ builder.Services
     .AddAllCustomServices();
 
 builder.Services
+    .AddApplicationServices();
+
+builder.Services
     .AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 builder.Services
@@ -118,7 +126,7 @@ builder.Services.AddControllers()
 var app = builder.Build();
 
 var license = app.Configuration.GetSection("SyncfusionLicense").Get<string>();
-Console.WriteLine($"License: {license}");
+Console.WriteLine($"License: {license?.Replace(license, new string('*', license.Length))}");
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(license);
 
 if (app.Environment.IsDevelopment())
@@ -128,6 +136,7 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Indotalent v1");
         c.RoutePrefix = string.Empty;
+        c.DocExpansion(DocExpansion.None);
     });
 }
 
@@ -156,7 +165,9 @@ app.UseSession();
 
 app.UseMiddleware<LogAnalyticMiddleware>();
 
-app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+// app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+
+app.UseODataBatching();
 
 app.UseRouting();
 

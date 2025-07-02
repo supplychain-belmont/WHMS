@@ -1,11 +1,13 @@
-﻿using Indotalent.Applications.InventoryTransactions;
+﻿using Indotalent.Application.GoodReceives;
+using Indotalent.Application.Products;
+using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrderItems;
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,8 @@ namespace Indotalent.Applications.GoodsReceives
         private readonly PurchaseOrderItemService _purchaseOrderItemService;
         private readonly InventoryTransactionService _inventoryTransactionService;
         private readonly ProductService _productService;
+        private readonly ProductProcessor _productProcessor;
+        private readonly GoodReceiveProcessor _goodReceiveProcessor;
 
         public GoodsReceiveService(
             ApplicationDbContext context,
@@ -25,7 +29,9 @@ namespace Indotalent.Applications.GoodsReceives
             NumberSequenceService numberSequenceService,
             PurchaseOrderItemService purchaseOrderItemService,
             InventoryTransactionService inventoryTransactionService,
-            ProductService productService) :
+            ProductService productService,
+            ProductProcessor productProcessor,
+            GoodReceiveProcessor goodReceiveProcessor) :
             base(
                 context,
                 httpContextAccessor,
@@ -35,11 +41,12 @@ namespace Indotalent.Applications.GoodsReceives
             _purchaseOrderItemService = purchaseOrderItemService;
             _inventoryTransactionService = inventoryTransactionService;
             _productService = productService;
+            _productProcessor = productProcessor;
+            _goodReceiveProcessor = goodReceiveProcessor;
         }
 
         public override async Task AddAsync(GoodsReceive? entity)
         {
-            var moduleName = nameof(GoodsReceive);
             await base.AddAsync(entity);
             var purchaseItems = await _purchaseOrderItemService.GetAll()
                 .Include(item => item.Product)
@@ -48,42 +55,38 @@ namespace Indotalent.Applications.GoodsReceives
                 .Where(item => item.PurchaseOrderId == entity!.PurchaseOrderId)
                 .ToListAsync();
 
+            var transactions = new List<InventoryTransaction>();
             foreach (PurchaseOrderItem purchaseOrderItem in purchaseItems)
             {
                 if (purchaseOrderItem.LotItemId.HasValue)
                 {
-                    var product = purchaseOrderItem.Product;
-                    var lot = purchaseOrderItem.LotItem!.Lot;
-                    var productLotItem = product!.Clone();
-                    productLotItem.RowGuid = Guid.NewGuid();
-                    productLotItem.Id = 0;
-                    productLotItem.Name = $"{product.Name}/{lot!.Name}";
-                    productLotItem.UnitCost = purchaseOrderItem.UnitCostBolivia;
-                    productLotItem.CalculateUnitPrice();
+                    var productLotItem = _goodReceiveProcessor.CreateProduct(_productProcessor, purchaseOrderItem);
 
-                    await _productService.AddAsync(productLotItem);
+                    var exist = await _productService.GetAll()
+                        .Where(p => p.Name == productLotItem.Name)
+                        .FirstOrDefaultAsync();
+
+                    if (exist == null)
+                    {
+                        await _productService.AddAsync(productLotItem);
+                    }
+                    else
+                    {
+                        productLotItem = exist;
+                    }
 
                     purchaseOrderItem.ProductId = productLotItem.Id;
                     purchaseOrderItem.Summary = productLotItem.Number;
                 }
 
-                var inventoryTransaction = new InventoryTransaction()
-                {
-                    WarehouseId = 2,
-                    ProductId = purchaseOrderItem.ProductId,
-                    ModuleId = entity!.Id,
-                    ModuleName = moduleName,
-                    ModuleCode = "GR",
-                    ModuleNumber = entity.Number ?? string.Empty,
-                    MovementDate = entity.ReceiveDate!.Value,
-                    Status = (InventoryTransactionStatus)entity.Status!,
-                    RequestedMovement = purchaseOrderItem.Quantity,
-                    Movement = purchaseOrderItem.Quantity,
-                    Number = _numberSequenceService.GenerateNumber(nameof(InventoryTransaction), "", "IVT")
-                };
+                var numberSequence = _numberSequenceService
+                    .GenerateNumber(nameof(InventoryTransaction), "", "IVT");
 
-                await _inventoryTransactionService.AddAsync(inventoryTransaction);
+                transactions.Add(_goodReceiveProcessor
+                    .CreateInventoryTransaction(purchaseOrderItem, entity!, numberSequence));
             }
+
+            await _inventoryTransactionService.AddRangeAsync(transactions);
         }
 
         public override async Task UpdateAsync(GoodsReceive? entity)

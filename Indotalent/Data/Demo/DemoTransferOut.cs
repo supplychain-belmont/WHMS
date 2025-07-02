@@ -3,8 +3,8 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.TransferOuts;
 using Indotalent.Applications.Warehouses;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 
 namespace Indotalent.Data.Demo
 {

@@ -1,8 +1,8 @@
 using AutoMapper;
 
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Images;
-using Indotalent.Models.Entities;
 
 namespace Indotalent.Infrastructures.Mapper;
 
@@ -194,6 +194,8 @@ public class ApplicationProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid,
                 opt => opt.Ignore());
+        CreateMap<CustomerContact, CustomerContactChildDto>();
+        CreateMap<CustomerContactChildDto, CustomerContact>();
         CreateMap<CustomerGroup, CustomerGroupDto>();
         CreateMap<CustomerGroupDto, CustomerGroup>()
             .ForMember(dest => dest.Id,
@@ -339,12 +341,15 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
         CreateMap<ProductGroup, ProductGroupDto>().ReverseMap();
-        CreateMap<AssemblyProduct, AssemblyProductDto>()
-            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
-            .ForMember(dest => dest.Assembly, opt => opt.MapFrom(src => src.Assembly));
-        CreateMap<AssemblyProductDto, AssemblyProduct>()
+        CreateMap<Assembly, AssemblyDto>()
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+        CreateMap<AssemblyDto, Assembly>()
             .ForMember(dest => dest.Product, opt => opt.Ignore())
-            .ForMember(dest => dest.Assembly, opt => opt.Ignore());
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+        CreateMap<AssemblyChild, AssemblyChildDto>();
+        CreateMap<AssemblyChildDto, AssemblyChild>()
+            .ForMember(dest => dest.Assembly, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
 
         #endregion
 
@@ -380,6 +385,16 @@ public class ApplicationProfile : Profile
         CreateMap<InvenStockDto, InventoryTransaction>()
             .ForMember(dest => dest.WarehouseId, opt => opt.Ignore())
             .ForMember(dest => dest.ProductId, opt => opt.Ignore());
+
+        CreateMap<InventoryStock, InvenStockDto>()
+            .ForMember(dest => dest.ReservedPercentage,
+                opt => opt.MapFrom(src => Math.Round(Math.Min(src.Reserved / src.Stock * 100, 100), 2)
+                )
+            )
+            .ForMember(dest => dest.RowGuid,
+                opt => opt.MapFrom(src => Guid.Parse(src.RowGuid.ToString())
+                )
+            );
 
         #endregion
 

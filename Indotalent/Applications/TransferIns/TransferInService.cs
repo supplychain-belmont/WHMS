@@ -2,9 +2,9 @@
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.TransferOuts;
 using Indotalent.Data;
+using Indotalent.Domain.Entities;
+using Indotalent.Domain.Enums;
 using Indotalent.Infrastructures.Repositories;
-using Indotalent.Models.Entities;
-using Indotalent.Models.Enums;
 
 using Microsoft.EntityFrameworkCore;
 

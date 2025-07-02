@@ -1,8 +1,8 @@
 ﻿using Indotalent.Applications.Companies;
+using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
 using Indotalent.Infrastructures.TimeZones;
-using Indotalent.Models.Entities;
 
 namespace Indotalent.Data.System
 {

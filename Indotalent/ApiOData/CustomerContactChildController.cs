@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Indotalent.Applications.CustomerContacts;
 using Indotalent.Applications.NumberSequences;
+using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Models.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -17,17 +18,6 @@ namespace Indotalent.ApiOData
 
     public class CustomerContactChildController : ODataController
     {
-
-        public class MappingProfile : Profile
-        {
-            public MappingProfile()
-            {
-                CreateMap<CustomerContact, CustomerContactChildDto>();
-                CreateMap<CustomerContactChildDto, CustomerContact>();
-            }
-        }
-
-
         private readonly CustomerContactService _customerContactService;
         private readonly NumberSequenceService _numberSequenceService;
         private readonly IMapper _mapper;
@@ -52,7 +42,7 @@ namespace Indotalent.ApiOData
             return _customerContactService
                 .GetAll()
                 .Where(x => x.CustomerId == parentId)
-                .Select(x => _mapper.Map<CustomerContactChildDto>(x));
+                .ProjectTo<CustomerContactChildDto>(_mapper.ConfigurationProvider);
         }
 
 
