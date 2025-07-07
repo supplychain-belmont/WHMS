@@ -31,7 +31,6 @@ namespace Indotalent.ApiOData
         }
 
         [EnableQuery]
-        [Authorize]
         public IQueryable<GoodsReceiveDto> Get()
         {
             return _goodsReceiveService

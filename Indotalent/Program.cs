@@ -21,6 +21,7 @@ using WkHtmlToPdfDotNet.Contracts;
 using DotNetEnv;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 Env.Load();
@@ -134,6 +135,9 @@ builder.Services
             }
         };
     });
+
+builder.Services.AddAuthorization(opt =>
+    opt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
 
 builder.Services
     .Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
