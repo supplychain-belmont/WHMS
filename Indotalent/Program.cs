@@ -31,6 +31,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+builder.WebHost.ConfigureKestrel(opt => opt.ListenAnyIP(5007));
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
