@@ -1,3 +1,5 @@
+using DotNetEnv;
+
 using Indotalent;
 using Indotalent.Application;
 using Indotalent.AppSettings;
@@ -7,10 +9,13 @@ using Indotalent.Infrastructures.Middlewares;
 using Indotalent.Infrastructures.ODatas;
 using Indotalent.Infrastructures.Pdfs;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -18,10 +23,14 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
 
+Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+builder.WebHost.ConfigureKestrel(opt => opt.ListenAnyIP(5007));
 
 builder.Services.AddCors(options =>
 {
@@ -49,7 +58,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services
-    .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+    .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services
     .AddDatabaseDeveloperPageExceptionFilter();
@@ -79,16 +88,57 @@ builder.Services
     .AddDefaultTokenProviders();
 
 builder.Services
-    .ConfigureApplicationCookie(options =>
+    .AddAuthentication(opt =>
     {
-        var appConfig = builder.Configuration.GetSection("ApplicationConfiguration").Get<ApplicationConfiguration>();
-        if (appConfig != null)
+        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer("Bearer", options =>
+    {
+        var domain = $"https://{builder.Configuration["Auth0Domain"]}/";
+        var audience = builder.Configuration["ApiIdentifier"];
+        options.Authority = domain;
+        options.Audience = audience;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            options.LoginPath = appConfig.LoginPage;
-            options.LogoutPath = appConfig.LogoutPage;
-            options.AccessDeniedPath = appConfig.AccessDeniedPage;
-        }
+            ValidateIssuer = true,
+            ValidIssuer = domain,
+            ValidateAudience = true,
+            ValidAudiences = new[] { audience, $"{domain}userinfo" },
+            ValidateLifetime = true,
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"🔴 Auth Failed: {context.Exception.Message}");
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("Token validated successfully");
+                return Task.CompletedTask;
+            },
+            OnChallenge = context =>
+            {
+                Console.WriteLine("🔴 Token challenge triggered");
+                return Task.CompletedTask;
+            },
+            OnMessageReceived = context =>
+            {
+                Console.WriteLine("🔵 Message received for authentication");
+                return Task.CompletedTask;
+            },
+            OnForbidden = context =>
+            {
+                Console.WriteLine("🔴 Forbidden access");
+                return Task.CompletedTask;
+            }
+        };
     });
+
+builder.Services.AddAuthorization(opt =>
+    opt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
 
 builder.Services
     .Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
@@ -97,8 +147,6 @@ builder.Services
     .Configure<RegistrationConfiguration>(builder.Configuration.GetSection("RegistrationConfiguration"));
 
 builder.Services.Configure<ApplicationConfiguration>(builder.Configuration.GetSection("ApplicationConfiguration"));
-
-builder.Services.AddRazorPages();
 
 builder.Services
     .AddAllCustomServices();
@@ -118,11 +166,6 @@ builder.Services
 builder.Services
     .AddCustomOData();
 
-builder.Services
-    .AddSession();
-builder.Services.AddControllers()
-    .AddNewtonsoftJson();
-
 var app = builder.Build();
 
 var license = app.Configuration.GetSection("SyncfusionLicense").Get<string>();
@@ -139,7 +182,6 @@ if (app.Environment.IsDevelopment())
         c.DocExpansion(DocExpansion.None);
     });
 }
-
 else
 {
     app.UseExceptionHandler("/Error");
@@ -161,22 +203,19 @@ using (var scope = app.Services.CreateScope())
 
 app.UseStaticFiles();
 
-app.UseSession();
-
-app.UseMiddleware<LogAnalyticMiddleware>();
-
-// app.UseMiddleware<GlobalErrorHandlingMiddleware>();
-
-app.UseODataBatching();
-
 app.UseRouting();
 
 app.UseCors();
 
+// app.UseMiddleware<LogAnalyticMiddleware>();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.UseStatusCodePages();
+
+app.UseODataBatching();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
