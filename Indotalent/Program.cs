@@ -1,3 +1,5 @@
+using DotNetEnv;
+
 using Indotalent;
 using Indotalent.Application;
 using Indotalent.AppSettings;
@@ -7,22 +9,19 @@ using Indotalent.Infrastructures.Middlewares;
 using Indotalent.Infrastructures.ODatas;
 using Indotalent.Infrastructures.Pdfs;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
-
-using DotNetEnv;
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 
 Env.Load();
 

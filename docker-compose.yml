@@ -1,0 +1,43 @@
+services:
+  indotalent:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./Indotalent/.env.prod
+    ports:
+      - "5007:5007"
+    depends_on:
+      - postgres
+    cpus: 4
+    mem_limit: 4g
+  lens:
+    image: whms-lens
+    env_file:
+      - ./Indotalent/.env.lens.prod
+    volumes:
+      - ./Indotalent/syncfusion-license.txt:/app/syncfusion-license.txt
+    ports:
+      - "3000:3000"
+    depends_on:
+      - indotalent
+    cpus: 4
+    mem_limit: 4g
+  postgres:
+    image: postgres
+    env_file:
+      - ./.env-postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    cpus: 4
+    mem_limit: 4g
+
+volumes:
+  data:
+  timescale-data:
+
+networks:
+  shared_network:
+    external: true
