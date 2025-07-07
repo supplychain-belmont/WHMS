@@ -1,8 +1,6 @@
 services:
   indotalent:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    image: alejandroet/belmont:whms
     env_file:
       - ./Indotalent/.env.prod
     ports:
@@ -14,7 +12,7 @@ services:
     networks:
       - shared_network
   lens:
-    image: whms-lens
+    image: alejandroet/belmont:lens
     env_file:
       - ./Indotalent/.env.lens.prod
     volumes:
