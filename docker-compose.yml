@@ -11,6 +11,8 @@ services:
       - postgres
     cpus: 4
     mem_limit: 4g
+    networks:
+      - shared_network
   lens:
     image: whms-lens
     env_file:
@@ -23,6 +25,8 @@ services:
       - indotalent
     cpus: 4
     mem_limit: 4g
+    networks:
+      - shared_network
   postgres:
     image: postgres
     env_file:
@@ -33,6 +37,8 @@ services:
       - data:/var/lib/postgresql/data
     cpus: 4
     mem_limit: 4g
+    networks:
+      - shared_network
 
 volumes:
   data:
