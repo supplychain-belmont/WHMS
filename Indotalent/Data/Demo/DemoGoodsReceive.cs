@@ -21,6 +21,7 @@ namespace Indotalent.Data.Demo
             var warehouseService = services.GetRequiredService<WarehouseService>();
             var numberSequenceService = services.GetRequiredService<NumberSequenceService>();
             var inventoryTransactionService = services.GetRequiredService<InventoryTransactionService>();
+            var dbContext = services.GetRequiredService<ApplicationDbContext>();
             Random random = new Random();
             int goodsReceiveStatusLength = Enum.GetNames(typeof(GoodsReceiveStatus)).Length;
 
@@ -46,8 +47,7 @@ namespace Indotalent.Data.Demo
                 };
                 await goodsReceiveService.AddAsync(goodsReceive);
 
-                var transactions = await inventoryTransactionService.GetAll()
-                    .AsNoTracking()
+                var transactions = await dbContext.Set<InventoryTransaction>()
                     .Where(x => x.ModuleId == goodsReceive.Id)
                     .ToListAsync();
 

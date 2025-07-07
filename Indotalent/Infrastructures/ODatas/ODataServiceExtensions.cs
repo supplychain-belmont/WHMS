@@ -99,6 +99,7 @@ namespace Indotalent.Infrastructures.ODatas
 
 
             services.AddControllers()
+                .AddNewtonsoftJson()
                 .AddOData(options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null)
                     .AddRouteComponents("odata", builder.GetEdmModel(), odataServices =>
                     {

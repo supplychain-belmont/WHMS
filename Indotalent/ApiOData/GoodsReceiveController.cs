@@ -6,7 +6,7 @@ using Indotalent.Applications.NumberSequences;
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 
-using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
@@ -31,6 +31,7 @@ namespace Indotalent.ApiOData
         }
 
         [EnableQuery]
+        [Authorize]
         public IQueryable<GoodsReceiveDto> Get()
         {
             return _goodsReceiveService
