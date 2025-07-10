@@ -1,5 +1,5 @@
 services:
-  indotalent:
+  whms:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -13,16 +13,17 @@ services:
     mem_limit: 4g
     networks:
       - shared_network
-  lens:
+  whms-lens:
     image: whms-lens
     env_file:
       - ./Indotalent/.env.lens.prod
     volumes:
       - ./Indotalent/syncfusion-license.txt:/app/syncfusion-license.txt
+      - ./Indotalent/.env.lens.prod:/app/.env
     ports:
       - "3000:3000"
     depends_on:
-      - indotalent
+      - whms
     cpus: 4
     mem_limit: 4g
     networks:
