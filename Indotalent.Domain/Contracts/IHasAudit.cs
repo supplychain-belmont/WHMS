@@ -8,17 +8,11 @@ namespace Indotalent.Domain.Contracts
         DateTime? CreatedAtUtc { get; set; }
         string? UpdatedByUserId { get; set; }
         DateTime? UpdatedAtUtc { get; set; }
-
+        string? CreatedByUserName { get; set; }
+        string? UpdatedByUserName { get; set; }
 
 
         //not mapped
-
-
-
-        [NotMapped]
-        string? CreatedByUserName { get; set; }
-        [NotMapped]
-        string? UpdatedByUserName { get; set; }
         [NotMapped]
         string? CreatedAtString { get; set; }
         [NotMapped]

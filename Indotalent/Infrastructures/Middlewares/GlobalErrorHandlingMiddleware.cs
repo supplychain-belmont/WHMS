@@ -1,4 +1,6 @@
-﻿using Indotalent.Applications.LogErrors;
+﻿using System.Text.Json;
+
+using Indotalent.Applications.LogErrors;
 
 namespace Indotalent.Infrastructures.Middlewares
 {
@@ -23,28 +25,30 @@ namespace Indotalent.Infrastructures.Middlewares
             }
         }
 
-        private async Task CollectAndHandleErrorAsync(HttpContext context, Exception ex, LogErrorService logErrorService)
+        private async Task CollectAndHandleErrorAsync(HttpContext context, Exception ex,
+            LogErrorService logErrorService)
         {
             string? errorMessage = ex.Message;
             string? stackTrace = ex.StackTrace;
             string? source = ex.InnerException?.Message;
 
-            var redirectUrl = string.Empty;
-            if (!string.IsNullOrEmpty(context.Request.QueryString.ToString()))
-            {
-                redirectUrl += context.Request.Path.ToString();
-                redirectUrl += context.Request.QueryString.ToString();
-            }
-            else
-            {
-                redirectUrl += "/Error";
-            }
-
-
             await logErrorService.CollectErrorDataAsync(errorMessage, stackTrace, source);
-            context.Session.SetString("ErrorMessage", errorMessage);
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Response.Redirect(redirectUrl);
+
+            var errorResponse = new
+            {
+                status = 520,
+                title = "Internal Server Error",
+                message = errorMessage,
+                detail = source,
+                path = context.Request.Path,
+                query = context.Request.QueryString.ToString()
+            };
+
+            context.Response.StatusCode = 520;
+            context.Response.ContentType = "application/json";
+
+            var json = JsonSerializer.Serialize(errorResponse);
+            await context.Response.WriteAsync(json);
         }
     }
 }

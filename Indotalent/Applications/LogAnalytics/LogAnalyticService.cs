@@ -20,16 +20,17 @@ namespace Indotalent.Applications.LogAnalytics
     public class LogAnalyticService : Repository<LogAnalytic>
     {
         private readonly IMapper _mapper;
+        private const string NameSpace = "https://belmont.com";
 
         public LogAnalyticService(
             ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
             IAuditColumnTransformer auditColumnTransformer,
             IMapper mapper) :
-                base(
-                    context,
-                    httpContextAccessor,
-                    auditColumnTransformer)
+            base(
+                context,
+                httpContextAccessor,
+                auditColumnTransformer)
         {
             _mapper = mapper;
         }
@@ -72,8 +73,11 @@ namespace Indotalent.Applications.LogAnalytics
 
         public async Task CollectAnalyticDataAsync()
         {
-            var userName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
-            var userId = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = _httpContextAccessor.HttpContext?.User;
+            var userName = user?.FindFirst($"{NameSpace}/name")?.Value
+                           ?? user?.FindFirst($"{NameSpace}/email")?.Value
+                           ?? string.Empty;
+            var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var userAgentString = _httpContextAccessor?.HttpContext?.Request.Headers["User-Agent"].ToString();
             var userIpAddress = _httpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString();
             var url = _httpContextAccessor?.HttpContext?.Request.Path.ToString();

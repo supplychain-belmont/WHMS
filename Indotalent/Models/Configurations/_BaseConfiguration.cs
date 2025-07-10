@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Indotalent.Models.Configurations
 {
-    public abstract class _BaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : class, IHasId, IHasAudit, IHasSoftDelete
+    public abstract class _BaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
+        where TEntity : class, IHasId, IHasAudit, IHasSoftDelete
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
@@ -34,6 +35,8 @@ namespace Indotalent.Models.Configurations
                 );
 
             builder.Property(e => e.IsNotDeleted).HasDefaultValue(true);
+            builder.Property(e => e.CreatedByUserName).HasMaxLength(50);
+            builder.Property(e => e.UpdatedByUserName).HasMaxLength(50);
         }
     }
 }

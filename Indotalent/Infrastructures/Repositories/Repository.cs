@@ -15,8 +15,9 @@ namespace Indotalent.Infrastructures.Repositories
         protected readonly ApplicationDbContext _context;
         protected readonly IHttpContextAccessor _httpContextAccessor;
         protected readonly IAuditColumnTransformer _auditColumnTransformer;
-        protected readonly string _userId = string.Empty;
-        protected readonly string _userName = string.Empty;
+        protected readonly string _userId;
+        protected readonly string _userName;
+        private const string NameSpace = "https://belmont.com";
 
         public Repository(
             ApplicationDbContext context,
@@ -37,7 +38,10 @@ namespace Indotalent.Infrastructures.Repositories
 
         private static string GetUserName(IHttpContextAccessor httpContextAccessor)
         {
-            return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+            var user = httpContextAccessor.HttpContext?.User;
+            return user?.FindFirst($"{NameSpace}/name")?.Value
+                   ?? user?.FindFirst($"{NameSpace}/email")?.Value
+                   ?? string.Empty;
         }
 
         public virtual IQueryable<T> GetAllArchive()
@@ -125,6 +129,7 @@ namespace Indotalent.Infrastructures.Repositories
                 {
                     auditEntity.CreatedAtUtc = DateTime.Now;
                     auditEntity.CreatedByUserId = _userId;
+                    auditEntity.CreatedByUserName = _userName;
                 }
 
                 entity.RowGuid = Guid.NewGuid();
@@ -148,6 +153,7 @@ namespace Indotalent.Infrastructures.Repositories
                     {
                         auditEntity.CreatedAtUtc = DateTime.Now;
                         auditEntity.CreatedByUserId = _userId;
+                        auditEntity.CreatedByUserName = _userName;
                     }
 
                     entity.RowGuid = Guid.NewGuid();
@@ -169,6 +175,7 @@ namespace Indotalent.Infrastructures.Repositories
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
+                    auditEntity.UpdatedByUserName = _userName;
                 }
 
                 if (entity is IHasAudit auditedEntity)
@@ -200,6 +207,7 @@ namespace Indotalent.Infrastructures.Repositories
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
+                    auditEntity.UpdatedByUserName = _userName;
                 }
 
                 if (entity is IHasAudit auditedEntity)
@@ -236,6 +244,7 @@ namespace Indotalent.Infrastructures.Repositories
                 if (entity is IHasAudit auditEntity && !string.IsNullOrEmpty(_userId))
                 {
                     auditEntity.UpdatedByUserId = _userId;
+                    auditEntity.UpdatedByUserName = _userName;
                 }
 
                 if (entity is IHasAudit auditedEntity)
