@@ -121,16 +121,8 @@ public abstract class BaseODataController<T, TDto> : ODataController
             return NotFound();
         }
 
-        try
-        {
-            await _service.DeleteByIdAsync(key);
-            return NoContent();
-        }
-        catch (Exception e)
-        {
-            return StatusCode(520,
-                new { status = 520, title = "Unknown Error", message = e.Message, timestamp = DateTime.UtcNow });
-        }
+        await _service.DeleteByIdAsync(key);
+        return NoContent();
     }
 
     protected async Task<ActionResult<TDto>> GetEntityWithIncludesAsync(int key,

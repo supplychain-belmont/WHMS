@@ -37,7 +37,7 @@ namespace Indotalent.Infrastructures.Middlewares
             var errorResponse = new
             {
                 status = 520,
-                title = "Internal Server Error",
+                title = "Unknown Error",
                 message = errorMessage,
                 detail = source,
                 path = context.Request.Path,
