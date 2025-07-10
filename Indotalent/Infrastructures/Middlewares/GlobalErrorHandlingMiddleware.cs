@@ -36,7 +36,7 @@ namespace Indotalent.Infrastructures.Middlewares
 
             var errorResponse = new
             {
-                status = 500,
+                status = 520,
                 title = "Internal Server Error",
                 message = errorMessage,
                 detail = source,
@@ -44,7 +44,7 @@ namespace Indotalent.Infrastructures.Middlewares
                 query = context.Request.QueryString.ToString()
             };
 
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.StatusCode = 520;
             context.Response.ContentType = "application/json";
 
             var json = JsonSerializer.Serialize(errorResponse);
