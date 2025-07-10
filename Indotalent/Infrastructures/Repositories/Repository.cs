@@ -17,7 +17,7 @@ namespace Indotalent.Infrastructures.Repositories
         protected readonly IAuditColumnTransformer _auditColumnTransformer;
         protected readonly string _userId;
         protected readonly string _userName;
-        private const string nameSpace = "https://belmont.com";
+        private const string NameSpace = "https://belmont.com";
 
         public Repository(
             ApplicationDbContext context,
@@ -33,17 +33,14 @@ namespace Indotalent.Infrastructures.Repositories
 
         private static string GetUserId(IHttpContextAccessor httpContextAccessor)
         {
-            var user = httpContextAccessor.HttpContext?.User;
-            var identifier = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
 
         private static string GetUserName(IHttpContextAccessor httpContextAccessor)
         {
             var user = httpContextAccessor.HttpContext?.User;
-            return user?.FindFirst($"{nameSpace}/name")?.Value
-                   ?? user?.FindFirst($"{nameSpace}/email")?.Value
+            return user?.FindFirst($"{NameSpace}/name")?.Value
+                   ?? user?.FindFirst($"{NameSpace}/email")?.Value
                    ?? string.Empty;
         }
 

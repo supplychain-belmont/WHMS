@@ -207,10 +207,11 @@ app.UseRouting();
 
 app.UseCors();
 
-// app.UseMiddleware<LogAnalyticMiddleware>();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<LogAnalyticMiddleware>();
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 app.UseStatusCodePages();
 

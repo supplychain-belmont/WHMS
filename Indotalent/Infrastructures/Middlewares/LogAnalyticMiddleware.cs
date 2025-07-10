@@ -13,18 +13,8 @@ namespace Indotalent.Infrastructures.Middlewares
 
         public async Task Invoke(HttpContext context, LogAnalyticService logAnalyticService)
         {
-            if (IsRazorPage(context))
-            {
-                await logAnalyticService.CollectAnalyticDataAsync();
-            }
+            await logAnalyticService.CollectAnalyticDataAsync();
             await _next(context);
-        }
-
-        private bool IsRazorPage(HttpContext context)
-        {
-            bool hasExtension = !Path.HasExtension(context.Request.Path);
-            bool hasHandler = context.Request.QueryString.HasValue && context.Request.QueryString.Value.Contains("handler");
-            return hasExtension && !hasHandler;
         }
     }
 }
