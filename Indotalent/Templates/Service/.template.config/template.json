@@ -1,0 +1,24 @@
+{
+  "author": "santihsdev",
+  "classifications": [
+    "custom-service"
+  ],
+  "name": "Custom Service",
+  "shortName": "custom-service",
+  "identity": "Indotalent.Templates.Service.CSharp",
+  "sourceName": "Indotalent.Templates.Service.CSharp",
+  "preferNameDirectory": "false",
+  "tags": [
+    {
+      "language": "C#"
+    }
+  ],
+  "symbols": {
+    "className": {
+      "type": "parameter",
+      "datatype": "text",
+      "defaultValue": "_Base",
+      "replaces": "_Base"
+    }
+  }
+}
