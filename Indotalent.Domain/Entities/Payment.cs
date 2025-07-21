@@ -1,6 +1,7 @@
 using System;
 
 using Indotalent.Domain.Contracts;
+
 namespace Indotalent.Domain.Entities
 {
     public class Payment : _Base
@@ -8,10 +9,9 @@ namespace Indotalent.Domain.Entities
         public Payment(string paymentName, Guid id)
         {
             PaymentName = paymentName;
-            Id = id;
+            base.RowGuid = id;
         }
 
         public string PaymentName { get; set; }
-        public Guid Id { get; set; }
     }
 }

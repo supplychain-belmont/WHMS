@@ -1,4 +1,6 @@
 using Indotalent.Domain.Entities;
+using Indotalent.Domain.Grid;
+using Indotalent.Persistence.Configuration;
 using Indotalent.Persistence.Configurations;
 using Indotalent.Persistence.Docs;
 using Indotalent.Persistence.Images;
@@ -59,6 +61,10 @@ namespace Indotalent.Persistence
         public virtual DbSet<Lot> Lots { get; set; } = default!;
         public virtual DbSet<LotItem> LotItems { get; set; } = default!;
         public virtual DbSet<InventoryStock> InventoryStocks { get; set; } = default!;
+        public virtual DbSet<ColumnType> ColumnTypes { get; set; } = default!;
+        public virtual DbSet<ColumnModel> ColumnModels { get; set; } = default!;
+        public virtual DbSet<Filter> Filters { get; set; } = default!;
+        public virtual DbSet<Grid> Grids { get; set; } = default!;
 
         public virtual void SetModifiedState(object entity) =>
             Entry(entity).State = EntityState.Modified;
@@ -112,6 +118,10 @@ namespace Indotalent.Persistence
             modelBuilder.ApplyConfiguration(new AssemblyChildProductConfiguration());
             modelBuilder.ApplyConfiguration(new LotConfiguration());
             modelBuilder.ApplyConfiguration(new LotItemConfiguration());
+            modelBuilder.ApplyConfiguration(new ColumnModelConfiguration());
+            modelBuilder.ApplyConfiguration(new ColumnTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FilterConfiguration());
+            modelBuilder.ApplyConfiguration(new GridConfiguration());
 
             modelBuilder.Entity<InventoryStock>()
                 .ToView("InventoryStock")

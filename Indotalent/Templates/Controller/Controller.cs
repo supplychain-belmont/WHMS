@@ -1,9 +1,9 @@
 using AutoMapper;
 
 using Indotalent.ApiOData;
-using Indotalent.Data;
 using Indotalent.Domain.Contracts;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 namespace Indotalent.Templates.Controller;
 

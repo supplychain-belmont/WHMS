@@ -1,12 +1,12 @@
-using Indotalent.Domain.Contracts;
+using Indotalent.Domain.Grid;
 using Indotalent.Persistence;
 using Indotalent.Persistence.Repositories;
 
 namespace Indotalent.Templates.Service;
 
-public class _BaseService : Repository<_Base>
+public class GridService : Repository<Grid>
 {
-    public _BaseService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor,
+    public GridService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor,
         IAuditColumnTransformer auditColumnTransformer) : base(context, httpContextAccessor, auditColumnTransformer)
     {
     }

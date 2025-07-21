@@ -26,7 +26,7 @@ namespace Indotalent.ApiOData
                 .GetAll()
                 .Select(rec => new PaymentDto
                 {
-                    Id = rec.Id,
+                    Id = rec.RowGuid,
                     PaymentName = rec.PaymentName
                 });
         }
@@ -36,10 +36,10 @@ namespace Indotalent.ApiOData
         {
             var result = _paymentService
                 .GetAll()
-                .Where(n => n.Id == key)
+                .Where(n => n.RowGuid == key)
                 .Select(rec => new PaymentDto
                 {
-                    Id = rec.Id,
+                    Id = rec.RowGuid,
                     PaymentName = rec.PaymentName
                 });
 

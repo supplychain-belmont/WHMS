@@ -45,4 +45,11 @@
         <ProjectReference Include="..\Indotalent.Persistence\Indotalent.Persistence.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="Templates\Configuration\.template.config\template.json" />
+      <Content Include="Templates\Controller\.template.config\template.json" />
+      <Content Include="Templates\Dto\.template.config\template.json" />
+      <Content Include="Templates\Service\.template.config\template.json" />
+    </ItemGroup>
+
 </Project>

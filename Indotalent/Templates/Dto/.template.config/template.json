@@ -1,0 +1,24 @@
+{
+  "author": "santihsdev",
+  "classifications": [
+    "custom-dto"
+  ],
+  "name": "Custom Dto",
+  "shortName": "custom-dto",
+  "identity": "Indotalent.Templates.Dto.CSharp",
+  "sourceName": "Indotalent.Templates.Dto.CSharp",
+  "preferNameDirectory": "false",
+  "tags": [
+    {
+      "language": "C#"
+    }
+  ],
+  "symbols": {
+    "className": {
+      "type": "parameter",
+      "datatype": "text",
+      "defaultValue": "_Base",
+      "replaces": "_Base"
+    }
+  }
+}
