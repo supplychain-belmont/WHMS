@@ -111,8 +111,15 @@ namespace Indotalent.Applications.PurchaseOrderItems
             }
 
             entity.ShowOrderItem = entity.AssemblyId == null;
-            _purchaseOrderItemProcessor.CalculateCosts(entity, product!.M3, order!.ContainerM3,
-                order.TotalTransportContainerCost, order.TotalAgencyCost);
+            if (product is { IsNationalProduct: true })
+            {
+                _purchaseOrderItemProcessor.CalculateCostsWithoutShipping(entity);
+            }
+            else
+            {
+                _purchaseOrderItemProcessor.CalculateCosts(entity, product!.M3, order!.ContainerM3,
+                    order.TotalTransportContainerCost, order.TotalAgencyCost);
+            }
         }
 
         public override async Task DeleteByIdAsync(int? id)
