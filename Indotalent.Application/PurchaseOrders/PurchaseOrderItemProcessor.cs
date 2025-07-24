@@ -24,6 +24,15 @@ public class PurchaseOrderItemProcessor
         purchaseOrderItem.UnitCostBoliviaBs = purchaseOrderItem.Total.Value * 6.92m;
     }
 
+    public void CalculateCostsWithoutShipping(PurchaseOrderItem purchaseOrderItem)
+    {
+        purchaseOrderItem.TransportCost = 0;
+        purchaseOrderItem.TotalShippingCost = 0;
+        purchaseOrderItem.UnitCostBolivia = purchaseOrderItem.UnitCostDiscounted;
+        purchaseOrderItem.Total = purchaseOrderItem.Quantity * purchaseOrderItem.UnitCostDiscounted;
+        purchaseOrderItem.UnitCostBoliviaBs = purchaseOrderItem.Total.Value * 6.92m;
+    }
+
     public void CalculateCosts(PurchaseOrderItem purchaseOrderItem, decimal m3, decimal containerM3,
         decimal totalTransportCost, decimal totalAgencyCost)
     {
