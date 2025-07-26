@@ -1,6 +1,6 @@
 ﻿using Indotalent.Domain.Contracts;
 
-namespace Indotalent.Infrastructures.Repositories
+namespace Indotalent.Persistence.Repositories
 {
     public static class SoftDeleteFilter
     {

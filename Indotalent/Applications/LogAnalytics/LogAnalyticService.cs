@@ -1,17 +1,13 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 
 using AutoMapper;
 
 using DeviceDetectorNET;
 
-using Indotalent.Data;
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Infrastructures.Repositories;
-
-using Microsoft.EntityFrameworkCore;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using UAParser;
 
@@ -66,7 +62,7 @@ namespace Indotalent.Applications.LogAnalytics
             return _mapper.Map<LogAnalyticDto>(logAnalytic);
         }
 
-        public new async Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             await base.DeleteByIdAsync(id);
         }
@@ -78,8 +74,8 @@ namespace Indotalent.Applications.LogAnalytics
                            ?? user?.FindFirst($"{NameSpace}/email")?.Value
                            ?? string.Empty;
             var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userAgentString = _httpContextAccessor?.HttpContext?.Request.Headers["User-Agent"].ToString();
-            var userIpAddress = _httpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString();
+            var userAgentString = _httpContextAccessor.HttpContext?.Request.Headers["User-Agent"].ToString();
+            var userIpAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
             var url = _httpContextAccessor?.HttpContext?.Request.Path.ToString();
 
             var deviceDetector = new DeviceDetector(userAgentString);

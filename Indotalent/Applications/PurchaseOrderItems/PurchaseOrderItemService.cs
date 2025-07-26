@@ -1,10 +1,10 @@
 ﻿using Indotalent.Application.PurchaseOrders;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrders;
-using Indotalent.Data;
 using Indotalent.Domain.Contracts;
 using Indotalent.Domain.Entities;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 

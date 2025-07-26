@@ -4,7 +4,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using Indotalent.Domain.Contracts;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

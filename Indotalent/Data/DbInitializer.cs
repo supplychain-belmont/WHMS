@@ -6,8 +6,9 @@ using Indotalent.Data.System;
 using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
-using Indotalent.Infrastructures.Images;
 using Indotalent.Infrastructures.TimeZones;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Images;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

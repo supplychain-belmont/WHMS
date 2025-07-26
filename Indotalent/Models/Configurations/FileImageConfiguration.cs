@@ -1,5 +1,5 @@
 using Indotalent.Domain.Entities;
-using Indotalent.Infrastructures.Images;
+using Indotalent.Persistence.Images;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

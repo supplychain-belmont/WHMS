@@ -4,7 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Indotalent.Applications.VendorGroups;
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;

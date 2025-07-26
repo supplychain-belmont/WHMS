@@ -5,12 +5,12 @@ using AutoMapper;
 using Indotalent.ApiOData;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Vendors;
-using Indotalent.Data;
 using Indotalent.Domain.Contracts;
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 using Indotalent.Infrastructures.Mapper;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

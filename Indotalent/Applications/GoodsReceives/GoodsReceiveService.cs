@@ -4,10 +4,10 @@ using Indotalent.Applications.InventoryTransactions;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
 using Indotalent.Applications.PurchaseOrderItems;
-using Indotalent.Data;
 using Indotalent.Domain.Entities;
 using Indotalent.Domain.Enums;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -1,14 +1,12 @@
-using System.Runtime.CompilerServices;
-
 using Indotalent.Domain.Entities;
-using Indotalent.Infrastructures.Docs;
-using Indotalent.Infrastructures.Images;
-using Indotalent.Models.Configurations;
+using Indotalent.Persistence.Configurations;
+using Indotalent.Persistence.Docs;
+using Indotalent.Persistence.Images;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Indotalent.Data
+namespace Indotalent.Persistence
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

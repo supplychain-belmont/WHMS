@@ -2,11 +2,11 @@
 
 using Indotalent.Applications.Products;
 using Indotalent.Applications.SalesOrders;
-using Indotalent.Data;
 using Indotalent.Domain.Contracts;
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;

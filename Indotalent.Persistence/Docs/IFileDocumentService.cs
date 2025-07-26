@@ -1,4 +1,6 @@
-﻿namespace Indotalent.Infrastructures.Docs
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Indotalent.Persistence.Docs
 {
     public interface IFileDocumentService
     {

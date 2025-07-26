@@ -1,10 +1,10 @@
-﻿using Indotalent.Data;
-using Indotalent.Domain.Contracts;
-using Indotalent.Infrastructures.Repositories;
+﻿using Indotalent.Domain.Contracts;
+using Indotalent.Persistence.Repositories;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace Indotalent.Infrastructures.Images
+namespace Indotalent.Persistence.Images
 {
     public class FileImageService : IFileImageService
     {

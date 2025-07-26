@@ -6,5 +6,5 @@ public class ImageDto
 
     public string? Name { get; set; }
 
-    public string Folder { get; set; }
+    public string? Folder { get; set; }
 }
