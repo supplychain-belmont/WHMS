@@ -2,7 +2,7 @@ using AutoMapper;
 
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Infrastructures.Images;
+using Indotalent.Persistence.Images;
 
 namespace Indotalent.Infrastructures.Mapper;
 

@@ -1,7 +1,6 @@
-﻿using Indotalent.Data;
-using Indotalent.Domain.Contracts;
+﻿using Indotalent.Domain.Contracts;
 
-namespace Indotalent.Infrastructures.Repositories
+namespace Indotalent.Persistence.Repositories
 {
     public interface IAuditColumnTransformer
     {

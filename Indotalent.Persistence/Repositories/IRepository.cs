@@ -2,7 +2,7 @@
 
 using Indotalent.Domain.Contracts;
 
-namespace Indotalent.Infrastructures.Repositories
+namespace Indotalent.Persistence.Repositories
 {
     public interface IRepository<T> where T : class
     {

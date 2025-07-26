@@ -1,6 +1,6 @@
-using Indotalent.Data;
 using Indotalent.Domain.Entities;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.AspNetCore.Http;
 

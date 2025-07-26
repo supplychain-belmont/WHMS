@@ -8,12 +8,12 @@ using Indotalent.Domain.Entities;
 using Indotalent.Infrastructures.Middlewares;
 using Indotalent.Infrastructures.ODatas;
 using Indotalent.Infrastructures.Pdfs;
+using Indotalent.Persistence;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -58,7 +58,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services
-    .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+    .AddPersistenceDbContext(connectionString);
 
 builder.Services
     .AddDatabaseDeveloperPageExceptionFilter();

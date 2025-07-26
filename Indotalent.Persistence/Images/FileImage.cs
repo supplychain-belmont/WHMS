@@ -2,7 +2,7 @@
 
 using Indotalent.Domain.Contracts;
 
-namespace Indotalent.Infrastructures.Images
+namespace Indotalent.Persistence.Images
 {
     public class FileImage : _Base
     {

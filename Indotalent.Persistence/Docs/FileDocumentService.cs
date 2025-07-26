@@ -1,6 +1,7 @@
-﻿using Indotalent.Data;
+﻿
+using Microsoft.AspNetCore.Http;
 
-namespace Indotalent.Infrastructures.Docs
+namespace Indotalent.Persistence.Docs
 {
     public class FileDocumentService : IFileDocumentService
     {

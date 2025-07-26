@@ -1,6 +1,6 @@
-﻿using Indotalent.Data;
-using Indotalent.Domain.Entities;
-using Indotalent.Infrastructures.Repositories;
+﻿using Indotalent.Domain.Entities;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 namespace Indotalent.Applications.VendorCategories
 {

@@ -1,9 +1,8 @@
-﻿using Indotalent.Data;
-using Indotalent.Domain.Contracts;
+﻿using Indotalent.Domain.Contracts;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Indotalent.Infrastructures.Repositories
+namespace Indotalent.Persistence.Repositories
 {
     public class AuditColumnTransformer : IAuditColumnTransformer
     {

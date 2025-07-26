@@ -1,14 +1,12 @@
 ﻿using System.Linq.Expressions;
 using System.Security.Claims;
 
-using AutoMapper.QueryableExtensions;
-
-using Indotalent.Data;
 using Indotalent.Domain.Contracts;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace Indotalent.Infrastructures.Repositories
+namespace Indotalent.Persistence.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class, IHasId, IHasAudit, IHasSoftDelete
     {

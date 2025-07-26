@@ -35,11 +35,11 @@ using Indotalent.Applications.Vendors;
 using Indotalent.Applications.Warehouses;
 using Indotalent.Infrastructures.Countries;
 using Indotalent.Infrastructures.Currencies;
-using Indotalent.Infrastructures.Docs;
 using Indotalent.Infrastructures.Emails;
-using Indotalent.Infrastructures.Images;
-using Indotalent.Infrastructures.Repositories;
 using Indotalent.Infrastructures.TimeZones;
+using Indotalent.Persistence.Docs;
+using Indotalent.Persistence.Images;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Infrastructure;

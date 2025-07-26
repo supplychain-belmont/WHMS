@@ -17,17 +17,17 @@ public class ImageController : ControllerBase
 
     [HttpGet]
     [Route("/{folder}/{name}")]
-    public async Task<IActionResult> Get(string folder, string name)
+    public Task<IActionResult> Get(string folder, string name)
     {
         var filePath = Path.Combine(_environment.WebRootPath, "uploads", folder, $"{name}.jpg");
 
         if (!System.IO.File.Exists(filePath))
         {
-            return NotFound("File not found.");
+            return Task.FromResult<IActionResult>(NotFound("File not found."));
         }
 
         var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-        return File(fileStream, "image/jpeg");
+        return Task.FromResult<IActionResult>(File(fileStream, "image/jpeg"));
     }
 
     [HttpPost]
@@ -42,7 +42,7 @@ public class ImageController : ControllerBase
             return BadRequest("No file uploaded.");
         }
 
-        var uploadFolder = Path.Combine(_environment.WebRootPath, "uploads", folder);
+        var uploadFolder = Path.Combine(_environment.WebRootPath, "uploads", folder!);
         if (!Directory.Exists(uploadFolder))
         {
             Directory.CreateDirectory(uploadFolder);

@@ -6,6 +6,7 @@ using Indotalent.Applications.PurchaseOrders;
 using Indotalent.Applications.Warehouses;
 using Indotalent.Domain.Entities;
 using Indotalent.Domain.Enums;
+using Indotalent.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 

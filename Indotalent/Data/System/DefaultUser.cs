@@ -1,7 +1,7 @@
 ﻿using Indotalent.Applications.Companies;
 using Indotalent.AppSettings;
 using Indotalent.Domain.Entities;
-using Indotalent.Infrastructures.Images;
+using Indotalent.Persistence.Images;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

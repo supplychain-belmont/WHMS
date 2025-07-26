@@ -2,10 +2,10 @@
 
 using AutoMapper;
 
-using Indotalent.Data;
 using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 

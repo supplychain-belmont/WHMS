@@ -2,10 +2,10 @@
 using Indotalent.Application.SalesOrders;
 using Indotalent.Applications.NumberSequences;
 using Indotalent.Applications.Products;
-using Indotalent.Data;
 using Indotalent.Domain.Contracts;
 using Indotalent.Domain.Entities;
-using Indotalent.Infrastructures.Repositories;
+using Indotalent.Persistence;
+using Indotalent.Persistence.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 

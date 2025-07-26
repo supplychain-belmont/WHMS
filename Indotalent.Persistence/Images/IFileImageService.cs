@@ -1,4 +1,6 @@
-﻿namespace Indotalent.Infrastructures.Images
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Indotalent.Persistence.Images
 {
     public interface IFileImageService
     {

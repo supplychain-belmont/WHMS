@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-namespace Indotalent.Infrastructures.Docs
+namespace Indotalent.Persistence.Docs
 {
     public class FileDocument
     {

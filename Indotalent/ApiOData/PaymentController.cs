@@ -53,7 +53,7 @@ namespace Indotalent.ApiOData
                 return BadRequest(ModelState);
             }
 
-            var payment = new Payment(paymentDto.PaymentName, paymentDto.Id);
+            var payment = new Payment(paymentDto.PaymentName!, paymentDto.Id);
 
             await _paymentService.AddAsync(payment);
             return Created(payment);
@@ -72,7 +72,7 @@ namespace Indotalent.ApiOData
                 return NotFound();
             }
 
-            payment.PaymentName = paymentDto.PaymentName;
+            payment.PaymentName = paymentDto.PaymentName!;
 
             await _paymentService.UpdateAsync(payment);
             return Updated(payment);
