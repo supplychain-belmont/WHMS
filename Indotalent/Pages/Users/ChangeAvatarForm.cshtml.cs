@@ -19,12 +19,13 @@ namespace Indotalent.Pages.Users
         private readonly IFileImageService _fileImageService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationUserService _applicationUserService;
+
         public ChangeAvatarFormModel(
             IMapper mapper,
             IFileImageService fileImageService,
             UserManager<ApplicationUser> userManager,
             ApplicationUserService applicationUserService
-            )
+        )
         {
             _mapper = mapper;
             _fileImageService = fileImageService;
@@ -32,11 +33,9 @@ namespace Indotalent.Pages.Users
             _applicationUserService = applicationUserService;
         }
 
-        [TempData]
-        public string StatusMessage { get; set; } = string.Empty;
+        [TempData] public string StatusMessage { get; set; } = string.Empty;
 
-        [BindProperty]
-        public UserModel UserForm { get; set; } = default!;
+        [BindProperty] public UserModel UserForm { get; set; } = default!;
 
         public class UserModel
         {
@@ -61,10 +60,7 @@ namespace Indotalent.Pages.Users
             this.SetupStatusMessage();
             StatusMessage = this.ReadStatusMessage();
 
-            UserForm = new UserModel
-            {
-                Id = Guid.Empty.ToString()
-            };
+            UserForm = new UserModel { Id = Guid.Empty.ToString() };
 
             if (!(string.IsNullOrEmpty(id) || id.Equals(Guid.Empty.ToString())))
             {
@@ -73,15 +69,16 @@ namespace Indotalent.Pages.Users
                 {
                     throw new Exception($"Unable to load: {id}");
                 }
+
                 UserForm = _mapper.Map<UserModel>(existing);
 
-                LogoImageUrl = await _fileImageService.GetImageUrlFromImageIdAsync(existing.Avatar ?? Guid.Empty.ToString());
+                LogoImageUrl =
+                    await _fileImageService.GetImageUrlFromImageIdAsync(existing.Avatar ?? Guid.Empty.ToString());
             }
         }
 
         public async Task<IActionResult> OnPostAsync([Bind(Prefix = nameof(UserForm))] UserModel input)
         {
-
             if (!ModelState.IsValid)
             {
                 var message = string.Join(" ", ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)));
@@ -118,9 +115,8 @@ namespace Indotalent.Pages.Users
 
                 var existingAvatar = await _fileImageService.GetImageAsync(new Guid(ava));
 
-                if (existingAvatar.Id == Guid.Empty)
+                if (existingAvatar.RowGuid == Guid.Empty)
                 {
-
                     var avatarId = await _fileImageService.UploadImageAsync(input.File);
 
                     existing.Avatar = avatarId.ToString();
@@ -131,13 +127,10 @@ namespace Indotalent.Pages.Users
                     {
                         throw new Exception("Upload avatar failed");
                     }
-
                 }
                 else
                 {
-
-                    await _fileImageService.UpdateImageAsync(existingAvatar.Id, input.File);
-
+                    await _fileImageService.UpdateImageAsync(existingAvatar.RowGuid, input.File);
                 }
 
 
@@ -147,6 +140,5 @@ namespace Indotalent.Pages.Users
 
             return Page();
         }
-
     }
 }
