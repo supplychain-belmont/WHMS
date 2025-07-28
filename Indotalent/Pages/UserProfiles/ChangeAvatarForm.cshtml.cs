@@ -131,7 +131,7 @@ namespace Indotalent.Pages.UserProfiles
 
                 var existingAvatar = await _fileImageService.GetImageAsync(new Guid(ava));
 
-                if (existingAvatar.Id == Guid.Empty)
+                if (existingAvatar.RowGuid == Guid.Empty)
                 {
 
                     var avatarId = await _fileImageService.UploadImageAsync(input.File);
@@ -149,7 +149,7 @@ namespace Indotalent.Pages.UserProfiles
                 else
                 {
 
-                    await _fileImageService.UpdateImageAsync(existingAvatar.Id, input.File);
+                    await _fileImageService.UpdateImageAsync(existingAvatar.RowGuid, input.File);
 
                 }
 

@@ -1,0 +1,34 @@
+<Project>
+    <Target Name="GenerateVersionInfoFile" BeforeTargets="BeforeCompile" AfterTargets="MinVer">
+        <PropertyGroup>
+            <Version>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</Version>
+            <VersionInfoFilePath>$(ProjectDir)VersionInfo.cs</VersionInfoFilePath>
+
+            <!-- Define the full file content here, with explicit newlines -->
+            <GeneratedText><![CDATA[
+namespace VersionData
+{
+    public static class VersionInfo
+    {
+        public const string Version = "$(Version)"%3B
+    }
+}
+]]></GeneratedText>
+
+
+        </PropertyGroup>
+
+        <Message Text="Generating VersionInfo.cs with version $(Version)" Importance="high"/>
+
+        <!-- Write all content at once -->
+        <WriteLinesToFile
+                File="$(VersionInfoFilePath)"
+                Lines="$(GeneratedText)"
+                Overwrite="true"/>
+
+        <!-- Include the file in compilation -->
+        <ItemGroup>
+            <Compile Include="$(VersionInfoFilePath)"/>
+        </ItemGroup>
+    </Target>
+</Project>
