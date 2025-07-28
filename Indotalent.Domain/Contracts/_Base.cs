@@ -4,11 +4,11 @@ namespace Indotalent.Domain.Contracts
 {
     public class _Base : IHasId, IHasAudit, IHasSoftDelete
     {
-
         public _Base()
         {
             this.IsNotDeleted = true;
             this.CreatedAtUtc = DateTime.UtcNow;
+            this.RowGuid = Guid.NewGuid();
         }
 
         //IHasId
@@ -24,10 +24,8 @@ namespace Indotalent.Domain.Contracts
 
         public string? CreatedByUserName { get; set; }
         public string? UpdatedByUserName { get; set; }
-        [NotMapped]
-        public string? CreatedAtString { get; set; }
-        [NotMapped]
-        public string? UpdatedAtString { get; set; }
+        [NotMapped] public string? CreatedAtString { get; set; }
+        [NotMapped] public string? UpdatedAtString { get; set; }
 
 
         //IHasSoftDelete
