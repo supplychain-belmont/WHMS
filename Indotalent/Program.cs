@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -194,7 +195,7 @@ using (var scope = app.Services.CreateScope())
     var appConfig = services.GetRequiredService<IOptions<ApplicationConfiguration>>();
     if (appConfig.Value.IsDevelopment)
     {
-        await context.Database.EnsureCreatedAsync(); //<===*** Development Only !!! ***
+        await context.Database.MigrateAsync(); //<===*** Development Only !!! ***
     }
 
     await DbInitializer.InitializeAsync(services);

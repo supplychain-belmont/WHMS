@@ -23,7 +23,7 @@ namespace Indotalent.Persistence.Images
         public async Task<FileImage?> GetByRowGuidAsync(Guid? rowGuid)
         {
             var entity = await _context.FileImages.ApplyIsNotDeletedFilter()
-                .FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
+                .FirstOrDefaultAsync(x => x.Id == rowGuid);
             if (entity == null)
             {
                 throw new Exception("Unable to process, entity is null");
@@ -62,7 +62,7 @@ namespace Indotalent.Persistence.Images
             }
 
             var entity = await _context.FileImages.ApplyIsNotDeletedFilter()
-                .FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
+                .FirstOrDefaultAsync(x => x.Id == rowGuid);
 
             if (entity != null)
             {
@@ -102,7 +102,7 @@ namespace Indotalent.Persistence.Images
                 throw new ArgumentException("File size exceeds the maximum allowed size of 5 MB.");
             }
 
-            var image = new FileImage { RowGuid = Guid.NewGuid(), OriginalFileName = file.FileName };
+            var image = new FileImage { Id = Guid.NewGuid(), OriginalFileName = file.FileName };
 
             using (var memoryStream = new MemoryStream())
             {
@@ -155,7 +155,7 @@ namespace Indotalent.Persistence.Images
 
             await UpdateAsync(existingImage);
 
-            return existingImage.RowGuid;
+            return existingImage.Id;
         }
 
         public async Task<FileImage> GetImageAsync(Guid? id)
@@ -176,7 +176,7 @@ namespace Indotalent.Persistence.Images
 
             fileImage = new FileImage
             {
-                RowGuid = Guid.Empty,
+                Id = Guid.Empty,
                 OriginalFileName = "NoImage.png",
                 ImageData = File.ReadAllBytes(defaultImagePath)
             };
@@ -253,7 +253,7 @@ namespace Indotalent.Persistence.Images
 
                 fileImage = new FileImage
                 {
-                    RowGuid = Guid.Empty,
+                    Id = Guid.Empty,
                     OriginalFileName = "NoImage.png",
                     ImageData = File.ReadAllBytes(defaultImagePath)
                 };
