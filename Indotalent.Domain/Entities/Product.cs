@@ -35,6 +35,7 @@ namespace Indotalent.Domain.Entities
         public string? ColorCode { get; set; }
         public string? Material { get; set; }
         public string? TapestryCode { get; set; }
+        public string? Size { get; set; }
         public bool IsNationalProduct { get; set; }
         public string? ProductCategory { get; set; }
 

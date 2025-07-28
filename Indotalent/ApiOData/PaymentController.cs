@@ -24,7 +24,11 @@ namespace Indotalent.ApiOData
         {
             return _paymentService
                 .GetAll()
-                .Select(rec => new PaymentDto { Id = rec.RowGuid, PaymentName = rec.PaymentName });
+                .Select(rec => new PaymentDto
+                {
+                    Id = rec.Id,
+                    PaymentName = rec.PaymentName
+                });
         }
 
         [EnableQuery]
@@ -32,8 +36,12 @@ namespace Indotalent.ApiOData
         {
             var result = _paymentService
                 .GetAll()
-                .Where(n => n.RowGuid == key)
-                .Select(rec => new PaymentDto { Id = rec.RowGuid, PaymentName = rec.PaymentName });
+                .Where(n => n.Id == key)
+                .Select(rec => new PaymentDto
+                {
+                    Id = rec.Id,
+                    PaymentName = rec.PaymentName
+                });
 
             return SingleResult.Create(result);
         }

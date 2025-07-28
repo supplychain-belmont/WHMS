@@ -1722,6 +1722,9 @@ namespace Indotalent.Persistence.Migrations
                     b.Property<Guid>("RowGuid")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Size")
+                        .HasColumnType("text");
+
                     b.Property<string>("TapestryCode")
                         .HasColumnType("text");
 
@@ -3145,11 +3148,9 @@ namespace Indotalent.Persistence.Migrations
 
             modelBuilder.Entity("Indotalent.Persistence.Images.FileImage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAtUtc")
                         .HasColumnType("timestamp without time zone");
