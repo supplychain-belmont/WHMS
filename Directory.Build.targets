@@ -1,7 +1,7 @@
 <Project>
-    <Target Name="GenerateVersionInfoFile" BeforeTargets="BeforeCompile">
+    <Target Name="GenerateVersionInfoFile" BeforeTargets="BeforeCompile" AfterTargets="MinVer">
         <PropertyGroup>
-            <Version>$(PackageVersion)</Version>
+            <Version>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</Version>
             <VersionInfoFilePath>$(ProjectDir)VersionInfo.cs</VersionInfoFilePath>
 
             <!-- Define the full file content here, with explicit newlines -->
