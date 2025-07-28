@@ -17,7 +17,6 @@ namespace Indotalent.Persistence.Configurations
         protected virtual void ConfigureBaseProperties(EntityTypeBuilder<TEntity> builder)
         {
             builder.Property(c => c.Id).ValueGeneratedOnAdd();
-            builder.Property(c => c.RowGuid).HasDefaultValue(Guid.NewGuid());
             builder.Property(e => e.CreatedByUserId).HasMaxLength(50);
 
             builder.Property(e => e.CreatedAtUtc)
