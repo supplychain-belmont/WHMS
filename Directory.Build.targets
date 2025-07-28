@@ -3,6 +3,7 @@
         <PropertyGroup>
             <Version>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</Version>
             <VersionInfoFilePath>$(ProjectDir)VersionInfo.cs</VersionInfoFilePath>
+            <MinVerIgnoreHeight>true</MinVerIgnoreHeight>
 
             <!-- Define the full file content here, with explicit newlines -->
             <GeneratedText><![CDATA[
