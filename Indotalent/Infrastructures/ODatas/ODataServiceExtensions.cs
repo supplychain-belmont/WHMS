@@ -70,7 +70,7 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<AssemblyChildDto>("AssemblyChild");
             builder.EntitySet<LotDto>("Lot");
             builder.EntitySet<LotItemDto>("LotItem");
-            // builder.EntitySet<PdfResource>("PdfGenerator");
+            builder.EntitySet<StatusDto>("Status");
             var pdfAction = builder.EntityType<PdfResource>().Collection.Action("GeneratePdf");
             pdfAction.Returns<Stream>();
             pdfAction.Parameter<int>("Id");

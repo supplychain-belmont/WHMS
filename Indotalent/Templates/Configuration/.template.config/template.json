@@ -1,0 +1,29 @@
+{
+  "author": "santihsdev",
+  "classifications": [
+    "custom-database-configuration"
+  ],
+  "name": "Custom Database Configuration",
+  "shortName": "custom-config",
+  "identity": "Indotalent.Templates.Configuration.CSharp",
+  "sourceName": "Indotalent.Templates.Configuration.CSharp",
+  "preferNameDirectory": "false",
+  "tags": [
+    {
+      "language": "C#"
+    }
+  ],
+  "symbols": {
+    "className": {
+      "type": "parameter",
+      "datatype": "text",
+      "defaultValue": "__Entity__",
+      "replaces": "__Entity__"
+    },
+    "EnableEntityClass": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true"
+    }
+  }
+}

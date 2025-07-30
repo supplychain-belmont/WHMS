@@ -1,0 +1,29 @@
+{
+  "author": "santihsdev",
+  "classifications": [
+    "custom-controller"
+  ],
+  "name": "Custom Base Controller",
+  "shortName": "custom-controller",
+  "identity": "Indotalent.Templates.Controller.CSharp",
+  "sourceName": "Indotalent.Templates.Controller.CSharp",
+  "preferNameDirectory": "false",
+  "tags": [
+    {
+      "language": "C#"
+    }
+  ],
+  "symbols": {
+    "className": {
+      "type": "parameter",
+      "datatype": "text",
+      "defaultValue": "_Base",
+      "replaces": "_Base"
+    },
+    "EnableClasses": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true"
+    }
+  }
+}

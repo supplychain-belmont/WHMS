@@ -24,6 +24,7 @@ using Indotalent.Applications.SalesOrders;
 using Indotalent.Applications.SalesReturns;
 using Indotalent.Applications.Scrappings;
 using Indotalent.Applications.StockCounts;
+using Indotalent.Applications.System;
 using Indotalent.Applications.Taxes;
 using Indotalent.Applications.TransferIns;
 using Indotalent.Applications.TransferOuts;
@@ -40,6 +41,7 @@ using Indotalent.Infrastructures.TimeZones;
 using Indotalent.Persistence.Docs;
 using Indotalent.Persistence.Images;
 using Indotalent.Persistence.Repositories;
+using Indotalent.Templates.Service;
 
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -97,6 +99,10 @@ namespace Indotalent
             services.AddScoped<LotService>();
             services.AddScoped<LotItemService>();
             services.AddScoped<InventoryStockService>();
+            services.AddScoped<ColumnModelService>();
+            services.AddScoped<ColumnTypeService>();
+            services.AddScoped<FilterService>();
+            services.AddScoped<GridService>();
 
             return services;
         }

@@ -20,9 +20,8 @@ namespace Indotalent.Data
     {
         public static async Task InitializeAsync(
             IServiceProvider services
-            )
+        )
         {
-
             var context = services.GetRequiredService<ApplicationDbContext>();
             if (context.Users.Any())
             {
@@ -44,11 +43,13 @@ namespace Indotalent.Data
                 .Where(x => x.UserName == appConfig.Value.DefaultAdminEmail)
                 .FirstOrDefaultAsync();
 
-            await DefaultCompany.GenerateAsync(companyService, currencyService, timeZoneService, countryService, creator);
+            await DefaultCompany.GenerateAsync(companyService, currencyService, timeZoneService, countryService,
+                creator);
             await DefaultRole.GenerateAsync(roleManager, appConfig);
             await DefaultUser.GenerateAsync(userManager, appConfig, fileImageService, companyService);
 
             await DefaultSystemWarehouse.GenerateAsync(services);
+            // await DefaultGrid.GenerateAsync(services);
 
             if (appConfig.Value.IsDemoVersion)
             {
@@ -115,17 +116,17 @@ namespace Indotalent.Data
             int randomIndex = random.Next(0, strings.Length);
             return strings[randomIndex];
         }
+
         public static double GetRandomValue(double[] targetValues, Random random)
         {
             int randomIndex = random.Next(0, targetValues.Length);
             return targetValues[randomIndex];
-
         }
+
         public static int GetRandomValue(int[] targetValues, Random random)
         {
             int randomIndex = random.Next(0, targetValues.Length);
             return targetValues[randomIndex];
-
         }
     }
 }

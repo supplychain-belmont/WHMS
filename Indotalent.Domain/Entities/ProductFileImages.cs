@@ -1,6 +1,5 @@
-using System;
-
 using Indotalent.Domain.Contracts;
+
 namespace Indotalent.Domain.Entities
 
 {
