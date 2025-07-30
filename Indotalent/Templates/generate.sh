@@ -34,6 +34,7 @@ echo "Verify new "
 controller_dir="../ApiOData"
 service_dir="../Applications/$service_folder"
 config_dir="../Models/Configurations"
+dto_dir="../DTOs"
 
 echo "🛠️ Generating Controller..."
 dotnet new custom-controller -n "$name" -c "$name" -o "$controller_dir"
@@ -45,19 +46,19 @@ echo "🛠️ Generating Configuration..."
 dotnet new custom-config -n "$name" -c "$name" -o "$config_dir"
 
 echo "🛠️ Generating DTO..."
-dotnet new custom-dto -n "$name" -c "$name" -o "$service_dir"
+dotnet new custom-dto -n "$name" -c "$name" -o "$dto_dir"
 
 # Original default filenames
 original_controller_file="$controller_dir/Controller.cs"
 original_service_file="$service_dir/Service.cs"
 original_config_file="$config_dir/Configuration.cs"
-original_dto_file="$service_dir/Dto.cs"
+original_dto_file="$dto_dir/Dto.cs"
 
 # Target renamed filenames
 controller_file="$controller_dir/${name}Controller.cs"
 service_file="$service_dir/${name}Service.cs"
 config_file="$config_dir/${name}Configuration.cs"
-dto_file="$service_dir/${name}Dto.cs"
+dto_file="$dto_dir/${name}Dto.cs"
 
 echo "✏️ Renaming files..."
 

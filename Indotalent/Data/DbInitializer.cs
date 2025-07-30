@@ -49,7 +49,7 @@ namespace Indotalent.Data
             await DefaultUser.GenerateAsync(userManager, appConfig, fileImageService, companyService);
 
             await DefaultSystemWarehouse.GenerateAsync(services);
-            await DefaultGrid.GenerateAsync(services);
+            // await DefaultGrid.GenerateAsync(services);
 
             if (appConfig.Value.IsDemoVersion)
             {
