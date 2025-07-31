@@ -36,8 +36,15 @@ public class PurchaseOrderItemProcessor
     public void CalculateCosts(PurchaseOrderItem purchaseOrderItem, decimal m3, decimal containerM3,
         decimal totalTransportCost, decimal totalAgencyCost)
     {
-        RecalculateWeightedM3(purchaseOrderItem, m3, containerM3);
-        RecalculateTransportCost(purchaseOrderItem, totalTransportCost, totalAgencyCost);
-        RecalculateTotal(purchaseOrderItem);
+        try
+        {
+            RecalculateWeightedM3(purchaseOrderItem, m3, containerM3);
+            RecalculateTransportCost(purchaseOrderItem, totalTransportCost, totalAgencyCost);
+            RecalculateTotal(purchaseOrderItem);
+        }
+        catch (DivideByZeroException)
+        {
+            CalculateCostsWithoutShipping(purchaseOrderItem);
+        }
     }
 }
