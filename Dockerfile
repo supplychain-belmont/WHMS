@@ -9,6 +9,7 @@ COPY ./Indotalent.sln ./
 COPY ./Indotalent/ ./Indotalent/
 COPY ./Indotalent.Application/ ./Indotalent.Application/
 COPY ./Indotalent.Domain/ ./Indotalent.Domain/
+COPY ./Indotalent.Persistence/ ./Indotalent.Persistence/
 
 # Restaurar dependencias
 RUN dotnet restore Indotalent/Indotalent.csproj
