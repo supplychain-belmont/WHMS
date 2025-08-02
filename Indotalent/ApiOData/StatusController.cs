@@ -10,8 +10,9 @@ public class StatusController : ODataController
     [EnableQuery]
     public IQueryable<StatusDto> Get()
     {
-        var names = Enum.GetNames(typeof(Status))
-            .Select(value => new StatusDto { Name = value, Value = value });
+        var names = Enum.GetValues(typeof(Status))
+            .Cast<Status>()
+            .Select(status => new StatusDto { Name = status.ToString(), Value = status.GetDescription() });
         return names.AsQueryable();
     }
 }
