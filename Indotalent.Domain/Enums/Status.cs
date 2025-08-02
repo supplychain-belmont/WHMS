@@ -1,9 +1,11 @@
+using System.ComponentModel;
+
 namespace Indotalent.Domain.Enums;
 
 public enum Status
 {
-    Draft = 0,
-    Cancelled = 1,
-    Confirmed = 2,
-    Archived = 3
+    [Description("Borrador")] Draft = 0,
+    [Description("Cancelado")] Cancelled = 1,
+    [Description("Confirmado")] Confirmed = 2,
+    [Description("Archivado")] Archived = 3
 }
