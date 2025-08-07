@@ -123,5 +123,31 @@ namespace Indotalent.Applications.DeliveryOrders
 
             await base.UpdateAsync(entity);
         }
+
+        public async Task<int> ProcessGoodsReceiveAsync(int salesOrderId)
+        {
+            var salesOrder = await _context.Set<SalesOrder>()
+                .Where(x => x.Id == salesOrderId && x.IsNotDeleted)
+                .Select(x => new { x.Id, x.Description })
+                .FirstOrDefaultAsync();
+
+            var existingDeliveryOrder = await GetAll()
+                .Where(x => x.SalesOrderId == salesOrderId && x.Status == DeliveryOrderStatus.Draft)
+                .FirstOrDefaultAsync();
+
+            if (existingDeliveryOrder != null)
+                return existingDeliveryOrder.Id;
+
+            var deliverOrder = new DeliveryOrder
+            {
+                SalesOrderId = salesOrderId,
+                DeliveryDate = DateTime.UtcNow,
+                Status = DeliveryOrderStatus.Draft,
+                Description = salesOrder?.Description
+            };
+
+            await AddAsync(deliverOrder);
+            return deliverOrder.Id;
+        }
     }
 }

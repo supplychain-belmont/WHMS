@@ -45,7 +45,7 @@ namespace Indotalent.Infrastructures.ODatas
             builder.EntitySet<PurchaseOrderItemDto>("PurchaseOrderItem");
             builder.EntitySet<InvenTransDto>("InvenTrans");
             builder.EntitySet<InvenStockDto>("InvenStock");
-            builder.EntitySet<DeliveryOrderDto>("DeliveryOrder");
+            // builder.EntitySet<DeliveryOrderDto>("DeliveryOrder");
             builder.EntitySet<SalesReturnDto>("SalesReturn");
             builder.EntitySet<GoodsReceiveDto>("GoodsReceive");
             builder.EntitySet<PurchaseReturnDto>("PurchaseReturn");
@@ -97,6 +97,9 @@ namespace Indotalent.Infrastructures.ODatas
             assemblyAction2.Parameter<int>("quantity");
             assemblyAction2.ReturnsFromEntitySet<AssemblyDto>("Assembly");
 
+            var goodsReceiveAction = builder.EntityType<DeliveryOrderDto>().Collection.Action("ProcessDeliveryOrder");
+            goodsReceiveAction.Parameter<int>("salesOrderId");
+            goodsReceiveAction.ReturnsFromEntitySet<DeliveryOrderDto>("DeliveryOrder");
 
             services.AddControllers()
                 .AddNewtonsoftJson()
