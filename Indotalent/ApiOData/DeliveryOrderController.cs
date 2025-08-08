@@ -68,5 +68,39 @@ namespace Indotalent.ApiOData
                 return UnprocessableEntity(e.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> FinishDeliveryOrder(ODataActionParameters actionParameters)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                if (actionParameters["deliveryOrderId"] is not int deliveryOrderId)
+                {
+                    return BadRequest("Delivery Order Id is required.");
+                }
+
+                if (actionParameters["warehouseId"] is not int warehouseId)
+                {
+                    return BadRequest("Warehouse Id is required.");
+                }
+
+                await _deliveryOrderService.FinishDeliveryOrderAsync(deliveryOrderId, warehouseId);
+                var deliverOrder = await _deliveryOrderService
+                    .GetAll()
+                    .Include(x => x.SalesOrder)
+                    .ThenInclude(x => x!.Customer)
+                    .FirstOrDefaultAsync(x => x.Id == deliveryOrderId);
+                return Ok(_mapper.Map<DeliveryOrderDto>(deliverOrder));
+            }
+            catch (Exception e)
+            {
+                return UnprocessableEntity(e.Message);
+            }
+        }
     }
 }

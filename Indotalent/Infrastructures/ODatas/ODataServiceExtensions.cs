@@ -97,9 +97,15 @@ namespace Indotalent.Infrastructures.ODatas
             assemblyAction2.Parameter<int>("quantity");
             assemblyAction2.ReturnsFromEntitySet<AssemblyDto>("Assembly");
 
-            var goodsReceiveAction = builder.EntityType<DeliveryOrderDto>().Collection.Action("ProcessDeliveryOrder");
-            goodsReceiveAction.Parameter<int>("salesOrderId");
-            goodsReceiveAction.ReturnsFromEntitySet<DeliveryOrderDto>("DeliveryOrder");
+            var processDeliveryAction =
+                builder.EntityType<DeliveryOrderDto>().Collection.Action("ProcessDeliveryOrder");
+            processDeliveryAction.Parameter<int>("salesOrderId");
+            processDeliveryAction.ReturnsFromEntitySet<DeliveryOrderDto>("DeliveryOrder");
+
+            var finishDeliveryAction = builder.EntityType<DeliveryOrderDto>().Collection.Action("FinishDeliveryOrder");
+            finishDeliveryAction.Parameter<int>("deliveryOrderId");
+            finishDeliveryAction.Parameter<int>("warehouseId");
+            finishDeliveryAction.ReturnsFromEntitySet<DeliveryOrderDto>("DeliveryOrder");
 
             services.AddControllers()
                 .AddNewtonsoftJson()

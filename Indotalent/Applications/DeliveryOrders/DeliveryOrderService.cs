@@ -149,5 +149,30 @@ namespace Indotalent.Applications.DeliveryOrders
             await AddAsync(deliverOrder);
             return deliverOrder.Id;
         }
+
+        public async Task<int> FinishDeliveryOrderAsync(int deliveryOrderId, int warehouseId)
+        {
+            var deliveryOrder = await GetByIdAsync(deliveryOrderId);
+
+            if (deliveryOrder == null)
+                throw new ArgumentException("Delivery order not found.");
+
+            deliveryOrder.Status = DeliveryOrderStatus.Confirmed;
+
+            var salesOrder = await _context.Set<SalesOrder>()
+                .Where(x => x.Id == deliveryOrder.SalesOrderId && x.IsNotDeleted)
+                .FirstOrDefaultAsync();
+            if (salesOrder != null)
+                salesOrder.OrderStatus = SalesOrderStatus.Confirmed;
+            await _context.SaveChangesAsync();
+
+            await _inventoryTransactionService
+                .GetAll()
+                .Where(x => x.ModuleId == deliveryOrder!.Id && x.ModuleName == nameof(DeliveryOrder))
+                .ExecuteUpdateAsync(s => s.SetProperty(x => x.WarehouseId, warehouseId));
+
+            await UpdateAsync(deliveryOrder);
+            return deliveryOrder.Id;
+        }
     }
 }
