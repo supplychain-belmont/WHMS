@@ -199,7 +199,6 @@ using (var scope = app.Services.CreateScope())
     }
 
     await DbInitializer.InitializeAsync(services);
-    await context.CreateInventoryStockView();
 }
 
 app.UseStaticFiles();

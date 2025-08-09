@@ -157,22 +157,39 @@ namespace Indotalent.Applications.DeliveryOrders
             if (deliveryOrder == null)
                 throw new ArgumentException("Delivery order not found.");
 
-            deliveryOrder.Status = DeliveryOrderStatus.Confirmed;
+            #region Update Transactions Warehouse
 
-            var salesOrder = await _context.Set<SalesOrder>()
-                .Where(x => x.Id == deliveryOrder.SalesOrderId && x.IsNotDeleted)
-                .FirstOrDefaultAsync();
-            if (salesOrder != null)
-                salesOrder.OrderStatus = SalesOrderStatus.Confirmed;
-            await _context.SaveChangesAsync();
+            var isValidWarehouse =
+                await _context.Warehouse.AnyAsync(x => x.Id == warehouseId && x.IsNotDeleted && !x.SystemWarehouse);
+            if (isValidWarehouse)
+                await _inventoryTransactionService
+                    .GetAll()
+                    .Where(x => x.ModuleId == deliveryOrder!.Id && x.ModuleName == nameof(DeliveryOrder))
+                    .ExecuteUpdateAsync(s => s.SetProperty(x => x.WarehouseId, warehouseId));
 
-            await _inventoryTransactionService
-                .GetAll()
-                .Where(x => x.ModuleId == deliveryOrder!.Id && x.ModuleName == nameof(DeliveryOrder))
-                .ExecuteUpdateAsync(s => s.SetProperty(x => x.WarehouseId, warehouseId));
+            #endregion
 
-            await UpdateAsync(deliveryOrder);
-            return deliveryOrder.Id;
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                deliveryOrder.Status = DeliveryOrderStatus.Confirmed;
+
+                var salesOrder = await _context.Set<SalesOrder>()
+                    .Where(x => x.Id == deliveryOrder.SalesOrderId && x.IsNotDeleted)
+                    .FirstOrDefaultAsync();
+                if (salesOrder != null)
+                    salesOrder.OrderStatus = SalesOrderStatus.Confirmed;
+                await _context.SaveChangesAsync();
+
+                await UpdateAsync(deliveryOrder);
+                await transaction.CommitAsync();
+                return deliveryOrder.Id;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
     }
 }

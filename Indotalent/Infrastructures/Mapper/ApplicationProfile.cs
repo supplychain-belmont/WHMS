@@ -390,10 +390,6 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.ReservedPercentage,
                 opt => opt.MapFrom(src => Math.Round(Math.Min(src.Reserved / src.Stock * 100, 100), 2)
                 )
-            )
-            .ForMember(dest => dest.RowGuid,
-                opt => opt.MapFrom(src => Guid.Parse(src.RowGuid.ToString())
-                )
             );
 
         #endregion
