@@ -484,8 +484,10 @@ public class ApplicationProfile : Profile
             .ForMember(dest => dest.SalesOrder, opt => opt.Ignore())
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.RowGuid, opt => opt.Ignore());
-        CreateMap<InventoryTransaction, DeliveryOrderItemChildDto>();
-        CreateMap<DeliveryOrderItemChildDto, InventoryTransaction>();
+        CreateMap<InventoryTransaction, DeliveryOrderItemChildDto>()
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product!.Name));
+        CreateMap<DeliveryOrderItemChildDto, InventoryTransaction>()
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
 
         #endregion
 
