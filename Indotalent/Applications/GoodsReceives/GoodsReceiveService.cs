@@ -47,6 +47,7 @@ namespace Indotalent.Applications.GoodsReceives
 
         public override async Task AddAsync(GoodsReceive? entity)
         {
+            entity!.Number = _numberSequenceService.GenerateNumber(nameof(GoodsReceive), "", "GR");
             await base.AddAsync(entity);
             var purchaseItems = await _purchaseOrderItemService.GetAll()
                 .Include(item => item.Product)

@@ -6,37 +6,30 @@ using Indotalent.Domain.Entities;
 using Indotalent.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Formatter;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Indotalent.ApiOData
 {
-    public class DeliveryOrderController : ODataController
+    public class DeliveryOrderController : BaseODataController<DeliveryOrder, DeliveryOrderDto>
     {
         private readonly DeliveryOrderService _deliveryOrderService;
-        private readonly IMapper _mapper;
 
-        public DeliveryOrderController(DeliveryOrderService deliveryOrderService, IMapper mapper)
+        public DeliveryOrderController(DeliveryOrderService service, IMapper mapper) : base(service, mapper)
         {
-            _deliveryOrderService = deliveryOrderService;
-            _mapper = mapper;
+            _deliveryOrderService = service;
         }
 
-        [EnableQuery]
-        public IQueryable<DeliveryOrderDto> Get()
+        public override IQueryable<DeliveryOrderDto> Get()
         {
-            return _deliveryOrderService
+            return _service
                 .GetAll()
                 .Include(x => x.SalesOrder)
                 .ThenInclude(x => x!.Customer)
                 .ProjectTo<DeliveryOrderDto>(_mapper.ConfigurationProvider);
         }
 
-        [EnableQuery]
-        public async Task<IActionResult> Get([FromODataUri] int key)
+        public override async Task<ActionResult<DeliveryOrderDto>> Get(int key)
         {
             var entity = await _deliveryOrderService
                 .GetAll()
@@ -44,44 +37,11 @@ namespace Indotalent.ApiOData
                 .ThenInclude(x => x!.Customer)
                 .ProjectTo<DeliveryOrderDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
-
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            var dto = _mapper.Map<DeliveryOrderDto>(entity);
-            return Ok(dto);
+            return Ok(entity);
         }
 
-        public async Task<IActionResult> Post([FromBody] DeliveryOrderDto dto)
-        {
-            var entity = _mapper.Map<DeliveryOrder>(dto);
-            await _deliveryOrderService.AddAsync(entity);
-            return Created();
-        }
-
-        public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] DeliveryOrderDto dto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var entity = await _deliveryOrderService.GetByIdAsync(key);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(dto, entity);
-            await _deliveryOrderService.UpdateAsync(entity);
-            return Updated(_mapper.Map<DeliveryOrderDto>(entity));
-        }
-
-        [HttpPatch]
-        public async Task<IActionResult> Patch([FromODataUri] int key,
-            [FromBody] Delta<DeliveryOrderDto> deliveryOrderDto)
+        [HttpPost]
+        public async Task<IActionResult> ProcessDeliveryOrder(ODataActionParameters actionParameters)
         {
             try
             {
@@ -90,25 +50,18 @@ namespace Indotalent.ApiOData
                     return BadRequest(ModelState);
                 }
 
-                var current = await _deliveryOrderService.GetByIdAsync(key);
-                if (current == null)
+                if (actionParameters["salesOrderId"] is not int salesOrderId)
                 {
-                    return NotFound();
+                    return BadRequest("Deliver Order Id is required.");
                 }
 
-                deliveryOrderDto.TryGetPropertyValue("Number", out var numberProperty);
-                if (numberProperty is string number && current.Number != number)
-                {
-                    return BadRequest("Unable to update delivery order");
-                }
-
-                var dto = _mapper.Map<DeliveryOrderDto>(current);
-                deliveryOrderDto.Patch(dto);
-
-                var entity = _mapper.Map(dto, current);
-
-                await _deliveryOrderService.UpdateAsync(entity);
-                return Updated(_mapper.Map<DeliveryOrderDto>(entity));
+                var deliverOrderId = await _deliveryOrderService.ProcessGoodsReceiveAsync(salesOrderId);
+                var deliverOrder = await _deliveryOrderService
+                    .GetAll()
+                    .Include(x => x.SalesOrder)
+                    .ThenInclude(x => x!.Customer)
+                    .FirstOrDefaultAsync(x => x.Id == deliverOrderId);
+                return Ok(_mapper.Map<DeliveryOrderDto>(deliverOrder));
             }
             catch (Exception e)
             {
@@ -116,16 +69,38 @@ namespace Indotalent.ApiOData
             }
         }
 
-        public async Task<IActionResult> Delete([FromODataUri] int key)
+        [HttpPost]
+        public async Task<IActionResult> FinishDeliveryOrder(ODataActionParameters actionParameters)
         {
-            var entity = await _deliveryOrderService.GetByIdAsync(key);
-            if (entity == null)
+            try
             {
-                return NotFound();
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            await _deliveryOrderService.DeleteByIdAsync(key);
-            return NoContent();
+                if (actionParameters["deliveryOrderId"] is not int deliveryOrderId)
+                {
+                    return BadRequest("Delivery Order Id is required.");
+                }
+
+                if (actionParameters["warehouseId"] is not int warehouseId)
+                {
+                    return BadRequest("Warehouse Id is required.");
+                }
+
+                await _deliveryOrderService.FinishDeliveryOrderAsync(deliveryOrderId, warehouseId);
+                var deliverOrder = await _deliveryOrderService
+                    .GetAll()
+                    .Include(x => x.SalesOrder)
+                    .ThenInclude(x => x!.Customer)
+                    .FirstOrDefaultAsync(x => x.Id == deliveryOrderId);
+                return Ok(_mapper.Map<DeliveryOrderDto>(deliverOrder));
+            }
+            catch (Exception e)
+            {
+                return UnprocessableEntity(e.Message);
+            }
         }
     }
 }
