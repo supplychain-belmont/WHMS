@@ -29,5 +29,32 @@ namespace Indotalent.ApiOData
         {
             return await GetEntityWithIncludesAsync(key, x => x.Vendor, x => x.Tax);
         }
+        
+        [HttpPost("AutoGenerate")]
+        public async Task<ActionResult<PurchaseOrderDto>> AutoGenerate([FromBody] AutoPurchaseOrderDto dto)
+        {
+            var entity = await ((PurchaseOrderService)_service).AutoGeneratePurchaseOrderAsync(dto);
+            var result = _mapper.Map<PurchaseOrderDto>(entity);
+            return Ok(result);
+        }
+        [HttpPost("AutoPOTransferFlow")]
+        public async Task<ActionResult<object>> AutoPOTransferFlow([FromBody] AutoPOTransferFlowDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (dto == null) return BadRequest("Body is null");
+            if (dto.WarehouseId <= 0) return BadRequest("WarehouseId is required");
+
+            var (po, to, ti, toLines, tiLines) =
+                await ((PurchaseOrderService)_service).AutoGenerateWithTransfersAsync(dto);
+
+            return Ok(new
+            {
+                PurchaseOrder = _mapper.Map<PurchaseOrderDto>(po),
+                TransferOut   = _mapper.Map<TransferOutDto>(to),
+                TransferIn    = _mapper.Map<TransferInDto>(ti),
+                TransferOutLinesCreated = toLines,
+                TransferInLinesCreated  = tiLines
+            });
+        }
     }
 }
